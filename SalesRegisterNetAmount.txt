@@ -1,0 +1,5 @@
+Select SB_VNo as SSB_VNo,P_Id,((B_Amount) + sum(case when ST_Sign='+' then Amount else 0 end ) + sum(case when ST_Sign='-' then -Amount else 0 end ))  as NAmount from AMS.SB_Details SBD
+										left Outer Join ams.SB_Term as ST on ST.SB_VNo=SBD.SB_Invoice and SBD.P_Id=ST.Product_Id 
+										left outer Join AMS.ST_Term as SMT on SMT.ST_ID=ST.ST_Id where P_Id is not Null 
+										group by SB_VNo,P_Id,B_Amount
+

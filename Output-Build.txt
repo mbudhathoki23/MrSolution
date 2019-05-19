@@ -1,0 +1,1 @@
+﻿1>------ Build started: Project: AMS, Configuration: Debug Any CPU ------
