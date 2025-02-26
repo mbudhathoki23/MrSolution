@@ -1,0 +1,6342 @@
+IF OBJECT_ID('AMS.CompanyInfo') IS NULL BEGIN
+    CREATE TABLE [AMS].[CompanyInfo] ([Company_Id] [TINYINT] IDENTITY(1, 1) NOT NULL,
+    [Company_Name] [NVARCHAR](200) NOT NULL,
+    [PrintDesc] [NVARCHAR](200) NOT NULL,
+    [Company_Logo] [IMAGE] NULL,
+    [CReg_Date] [DATE] NULL,
+    [Address] [NVARCHAR](200) NULL,
+    [Country] [NVARCHAR](50) NULL,
+    [State] [NVARCHAR](50) NULL,
+    [City] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [Fax] [NVARCHAR](50) NULL,
+    [Pan_No] [NVARCHAR](50) NULL,
+    [Email] [NVARCHAR](50) NULL,
+    [Website] [NVARCHAR](100) NULL,
+    [Database_Name] [NVARCHAR](50) NOT NULL,
+    [Database_Path] [NVARCHAR](100) NULL,
+    [Version_No] [NVARCHAR](50) NULL,
+    [Status] [BIT] NOT NULL,
+    [CreateDate] [DATETIME] NULL,
+    [SoftModule] [NVARCHAR](500) NULL,
+    [LoginDate] [DATE] NULL,
+    [IsSyncOnline] [BIT] NULL,
+    [ApiKey] [UNIQUEIDENTIFIER] NULL,
+    CONSTRAINT [PK_CompanyInfo] PRIMARY KEY CLUSTERED([Company_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_CompanyInfo] UNIQUE NONCLUSTERED([Company_Name] ASC, [PrintDesc] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.SyncTable') IS NULL BEGIN
+    CREATE TABLE [AMS].[SyncTable] ([SyncId] [INT] NOT NULL,
+    [IsBranch] [BIT] NULL,
+    [IsGeneralLedger] [BIT] NULL,
+    [IsTableId] [BIT] NULL,
+    [IsArea] [BIT] NULL,
+    [IsBillingTerm] [BIT] NULL,
+    [IsAgent] [BIT] NULL,
+    [IsProduct] [BIT] NULL,
+    [IsCostCenter] [BIT] NULL,
+    [IsMember] [BIT] NULL,
+    [IsCashBank] [BIT] NULL,
+    [IsJournalVoucher] [BIT] NULL,
+    [IsNotesRegister] [BIT] NULL,
+    [IsPDCVoucher] [BIT] NULL,
+    [IsLedgerOpening] [BIT] NULL,
+    [IsProductOpening] [BIT] NULL,
+    [IsSalesQuotation] [BIT] NULL,
+    [IsSalesOrder] [BIT] NULL,
+    [IsSalesChallan] [BIT] NULL,
+    [IsSalesInvoice] [BIT] NULL,
+    [IsSalesReturn] [BIT] NULL,
+    [IsSalesAdditional] [BIT] NULL,
+    [IsPurchaseIndent] [BIT] NULL,
+    [IsPurchaseOrder] [BIT] NULL,
+    [IsPurchaseChallan] [BIT] NULL,
+    [IsPurchaseInvoice] [BIT] NULL,
+    [IsPurchaseReturn] [BIT] NULL,
+    [IsPurchaseAdditional] [BIT] NULL,
+    [IsStockAdjustment] [BIT] NULL,
+    [SyncAPI] [NVARCHAR](MAX) NULL,
+    [SyncOriginId] [NVARCHAR](MAX) NULL,
+    [EnterBy] [NVARCHAR](50) NULL,
+    [EnterDate] [DATETIME] NULL,
+    CONSTRAINT [PK_SyncTable] PRIMARY KEY CLUSTERED([SyncId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.SMS_CONFIG') IS NULL BEGIN
+    CREATE TABLE [AMS].[SMS_CONFIG] ([SMSCONFIG_ID] [INT] IDENTITY(1, 1) NOT NULL,
+    [AlternetNumber] [NVARCHAR](MAX) NULL,
+    [TOKEN] [NVARCHAR](MAX) NOT NULL,
+    [IsCashBank] [BIT] NOT NULL,
+    [IsJournalVoucher] [BIT] NOT NULL,
+    [IsSalesReturn] [BIT] NOT NULL,
+    [IsSalesInvoice] [BIT] NOT NULL,
+    [IsPurchaseInvoice] [BIT] NOT NULL,
+    [IsPurchaseReturn] [BIT] NOT NULL,
+    CONSTRAINT [PK_SMS_CONFIG] PRIMARY KEY CLUSTERED([SMSCONFIG_ID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.ReportTemplate') IS NULL BEGIN
+    CREATE TABLE [AMS].[ReportTemplate] ([ID] [INT] IDENTITY(1, 1) NOT NULL,
+    [Report_Name] [NVARCHAR](MAX) NULL,
+    [FileName] [NVARCHAR](MAX) NOT NULL,
+    [FullPath] [NVARCHAR](MAX) NOT NULL,
+    [FromDate] [DATE] NULL,
+    [ToDate] [DATE] NULL,
+    [Reports_Type] [CHAR](1) NULL,
+    CONSTRAINT [PK_ReportTemplate] PRIMARY KEY CLUSTERED([ID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('CTRL.ExcTableErrorLog') IS NULL BEGIN
+    CREATE TABLE [CTRL].[ExcTableErrorLog] ([ErrorID] [INT] IDENTITY(1, 1) NOT NULL,
+    [UserName] [VARCHAR](100) NULL,
+    [ErrorNumber] [INT] NULL,
+    [ErrorState] [INT] NULL,
+    [ErrorSeverity] [INT] NULL,
+    [ErrorLine] [INT] NULL,
+    [ErrorProcedure] [VARCHAR](MAX) NULL,
+    [ErrorMessage] [VARCHAR](MAX) NULL,
+    [ErrorDateTime] [DATETIME] NULL) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('CTRL.ImportLog') IS NULL BEGIN
+    CREATE TABLE [CTRL].[ImportLog] ([LogId] [INT] IDENTITY(1, 1) NOT NULL,
+    [ImportType] [NVARCHAR](50) NULL,
+    [ImportDate] [DATETIME] NULL,
+    [ServerDesc] [NVARCHAR](MAX) NOT NULL,
+    [ServerUser] [NVARCHAR](MAX) NULL,
+    [ServerPassword] [NVARCHAR](MAX) NULL,
+    [dbInitial] [NVARCHAR](MAX) NULL,
+    [dbCompanyInfo] [NVARCHAR](MAX) NULL,
+    [IsSuccess] [BIT] NOT NULL,
+    CONSTRAINT [PK_ImportLog] PRIMARY KEY CLUSTERED([LogId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.DllPrintDesigList') IS NULL BEGIN
+    CREATE TABLE [AMS].[DllPrintDesigList] ([ListId] [INT] NOT NULL,
+    [Module] [CHAR](4) NOT NULL,
+    [DesignDesc] [NVARCHAR](MAX) NOT NULL,
+    CONSTRAINT [PK_DllPrintDesigList_ListId] PRIMARY KEY CLUSTERED([ListId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.DateMiti') IS NULL BEGIN
+    CREATE TABLE [AMS].[DateMiti] ([Date_Id] [BIGINT] NOT NULL,
+    [BS_Date] [VARCHAR](10) NOT NULL,
+    [BS_DateDMY] [VARCHAR](10) NOT NULL,
+    [AD_Date] [DATETIME] NOT NULL,
+    [BS_Months] [VARCHAR](50) NOT NULL,
+    [AD_Months] [VARCHAR](50) NOT NULL,
+    [Days] [VARCHAR](50) NULL,
+    [Is_Holiday] [BIT] NULL,
+    [Holiday] [NVARCHAR](50) NOT NULL,
+    CONSTRAINT [PK_DateMiti] PRIMARY KEY CLUSTERED([Date_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_DateMiti] UNIQUE NONCLUSTERED([AD_Date] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON),
+    CONSTRAINT [IX_DateMiti_1] UNIQUE NONCLUSTERED([BS_DateDMY] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON),
+    CONSTRAINT [IX_DateMiti_2] UNIQUE NONCLUSTERED([AD_Date] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON));
+END;
+IF OBJECT_ID('AMS.FiscalYear') IS NULL BEGIN
+    CREATE TABLE [AMS].[FiscalYear] ([FY_Id] [INT] NOT NULL,
+    [AD_FY] [VARCHAR](5) NOT NULL,
+    [BS_FY] [VARCHAR](5) NOT NULL,
+    [Current_FY] [BIT] NOT NULL,
+    [Start_ADDate] [DATE] NOT NULL,
+    [End_ADDate] [DATE] NOT NULL,
+    [Start_BSDate] [VARCHAR](10) NOT NULL,
+    [End_BSDate] [VARCHAR](10) NOT NULL,
+    CONSTRAINT [PK_FiscalYear] PRIMARY KEY CLUSTERED([FY_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_FiscalYear] UNIQUE NONCLUSTERED([AD_FY] ASC, [BS_FY] ASC, [Start_ADDate] ASC, [End_ADDate] ASC, [Start_BSDate] ASC, [End_BSDate] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.Branch') IS NULL BEGIN
+    CREATE TABLE [AMS].[Branch] ([Branch_ID] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [Branch_Name] [NVARCHAR](200) NOT NULL,
+    [Branch_Code] [NVARCHAR](50) NOT NULL,
+    [Reg_Date] [DATE] NULL,
+    [Address] [NVARCHAR](500) NULL,
+    [Country] [NVARCHAR](50) NULL,
+    [State] [NVARCHAR](50) NULL,
+    [City] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [Fax] [NVARCHAR](50) NULL,
+    [Email] [NVARCHAR](80) NULL,
+    [ContactPerson] [NVARCHAR](50) NULL,
+    [ContactPersonAdd] [NVARCHAR](50) NULL,
+    [ContactPersonPhone] [NVARCHAR](50) NULL,
+    [Created_By] [NVARCHAR](50) NULL,
+    [Created_Date] [DATETIME] NULL,
+    [Modify_By] [NVARCHAR](50) NULL,
+    [Modify_Date] [DATE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Branch] PRIMARY KEY NONCLUSTERED([Branch_ID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_BranchDesc_ShortName] UNIQUE CLUSTERED([Branch_Name] ASC, [Branch_Code] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.CompanyUnit') IS NULL BEGIN
+    CREATE TABLE [AMS].[CompanyUnit] ([CmpUnit_ID] [INT] NOT NULL,
+    [CmpUnit_Name] [NVARCHAR](200) NOT NULL,
+    [CmpUnit_Code] [NVARCHAR](50) NOT NULL,
+    [Reg_Date] [DATE] NOT NULL,
+    [Address] [NVARCHAR](50) NULL,
+    [Country] [NVARCHAR](50) NULL,
+    [State] [NVARCHAR](50) NULL,
+    [City] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [Fax] [NVARCHAR](50) NULL,
+    [Email] [NVARCHAR](90) NULL,
+    [ContactPerson] [NVARCHAR](50) NULL,
+    [ContactPersonAdd] [NVARCHAR](50) NULL,
+    [ContactPersonPhone] [NVARCHAR](50) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Created_By] [NVARCHAR](50) NOT NULL,
+    [Created_Date] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_CompanyUnit] PRIMARY KEY CLUSTERED([CmpUnit_ID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_CompanyUnit] UNIQUE NONCLUSTERED([CmpUnit_Name] ASC, [CmpUnit_Code] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[CompanyUnit] WITH CHECK
+    ADD CONSTRAINT [FK_CompanyUnit_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[CompanyUnit] CHECK CONSTRAINT [FK_CompanyUnit_Branch];
+END;
+IF OBJECT_ID('AMS.AppLog') IS NULL BEGIN
+    CREATE TABLE [AMS].[AppLog] ([AuditLogId] [INT] IDENTITY(1, 1) NOT NULL,
+    [LogDescription] [VARCHAR](500) NOT NULL,
+    [LogType] [VARCHAR](50) NOT NULL,
+    [LogTypeAlias] [TINYINT] NOT NULL,
+    [LogGroup] [VARCHAR](50) NOT NULL,
+    [LogGroupAlias] [TINYINT] NOT NULL,
+    [ActionType] [VARCHAR](50) NOT NULL,
+    [ActionTypeAlias] [TINYINT] NOT NULL,
+    [ActionTime] [DATETIME] NOT NULL,
+    [BranchId] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NULL,
+    [OldValue] [XML] NULL,
+    [NewValue] [XML] NULL,
+    [RefVno] [NVARCHAR](50) NULL,
+    [RefId] [NVARCHAR](50) NULL,
+    [RefType] [NVARCHAR](50) NULL,
+    [RefTypeAlias] [TINYINT] NULL,
+    [IsAudit] [BIT] NOT NULL,
+    CONSTRAINT [PK_AppLog] PRIMARY KEY CLUSTERED([AuditLogId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.Currency') IS NULL BEGIN
+    CREATE TABLE [AMS].[Currency] ([CId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](100) NULL,
+    [CName] [NVARCHAR](100) NOT NULL,
+    [CCode] [NVARCHAR](50) NOT NULL,
+    [CRate] [NUMERIC](18, 6) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Currency] PRIMARY KEY CLUSTERED([CId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Currency_ShortName] UNIQUE NONCLUSTERED([CName] ASC, [CCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Currency] WITH CHECK
+    ADD CONSTRAINT [FK_Currency_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Currency] CHECK CONSTRAINT [FK_Currency_Branch];
+    ALTER TABLE [AMS].[Currency] WITH CHECK
+    ADD CONSTRAINT [FK_Currency_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Currency] CHECK CONSTRAINT [FK_Currency_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.AccountGroup') IS NULL BEGIN
+    CREATE TABLE [AMS].AccountGroup ([GrpId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [GrpName] [NVARCHAR](200) NOT NULL,
+    [GrpCode] [NVARCHAR](50) NOT NULL,
+    [Schedule] [INT] NOT NULL,
+    [PrimaryGrp] [CHAR](2) NOT NULL,
+    [GrpType] [CHAR](2) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [PrimaryGroupId] [INT] NULL,
+    [IsDefault] [SMALLINT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_AccountGroup] PRIMARY KEY CLUSTERED([GrpId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_AccountGroup_ShortName] UNIQUE NONCLUSTERED([GrpName] ASC, [GrpCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[AccountGroup] WITH CHECK
+    ADD CONSTRAINT [FK_AccountGroup_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[AccountGroup] CHECK CONSTRAINT [FK_AccountGroup_Branch];
+    ALTER TABLE [AMS].[AccountGroup] WITH CHECK
+    ADD CONSTRAINT [FK_AccountGroup_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[AccountGroup] CHECK CONSTRAINT [FK_AccountGroup_CompanyUnit];
+    ALTER TABLE [AMS].[AccountGroup] WITH CHECK
+    ADD CONSTRAINT [FK_AccountGroup_PrimaryGroup] FOREIGN KEY([PrimaryGroupId])REFERENCES [AMS].[AccountGroup]([GrpId]);
+    ALTER TABLE [AMS].[AccountGroup] CHECK CONSTRAINT [FK_AccountGroup_PrimaryGroup];
+END;
+IF OBJECT_ID('AMS.AccountSubGroup') IS NULL BEGIN
+    CREATE TABLE [AMS].[AccountSubGroup] ([SubGrpId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [SubGrpName] [NVARCHAR](200) NOT NULL,
+    [GrpId] [INT] NOT NULL,
+    [SubGrpCode] [NVARCHAR](50) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [PrimaryGroupId] [INT] NULL,
+    [PrimarySubGroupId] [INT] NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_AccountSubGroup] PRIMARY KEY CLUSTERED([SubGrpId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_AccountSubGroup_ShortName] UNIQUE NONCLUSTERED([SubGrpName] ASC, [SubGrpCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[AccountSubGroup] WITH CHECK
+    ADD CONSTRAINT [FK_AccountSubGroup_AccountGroup] FOREIGN KEY([GrpId])REFERENCES [AMS].[AccountGroup]([GrpId]);
+    ALTER TABLE [AMS].[AccountSubGroup] CHECK CONSTRAINT [FK_AccountSubGroup_AccountGroup];
+    ALTER TABLE [AMS].[AccountSubGroup] WITH CHECK
+    ADD CONSTRAINT [FK_AccountSubGroup_PrimarySubGroup] FOREIGN KEY([PrimarySubGroupId])REFERENCES [AMS].[AccountSubGroup]([SubGrpId]);
+    ALTER TABLE [AMS].[AccountSubGroup] CHECK CONSTRAINT [FK_AccountSubGroup_PrimarySubGroup];
+END;
+IF OBJECT_ID('AMS.MainArea') IS NULL BEGIN
+    CREATE TABLE [AMS].[MainArea] ([MAreaId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](100) NULL,
+    [MAreaName] [NVARCHAR](100) NOT NULL,
+    [MAreaCode] [NVARCHAR](50) NOT NULL,
+    [MCountry] [NVARCHAR](50) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_MainArea] PRIMARY KEY CLUSTERED([MAreaId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_MainArea_ShortName] UNIQUE NONCLUSTERED([MAreaName] ASC, [MAreaCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[MainArea] WITH CHECK
+    ADD CONSTRAINT [FK_MainArea_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[MainArea] CHECK CONSTRAINT [FK_MainArea_Branch];
+    ALTER TABLE [AMS].[MainArea] WITH CHECK
+    ADD CONSTRAINT [FK_MainArea_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[MainArea] CHECK CONSTRAINT [FK_MainArea_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.Area') IS NULL BEGIN
+    CREATE TABLE [AMS].[Area] ([AreaId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](150) NULL,
+    [AreaName] [NVARCHAR](150) NOT NULL,
+    [AreaCode] [NVARCHAR](50) NOT NULL,
+    [Country] [NVARCHAR](50) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Main_Area] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Area] PRIMARY KEY CLUSTERED([AreaId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Area_ShortName] UNIQUE NONCLUSTERED([AreaName] ASC, [AreaCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Area] WITH CHECK
+    ADD CONSTRAINT [FK_Area_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Area] CHECK CONSTRAINT [FK_Area_Branch];
+    ALTER TABLE [AMS].[Area] WITH CHECK
+    ADD CONSTRAINT [FK_Area_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Area] CHECK CONSTRAINT [FK_Area_CompanyUnit];
+    ALTER TABLE [AMS].[Area] WITH CHECK
+    ADD CONSTRAINT [FK_Area_MainArea] FOREIGN KEY([Main_Area])REFERENCES [AMS].[MainArea]([MAreaId]);
+    ALTER TABLE [AMS].[Area] CHECK CONSTRAINT [FK_Area_MainArea];
+END;
+IF OBJECT_ID('AMS.SeniorAgent') IS NULL BEGIN
+    CREATE TABLE [AMS].[SeniorAgent] ([SAgentId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [SAgent] [NVARCHAR](200) NOT NULL,
+    [SAgentCode] [NVARCHAR](50) NOT NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [Address] [NVARCHAR](50) NULL,
+    [Comm] [DECIMAL](18, 6) NULL,
+    [TagetLimit] [DECIMAL](18, 6) NULL,
+    [GLID] [BIGINT] NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_SeniorAgent] PRIMARY KEY CLUSTERED([SAgentId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_SeniorAgent_ShortName] UNIQUE NONCLUSTERED([SAgent] ASC, [SAgentCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SeniorAgent] WITH CHECK
+    ADD CONSTRAINT [FK_SeniorAgent_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[SeniorAgent] CHECK CONSTRAINT [FK_SeniorAgent_Branch];
+    ALTER TABLE [AMS].[SeniorAgent] WITH CHECK
+    ADD CONSTRAINT [FK_SeniorAgent_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[SeniorAgent] CHECK CONSTRAINT [FK_SeniorAgent_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.JuniorAgent') IS NULL BEGIN
+    CREATE TABLE [AMS].[JuniorAgent] ([AgentId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [AgentName] [NVARCHAR](200) NOT NULL,
+    [AgentCode] [NVARCHAR](50) NOT NULL,
+    [Address] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [GLCode] [BIGINT] NULL,
+    [Commission] [DECIMAL](18, 6) NOT NULL,
+    [CrLimit] [DECIMAL](18, 6) NOT NULL,
+    [CrDays] [NUMERIC](18, 0) NOT NULL,
+    [CrTYpe] [CHAR](1) NOT NULL,
+    [TargetLimit] [DECIMAL](18, 6) NOT NULL,
+    [SAgent] [INT] NULL,
+    [Email] [NVARCHAR](200) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Agent] PRIMARY KEY CLUSTERED([AgentId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_JuniorAgent_ShortName] UNIQUE NONCLUSTERED([AgentName] ASC, [AgentCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[JuniorAgent] WITH CHECK
+    ADD CONSTRAINT [FK_JuniorAgent_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[JuniorAgent] CHECK CONSTRAINT [FK_JuniorAgent_Branch];
+    ALTER TABLE [AMS].[JuniorAgent] WITH CHECK
+    ADD CONSTRAINT [FK_JuniorAgent_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[JuniorAgent] CHECK CONSTRAINT [FK_JuniorAgent_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.GeneralLedger') IS NULL BEGIN
+    CREATE TABLE [AMS].[GeneralLedger] ([GLID] [BIGINT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [GLName] [NVARCHAR](200) NOT NULL,
+    [GLCode] [NVARCHAR](50) NOT NULL,
+    [ACCode] [NVARCHAR](50) NOT NULL,
+    [GLType] [VARCHAR](10) NOT NULL,
+    [GrpId] [INT] NOT NULL,
+    [PrimaryGroupId] [INT] NULL,
+    [SubGrpId] [INT] NULL,
+    [PrimarySubGroupId] [INT] NULL,
+    [PanNo] [NVARCHAR](50) NULL,
+    [AreaId] [INT] NULL,
+    [AgentId] [INT] NULL,
+    [CurrId] [INT] NULL,
+    [CrDays] [NUMERIC](18, 0) NOT NULL,
+    [CrLimit] [DECIMAL](18, 6) NOT NULL,
+    [CrTYpe] [CHAR](1) NOT NULL,
+    [IntRate] [DECIMAL](18, 6) NOT NULL,
+    [GLAddress] [NVARCHAR](500) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [LandLineNo] [NVARCHAR](50) NULL,
+    [OwnerName] [NVARCHAR](50) NULL,
+    [OwnerNumber] [NVARCHAR](50) NULL,
+    [Scheme] [INT] NULL,
+    [Email] [NVARCHAR](50) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_GeneralLedger] PRIMARY KEY CLUSTERED([GLID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_GeneralLedger_ShortName] UNIQUE NONCLUSTERED([GLName] ASC, [ACCode] ASC, [GLCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_AccountGroup] FOREIGN KEY([GrpId])REFERENCES [AMS].[AccountGroup]([GrpId]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_AccountGroup];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_AccountSubGroup] FOREIGN KEY([SubGrpId])REFERENCES [AMS].[AccountSubGroup]([SubGrpId]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_AccountSubGroup];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_Area] FOREIGN KEY([AreaId])REFERENCES [AMS].[Area]([AreaId]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_Area];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_Branch];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_CompanyUnit];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_Currency] FOREIGN KEY([CurrId])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_Currency];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_JuniorAgent] FOREIGN KEY([AgentId])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_JuniorAgent];
+    ALTER TABLE [AMS].[SeniorAgent] WITH CHECK
+    ADD CONSTRAINT [FK_SeniorAgent_GeneralLedger] FOREIGN KEY([GLID])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SeniorAgent] CHECK CONSTRAINT [FK_SeniorAgent_GeneralLedger];
+    ALTER TABLE [AMS].[JuniorAgent] WITH CHECK
+    ADD CONSTRAINT [FK_JuniorAgent_GeneralLedger] FOREIGN KEY([GLCode])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[JuniorAgent] CHECK CONSTRAINT [FK_JuniorAgent_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.Subledger') IS NULL BEGIN
+    CREATE TABLE [AMS].[Subledger] ([SLId] [INT] NOT NULL,
+    [NepalDesc] [NVARCHAR](200) NULL,
+    [SLName] [NVARCHAR](200) NOT NULL,
+    [SLCode] [NVARCHAR](50) NOT NULL,
+    [SLAddress] [NVARCHAR](500) NULL,
+    [SLPhoneNo] [NVARCHAR](50) NULL,
+    [GLID] [NVARCHAR](100) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Subledger] PRIMARY KEY CLUSTERED([SLId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_SubledgerDesc] UNIQUE NONCLUSTERED([SLName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_SubledgerShortName] UNIQUE NONCLUSTERED([SLCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.MemberType') IS NULL BEGIN
+    CREATE TABLE [AMS].[MemberType] ([MemberTypeId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [MemberDesc] [NVARCHAR](200) NOT NULL,
+    [MemberShortName] [NVARCHAR](50) NOT NULL,
+    [Discount] [DECIMAL](18, 6) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [ActiveStatus] [BIT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_MemberType_ShortName] PRIMARY KEY CLUSTERED([MemberTypeId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[MemberType] WITH CHECK
+    ADD CONSTRAINT [FK_MemberType_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[MemberType] CHECK CONSTRAINT [FK_MemberType_Branch];
+    ALTER TABLE [AMS].[MemberType] WITH CHECK
+    ADD CONSTRAINT [FK_MemberType_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[MemberType] CHECK CONSTRAINT [FK_MemberType_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.MemberShipSetup') IS NULL BEGIN
+    CREATE TABLE [AMS].[MemberShipSetup] ([MShipId] [INT] NOT NULL,
+    [MemberId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [MShipDesc] [NVARCHAR](200) NOT NULL,
+    [MShipShortName] [NVARCHAR](50) NOT NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [PriceTag] [NVARCHAR](50) NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [EmailAdd] [NVARCHAR](200) NULL,
+    [MemberTypeId] [INT] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [MValidDate] [DATE] NOT NULL,
+    [MExpireDate] [DATE] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [ActiveStatus] [BIT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_MemberShipSetup] PRIMARY KEY CLUSTERED([MShipId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_MemberShipSetupId] UNIQUE NONCLUSTERED([MemberId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[MemberShipSetup] WITH CHECK
+    ADD CONSTRAINT [FK_MemberShipSetup_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[MemberShipSetup] CHECK CONSTRAINT [FK_MemberShipSetup_Branch];
+    ALTER TABLE [AMS].[MemberShipSetup] WITH CHECK
+    ADD CONSTRAINT [FK_MemberShipSetup_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[MemberShipSetup] CHECK CONSTRAINT [FK_MemberShipSetup_CompanyUnit];
+    ALTER TABLE [AMS].[MemberShipSetup] WITH CHECK
+    ADD CONSTRAINT [FK_MemberShipSetup_MemberType] FOREIGN KEY([MemberTypeId])REFERENCES [AMS].[MemberType]([MemberTypeId]);
+    ALTER TABLE [AMS].[MemberShipSetup] CHECK CONSTRAINT [FK_MemberShipSetup_MemberType];
+END;
+IF OBJECT_ID('AMS.NR_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[NR_Master] ([NRID] [INT] IDENTITY(1, 1) NOT NULL,
+    [NRDESC] [NVARCHAR](255) NULL,
+    [NRTYPE] [CHAR](2) NULL,
+    [IsActive] [BIT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK__NR_Master] PRIMARY KEY CLUSTERED([NRID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_NR_Master] UNIQUE NONCLUSTERED([NRTYPE] ASC, [NRDESC] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[NR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_NR_Master_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[NR_Master] CHECK CONSTRAINT [FK_NR_Master_Branch];
+    ALTER TABLE [AMS].[NR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_NR_Master_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[NR_Master] CHECK CONSTRAINT [FK_NR_Master_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.Department') IS NULL BEGIN
+    CREATE TABLE [AMS].[Department] ([DId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](50) NULL,
+    [DName] [NVARCHAR](50) NOT NULL,
+    [DCode] [NVARCHAR](50) NOT NULL,
+    [Dlevel] [CHAR](4) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NULL,
+    [EnterDate] [DATETIME] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED([DId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Department_ShortName] UNIQUE NONCLUSTERED([Dlevel] ASC, [DCode] ASC, [DName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Department] WITH CHECK
+    ADD CONSTRAINT [FK_Department_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Department] CHECK CONSTRAINT [FK_Department_Branch];
+    ALTER TABLE [AMS].[Department] WITH CHECK
+    ADD CONSTRAINT [FK_Department_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Department] CHECK CONSTRAINT [FK_Department_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.DocumentDesignPrint') IS NULL BEGIN
+    CREATE TABLE [AMS].[DocumentDesignPrint] ([DDP_Id] [INT] NOT NULL,
+    [Module] [CHAR](4) NOT NULL,
+    [DesignerPaper_Name] [NVARCHAR](250) NULL,
+    [Paper_Name] [NVARCHAR](100) NOT NULL,
+    [Is_Online] [BIT] NOT NULL,
+    [NoOfPrint] [INT] NOT NULL,
+    [Notes] [NVARCHAR](250) NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [CmpUnit_ID] [INT] NULL,
+    [Created_By] [NVARCHAR](250) NULL,
+    [Created_Date] [DATETIME] NULL,
+    [Status] [BIT] NOT NULL,
+    CONSTRAINT [PK_DocumentDesignPrint] PRIMARY KEY CLUSTERED([DDP_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[DocumentDesignPrint] WITH CHECK
+    ADD CONSTRAINT [FK_DocumentDesignPrint_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[DocumentDesignPrint] CHECK CONSTRAINT [FK_DocumentDesignPrint_Branch];
+    ALTER TABLE [AMS].[DocumentDesignPrint] WITH CHECK
+    ADD CONSTRAINT [FK_DocumentDesignPrint_CompanyUnit] FOREIGN KEY([CmpUnit_ID])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[DocumentDesignPrint] CHECK CONSTRAINT [FK_DocumentDesignPrint_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.DocumentNumbering') IS NULL BEGIN
+    CREATE TABLE [AMS].[DocumentNumbering] ([DocId] [INT] NOT NULL,
+    [DocModule] [CHAR](4) NOT NULL,
+    [DocDesc] [NVARCHAR](50) NOT NULL,
+    [DocStartDate] [DATE] NOT NULL,
+    [DocStartMiti] [VARCHAR](10) NOT NULL,
+    [DocEndDate] [DATE] NOT NULL,
+    [DocEndMiti] [VARCHAR](10) NOT NULL,
+    [DocUser] [NVARCHAR](50) NULL,
+    [DocType] [CHAR](1) NOT NULL,
+    [DocPrefix] [CHAR](10) NULL,
+    [DocSufix] [CHAR](10) NULL,
+    [DocBodyLength] [NUMERIC](18, 0) NOT NULL,
+    [DocTotalLength] [NUMERIC](18, 0) NOT NULL,
+    [DocBlank] [BIT] NOT NULL,
+    [DocBlankCh] [CHAR](1) NOT NULL,
+    [DocBranch] [INT] NOT NULL,
+    [DocUnit] [INT] NULL,
+    [DocStart] [NUMERIC](18, 0) NULL,
+    [DocCurr] [NUMERIC](18, 0) NULL,
+    [DocEnd] [NUMERIC](18, 0) NULL,
+    [DocDesign] [NVARCHAR](250) NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [FiscalYearId] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_DocumentNumbering] PRIMARY KEY CLUSTERED([DocId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_DocumentNumbering] UNIQUE NONCLUSTERED([DocModule] ASC, [DocDesc] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.Floor') IS NULL BEGIN
+    CREATE TABLE [AMS].[Floor] ([FloorId] [INT] NOT NULL,
+    [Description] [NVARCHAR](50) NOT NULL,
+    [ShortName] [NVARCHAR](50) NOT NULL,
+    [Type] [CHAR](10) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Floor] PRIMARY KEY CLUSTERED([FloorId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Floor_ShortName] UNIQUE NONCLUSTERED([Description] ASC, [ShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Floor] WITH CHECK
+    ADD CONSTRAINT [FK_Floor_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Floor] CHECK CONSTRAINT [FK_Floor_Branch];
+    ALTER TABLE [AMS].[Floor] WITH CHECK
+    ADD CONSTRAINT [FK_Floor_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Floor] CHECK CONSTRAINT [FK_Floor_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.TableMaster') IS NULL BEGIN
+    CREATE TABLE [AMS].[TableMaster] ([TableId] [INT] NOT NULL,
+    [TableName] [NVARCHAR](50) NOT NULL,
+    [TableCode] [NVARCHAR](50) NOT NULL,
+    [FloorId] [INT] NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [TableStatus] [CHAR](1) NOT NULL,
+    [TableType] [CHAR](1) NOT NULL,
+    [IsPrePaid] [BIT] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [VARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Printed] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_TableMaster] PRIMARY KEY CLUSTERED([TableId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_TableMaster_ShortName] UNIQUE NONCLUSTERED([TableName] ASC, [TableCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[TableMaster] WITH CHECK
+    ADD CONSTRAINT [FK_TableMaster_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[TableMaster] CHECK CONSTRAINT [FK_TableMaster_Branch];
+    ALTER TABLE [AMS].[TableMaster] WITH CHECK
+    ADD CONSTRAINT [FK_TableMaster_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[TableMaster] CHECK CONSTRAINT [FK_TableMaster_CompanyUnit];
+    ALTER TABLE [AMS].[TableMaster] WITH CHECK
+    ADD CONSTRAINT [FK_TableMaster_Floor] FOREIGN KEY([FloorId])REFERENCES [AMS].[Floor]([FloorId]);
+    ALTER TABLE [AMS].[TableMaster] CHECK CONSTRAINT [FK_TableMaster_Floor];
+END;
+IF OBJECT_ID('AMS.Godown') IS NULL BEGIN
+    CREATE TABLE [AMS].[Godown] ([GID] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](100) NULL,
+    [GName] [NVARCHAR](100) NOT NULL,
+    [GCode] [NVARCHAR](50) NOT NULL,
+    [GLocation] [NVARCHAR](50) NULL,
+    [Status] [BIT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [BranchUnit] [INT] NOT NULL,
+    [CompUnit] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Godown] PRIMARY KEY CLUSTERED([GID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Godown_ShortName] UNIQUE NONCLUSTERED([GName] ASC, [GCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Godown] WITH CHECK
+    ADD CONSTRAINT [FK_Godown_Branch] FOREIGN KEY([BranchUnit])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Godown] CHECK CONSTRAINT [FK_Godown_Branch];
+    ALTER TABLE [AMS].[Godown] WITH CHECK
+    ADD CONSTRAINT [FK_Godown_CompanyUnit] FOREIGN KEY([CompUnit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Godown] CHECK CONSTRAINT [FK_Godown_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.ProductUnit') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductUnit] ([UID] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](50) NULL,
+    [UnitName] [NVARCHAR](50) NOT NULL,
+    [UnitCode] [NVARCHAR](50) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_ProductUnit] PRIMARY KEY CLUSTERED([UID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_ProductUnit_ShortName] UNIQUE NONCLUSTERED([UnitCode] ASC, [UnitName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductUnit] WITH CHECK
+    ADD CONSTRAINT [FK_ProductUnit_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ProductUnit] CHECK CONSTRAINT [FK_ProductUnit_Branch];
+    ALTER TABLE [AMS].[ProductUnit] WITH CHECK
+    ADD CONSTRAINT [FK_ProductUnit_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ProductUnit] CHECK CONSTRAINT [FK_ProductUnit_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.ProductGroup') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductGroup] ([PGrpId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [GrpName] [NVARCHAR](200) NOT NULL,
+    [GrpCode] [NVARCHAR](50) NOT NULL,
+    [GMargin] [DECIMAL](18, 6) NULL,
+    [Gprinter] [NVARCHAR](100) NULL,
+    [PurchaseLedgerId] [BIGINT] NULL,
+    [PurchaseReturnLedgerId] [BIGINT] NULL,
+    [SalesLedgerId] [BIGINT] NULL,
+    [SalesReturnLedgerId] [BIGINT] NULL,
+    [OpeningStockLedgerId] [BIGINT] NULL,
+    [ClosingStockLedgerId] [BIGINT] NULL,
+    [StockInHandLedgerId] [BIGINT] NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_ProductGroup] PRIMARY KEY CLUSTERED([PGrpId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_Branch];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_ClosingStockGeneralLedger] FOREIGN KEY([ClosingStockLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_ClosingStockGeneralLedger];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_CompanyUnit];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_OpeningStockGeneralLedger] FOREIGN KEY([OpeningStockLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_OpeningStockGeneralLedger];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_PurchaseGeneralLedger] FOREIGN KEY([PurchaseLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_PurchaseGeneralLedger];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_PurchaseReturnGeneralLedger] FOREIGN KEY([PurchaseReturnLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_PurchaseReturnGeneralLedger];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_SalesGeneralLedger] FOREIGN KEY([SalesLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_SalesGeneralLedger];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_SalesReturnGeneralLedger] FOREIGN KEY([SalesReturnLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_SalesReturnGeneralLedger];
+    ALTER TABLE [AMS].[ProductGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductGroup_StockInHandGeneralLedger] FOREIGN KEY([StockInHandLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ProductGroup] CHECK CONSTRAINT [FK_ProductGroup_StockInHandGeneralLedger];
+    CREATE UNIQUE NONCLUSTERED INDEX [IX_ProductGroup_ShortName]
+    ON [AMS].[ProductGroup]([GrpCode] ASC, [GrpName] ASC)
+    WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, SORT_IN_TEMPDB=OFF, IGNORE_DUP_KEY=OFF, DROP_EXISTING=OFF, ONLINE=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON);
+END;
+IF OBJECT_ID('AMS.ProductSubGroup') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductSubGroup] ([PSubGrpId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](100) NULL,
+    [SubGrpName] [NVARCHAR](100) NOT NULL,
+    [ShortName] [NVARCHAR](50) NOT NULL,
+    [GrpId] [INT] NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_ProductSubGroup] PRIMARY KEY CLUSTERED([PSubGrpId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_ProductSubGroup_ShortName] UNIQUE NONCLUSTERED([SubGrpName] ASC, [ShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductSubGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductSubGroup_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ProductSubGroup] CHECK CONSTRAINT [FK_ProductSubGroup_Branch];
+    ALTER TABLE [AMS].[ProductSubGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductSubGroup_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ProductSubGroup] CHECK CONSTRAINT [FK_ProductSubGroup_CompanyUnit];
+    ALTER TABLE [AMS].[ProductSubGroup] WITH CHECK
+    ADD CONSTRAINT [FK_ProductSubGroup_ProductGroup] FOREIGN KEY([GrpId])REFERENCES [AMS].[ProductGroup]([PGrpId]);
+    ALTER TABLE [AMS].[ProductSubGroup] CHECK CONSTRAINT [FK_ProductSubGroup_ProductGroup];
+END;
+IF OBJECT_ID('AMS.Product') IS NULL BEGIN
+    CREATE TABLE [AMS].[Product] ([PID] [BIGINT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [PName] [NVARCHAR](200) NOT NULL,
+    [PAlias] [NVARCHAR](200) NOT NULL,
+    [PShortName] [NVARCHAR](50) NOT NULL,
+    [PType] [CHAR](4) NOT NULL,
+    [PCategory] [CHAR](4) NOT NULL,
+    [PUnit] [INT] NOT NULL,
+    [PAltUnit] [INT] NULL,
+    [PQtyConv] [DECIMAL](18, 6) NOT NULL,
+    [PAltConv] [DECIMAL](18, 6) NOT NULL,
+    [PValTech] [NVARCHAR](50) NULL,
+    [PSerialno] [BIT] NOT NULL,
+    [PSizewise] [BIT] NOT NULL,
+    [PBatchwise] [BIT] NOT NULL,
+    [PVehicleWise] [BIT] NOT NULL,
+    [PublicationWise] [BIT] NOT NULL,
+    [PBuyRate] [DECIMAL](18, 6) NOT NULL,
+    [AltSalesRate] [DECIMAL](18, 6) NOT NULL,
+    [PSalesRate] [DECIMAL](18, 6) NOT NULL,
+    [PMargin1] [DECIMAL](18, 6) NOT NULL,
+    [TradeRate] [DECIMAL](18, 6) NOT NULL,
+    [PMargin2] [DECIMAL](18, 6) NOT NULL,
+    [PMRP] [DECIMAL](18, 6) NOT NULL,
+    [PGrpId] [INT] NULL,
+    [PSubGrpId] [INT] NULL,
+    [PTax] [DECIMAL](18, 6) NOT NULL,
+    [PMin] [DECIMAL](18, 6) NOT NULL,
+    [PMax] [DECIMAL](18, 6) NOT NULL,
+    [CmpId] [INT] NULL,
+    [CmpId1] [INT] NULL,
+    [CmpId2] [INT] NULL,
+    [CmpId3] [INT] NULL,
+    [Branch_Id] [INT] NOT NULL,
+    [CmpUnit_Id] [INT] NULL,
+    [PPL] [BIGINT] NULL,
+    [PPR] [BIGINT] NULL,
+    [PSL] [BIGINT] NULL,
+    [PSR] [BIGINT] NULL,
+    [PL_Opening] [BIGINT] NULL,
+    [PL_Closing] [BIGINT] NULL,
+    [BS_Closing] [BIGINT] NULL,
+    [PImage] [IMAGE] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [IsDefault] [SMALLINT] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [ChasisNo] [NVARCHAR](100) NULL,
+    [EngineNo] [NVARCHAR](100) NULL,
+    [VHModel] [NVARCHAR](100) NULL,
+    [VHColor] [NVARCHAR](100) NULL,
+    [VHNumber] [NVARCHAR](100) NULL,
+    [BeforeBuyRate] [DECIMAL](18, 6) NOT NULL,
+    [BeforeSalesRate] [DECIMAL](18, 6) NOT NULL,
+    [Barcode] [NVARCHAR](100) NULL,
+    [Barcode1] [NVARCHAR](100) NULL,
+    [Barcode2] [NVARCHAR](100) NULL,
+    [Barcode3] [NVARCHAR](100) NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED([PID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Product_Barcode] UNIQUE NONCLUSTERED([Barcode] ASC, [PID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Product_Barcode1] UNIQUE NONCLUSTERED([Barcode1] ASC, [PID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Product_Barcode2] UNIQUE NONCLUSTERED([Barcode2] ASC, [PID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Product_Barcode3] UNIQUE NONCLUSTERED([Barcode3] ASC, [PID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Product_ShortName] UNIQUE NONCLUSTERED([PName] ASC, [PShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Product_VehicleInfo] UNIQUE NONCLUSTERED([VHColor] ASC, [VHModel] ASC, [VHNumber] ASC, [PID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_Branch] FOREIGN KEY([Branch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_Branch];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_CompanyUnit] FOREIGN KEY([CmpUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_CompanyUnit];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_Department] FOREIGN KEY([CmpId])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_Department];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_ClosingLedger] FOREIGN KEY([PL_Closing])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_ClosingLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_OpeningLedger] FOREIGN KEY([PL_Opening])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_OpeningLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_PurchaseLedger] FOREIGN KEY([PPL])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_PurchaseLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_PurchaseReturnLedger] FOREIGN KEY([PPR])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_PurchaseReturnLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_SalesLedger] FOREIGN KEY([PSL])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_SalesLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_SalesReturnLedger] FOREIGN KEY([PSR])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_SalesReturnLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_GeneralLedger_StockInHandLedger] FOREIGN KEY([BS_Closing])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_GeneralLedger_StockInHandLedger];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_ProductAltUnit] FOREIGN KEY([PAltUnit])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_ProductAltUnit];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_ProductGroup] FOREIGN KEY([PGrpId])REFERENCES [AMS].[ProductGroup]([PGrpId]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_ProductGroup];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_ProductSubGroup] FOREIGN KEY([PSubGrpId])REFERENCES [AMS].[ProductSubGroup]([PSubGrpId]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_ProductSubGroup];
+    ALTER TABLE [AMS].[Product] WITH CHECK
+    ADD CONSTRAINT [FK_Product_ProductUnit] FOREIGN KEY([PUnit])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[Product] CHECK CONSTRAINT [FK_Product_ProductUnit];
+END;
+IF OBJECT_ID('AMS.BarcodeList') IS NULL BEGIN
+    CREATE TABLE [AMS].[BarcodeList] ([ProductId] [BIGINT] NOT NULL,
+    [Barcode] [NVARCHAR](50) NOT NULL,
+    [SalesRate] [DECIMAL](18, 6) NOT NULL,
+    [MRP] [DECIMAL](18, 6) NOT NULL,
+    [Trade] [DECIMAL](18, 6) NOT NULL,
+    [Wholesale] [DECIMAL](18, 6) NOT NULL,
+    [Retail] [DECIMAL](18, 6) NOT NULL,
+    [Dealer] [DECIMAL](18, 6) NOT NULL,
+    [Resellar] [DECIMAL](18, 6) NOT NULL,
+    [UnitId] [INT] NOT NULL,
+    [AltUnitId] [INT] NULL,
+    [DailyRateChange] [BIT] NOT NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[BarcodeList] WITH CHECK
+    ADD CONSTRAINT [FK_BarcodeList_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[BarcodeList] CHECK CONSTRAINT [FK_BarcodeList_Product];
+    ALTER TABLE [AMS].[BarcodeList] WITH CHECK
+    ADD CONSTRAINT [FK_BarcodeList_ProductAltUnit] FOREIGN KEY([AltUnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[BarcodeList] CHECK CONSTRAINT [FK_BarcodeList_ProductAltUnit];
+    ALTER TABLE [AMS].[BarcodeList] WITH CHECK
+    ADD CONSTRAINT [FK_BarcodeList_ProductUnit] FOREIGN KEY([UnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[BarcodeList] CHECK CONSTRAINT [FK_BarcodeList_ProductUnit];
+END;
+IF OBJECT_ID('AMS.ProductClosingRate') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductClosingRate] ([PCRate_Id] [BIGINT] IDENTITY(1, 1) NOT NULL,
+    [Product_Id] [BIGINT] NOT NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [Date_Type] [VARCHAR](5) NULL,
+    [Month_Date] [DATE] NULL,
+    [Month_Miti] [VARCHAR](50) NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    CONSTRAINT [PK_ProductClosingRate] PRIMARY KEY CLUSTERED([PCRate_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductClosingRate] WITH CHECK
+    ADD CONSTRAINT [FK_ProductClosingRate_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ProductClosingRate] CHECK CONSTRAINT [FK_ProductClosingRate_Branch];
+    ALTER TABLE [AMS].[ProductClosingRate] WITH CHECK
+    ADD CONSTRAINT [FK_ProductClosingRate_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ProductClosingRate] CHECK CONSTRAINT [FK_ProductClosingRate_CompanyUnit];
+    ALTER TABLE [AMS].[ProductClosingRate] WITH CHECK
+    ADD CONSTRAINT [FK_ProductClosingRate_Product] FOREIGN KEY([Product_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[ProductClosingRate] CHECK CONSTRAINT [FK_ProductClosingRate_Product];
+END;
+IF OBJECT_ID('AMS.BookDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[BookDetails] ([BookId] [BIGINT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [PrintDesc] [NVARCHAR](200) NOT NULL,
+    [ISBNNo] [NVARCHAR](100) NULL,
+    [Author] [NVARCHAR](100) NULL,
+    [Publisher] [NVARCHAR](100) NULL,
+    CONSTRAINT [PK_BookDetails] PRIMARY KEY CLUSTERED([BookId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_BookDetails] UNIQUE NONCLUSTERED([ISBNNo] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[BookDetails] WITH CHECK
+    ADD CONSTRAINT [FK_BookDetails_Product] FOREIGN KEY([BookId])REFERENCES [AMS].[Product]([PID]);
+END;
+IF OBJECT_ID('AMS.BranchRights') IS NULL BEGIN
+    CREATE TABLE [AMS].[BranchRights] ([RightsId] [INT] IDENTITY(1, 1) NOT NULL,
+    [UserId] [INT] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [Branch] [VARCHAR](255) NOT NULL,
+    CONSTRAINT [IX_BranchRights] UNIQUE NONCLUSTERED([RightsId] ASC, [UserId] ASC, [BranchId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[BranchRights] WITH CHECK
+    ADD CONSTRAINT [FK_BranchRights_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[BranchRights] CHECK CONSTRAINT [FK_BranchRights_Branch];
+END;
+IF OBJECT_ID('AMS.CostCenter') IS NULL BEGIN
+    CREATE TABLE [AMS].[CostCenter] ([CCId] [INT] NOT NULL,
+    [CCName] [NVARCHAR](200) NOT NULL,
+    [CCcode] [NVARCHAR](50) NOT NULL,
+    [GodownId] [INT] NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_CostCenter] PRIMARY KEY CLUSTERED([CCId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_CostCenter] UNIQUE NONCLUSTERED([CCName] ASC, [CCcode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[CostCenter] WITH CHECK
+    ADD CONSTRAINT [FK_CostCenter_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[CostCenter] CHECK CONSTRAINT [FK_CostCenter_Branch];
+    ALTER TABLE [AMS].[CostCenter] WITH CHECK
+    ADD CONSTRAINT [FK_CostCenter_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[CostCenter] CHECK CONSTRAINT [FK_CostCenter_CompanyUnit];
+    ALTER TABLE [AMS].[CostCenter] WITH CHECK
+    ADD CONSTRAINT [FK_CostCenter_Godown] FOREIGN KEY([GodownId])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[CostCenter] CHECK CONSTRAINT [FK_CostCenter_Godown];
+END;
+IF OBJECT_ID('AMS.Counter') IS NULL BEGIN
+    CREATE TABLE [AMS].[Counter] ([CId] [INT] NOT NULL,
+    [CName] [NVARCHAR](50) NOT NULL,
+    [CCode] [NVARCHAR](50) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Printer] [VARCHAR](250) NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Counter] PRIMARY KEY CLUSTERED([CId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Counter_ShortName] UNIQUE NONCLUSTERED([CName] ASC, [CCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Counter] WITH CHECK
+    ADD CONSTRAINT [FK_Counter_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[Counter] CHECK CONSTRAINT [FK_Counter_Branch];
+    ALTER TABLE [AMS].[Counter] WITH CHECK
+    ADD CONSTRAINT [FK_Counter_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[Counter] CHECK CONSTRAINT [FK_Counter_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.RACK') IS NULL BEGIN
+    CREATE TABLE [AMS].[RACK] ([RID] [INT] NOT NULL,
+    [RName] [NVARCHAR](80) NOT NULL,
+    [RCode] [NVARCHAR](50) NOT NULL,
+    [Location] [NVARCHAR](50) NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_RACK] PRIMARY KEY CLUSTERED([RID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_RACK_ShortName] UNIQUE NONCLUSTERED([RName] ASC, [RCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[RACK] WITH CHECK
+    ADD CONSTRAINT [FK_RACK_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[RACK] CHECK CONSTRAINT [FK_RACK_Branch];
+    ALTER TABLE [AMS].[RACK] WITH CHECK
+    ADD CONSTRAINT [FK_RACK_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[RACK] CHECK CONSTRAINT [FK_RACK_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.SectorMaster') IS NULL BEGIN
+    CREATE TABLE [AMS].[SectorMaster] ([SID] [INT] NOT NULL,
+    [SectorDesc] [NVARCHAR](50) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    CONSTRAINT [PK_SectorMaster] PRIMARY KEY CLUSTERED([SID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [Description] UNIQUE NONCLUSTERED([SectorDesc] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SectorMaster] WITH CHECK
+    ADD CONSTRAINT [FK_SectorMaster_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[SectorMaster] CHECK CONSTRAINT [FK_SectorMaster_Branch];
+    ALTER TABLE [AMS].[SectorMaster] WITH CHECK
+    ADD CONSTRAINT [FK_SectorMaster_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[SectorMaster] CHECK CONSTRAINT [FK_SectorMaster_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.PT_Term') IS NULL BEGIN
+    CREATE TABLE [AMS].[PT_Term] ([PT_Id] [INT] NOT NULL,
+    [Order_No] [INT] NOT NULL,
+    [PT_Name] [NVARCHAR](50) NOT NULL,
+    [Module] [CHAR](4) NOT NULL,
+    [PT_Type] [CHAR](2) NOT NULL,
+    [PT_Basis] [CHAR](2) NOT NULL,
+    [PT_Sign] [CHAR](1) NOT NULL,
+    [PT_Condition] [CHAR](1) NOT NULL,
+    [Ledger] [BIGINT] NOT NULL,
+    [PT_Rate] [DECIMAL](18, 6) NOT NULL,
+    [PT_Branch] [INT] NOT NULL,
+    [PT_CompanyUnit] [INT] NULL,
+    [PT_Profitability] [BIT] NOT NULL,
+    [PT_Supess] [BIT] NOT NULL,
+    [PT_Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_PT_TermId] PRIMARY KEY CLUSTERED([PT_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_PT_TermDesc_Module] UNIQUE NONCLUSTERED([PT_Name] ASC, [Module] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_PT_TermOrderNo] UNIQUE NONCLUSTERED([Order_No] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PT_Term] WITH CHECK
+    ADD CONSTRAINT [FK_PT_Term_Branch] FOREIGN KEY([PT_Branch])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[PT_Term] CHECK CONSTRAINT [FK_PT_Term_Branch];
+    ALTER TABLE [AMS].[PT_Term] WITH CHECK
+    ADD CONSTRAINT [FK_PT_Term_CompanyUnit] FOREIGN KEY([PT_CompanyUnit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[PT_Term] CHECK CONSTRAINT [FK_PT_Term_CompanyUnit];
+    ALTER TABLE [AMS].[PT_Term] WITH CHECK
+    ADD CONSTRAINT [FK_PT_Term_GeneralLedger] FOREIGN KEY([Ledger])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PT_Term] CHECK CONSTRAINT [FK_PT_Term_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.ST_Term') IS NULL BEGIN
+    CREATE TABLE [AMS].[ST_Term] ([ST_ID] [INT] NOT NULL,
+    [Order_No] [INT] NOT NULL,
+    [ST_Name] [NVARCHAR](50) NOT NULL,
+    [Module] [CHAR](4) NOT NULL,
+    [ST_Type] [CHAR](2) NOT NULL,
+    [ST_Basis] [CHAR](2) NOT NULL,
+    [ST_Sign] [CHAR](1) NOT NULL,
+    [ST_Condition] [CHAR](1) NOT NULL,
+    [Ledger] [BIGINT] NOT NULL,
+    [ST_Rate] [DECIMAL](18, 6) NULL,
+    [ST_Branch] [INT] NOT NULL,
+    [ST_CompanyUnit] [INT] NULL,
+    [ST_Profitability] [BIT] NOT NULL,
+    [ST_Supess] [BIT] NOT NULL,
+    [ST_Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_ST_Term] PRIMARY KEY CLUSTERED([ST_ID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_ST_TermDesc_Module] UNIQUE NONCLUSTERED([ST_Name] ASC, [Module] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_ST_TermOrderNo] UNIQUE NONCLUSTERED([Order_No] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ST_Term] WITH CHECK
+    ADD CONSTRAINT [FK_ST_Term_Branch] FOREIGN KEY([ST_Branch])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ST_Term] CHECK CONSTRAINT [FK_ST_Term_Branch];
+    ALTER TABLE [AMS].[ST_Term] WITH CHECK
+    ADD CONSTRAINT [FK_ST_Term_CompanyUnit] FOREIGN KEY([ST_CompanyUnit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ST_Term] CHECK CONSTRAINT [FK_ST_Term_CompanyUnit];
+    ALTER TABLE [AMS].[ST_Term] WITH CHECK
+    ADD CONSTRAINT [FK_ST_Term_GeneralLedger] FOREIGN KEY([Ledger])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[ST_Term] CHECK CONSTRAINT [FK_ST_Term_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.UDF') IS NULL BEGIN
+    CREATE TABLE [AMS].[UDF] ([UDF_Code] [VARCHAR](5) NOT NULL,
+    [Entry_Module] [VARCHAR](10) NOT NULL,
+    [Field_Name] [VARCHAR](50) NOT NULL,
+    [Field_Type] [VARCHAR](15) NOT NULL,
+    [Total_Width] [VARCHAR](256) NOT NULL,
+    [Field_Decimal] [VARCHAR](1) NULL,
+    [Date_Format] [VARCHAR](15) NULL,
+    [List_field_Name] [VARCHAR](1) NULL,
+    PRIMARY KEY CLUSTERED([UDF_Code] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.UDF_Entry') IS NULL BEGIN
+    CREATE TABLE [AMS].[UDF_Entry] ([UDF_Code] [VARCHAR](5) NOT NULL,
+    [Entry_module] [VARCHAR](256) NOT NULL,
+    [Field_Name] [VARCHAR](50) NOT NULL,
+    [Field_Type] [VARCHAR](15) NOT NULL,
+    [Total_Width] [VARCHAR](256) NOT NULL,
+    [Mandotary_opt] [CHAR](1) NULL,
+    [Udf_Schedule] [INT] NULL,
+    [Duplicate_opt] [CHAR](1) NULL,
+    [Date_Format] [VARCHAR](15) NULL,
+    [Field_Decimal] [VARCHAR](1) NULL,
+    CONSTRAINT [PK__UDF_Entr__9E120D4141F9D5D3] PRIMARY KEY CLUSTERED([UDF_Code] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('HOS.BedType') IS NULL BEGIN
+    CREATE TABLE [HOS].[BedType] ([BID] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](80) NULL,
+    [BDesc] [NVARCHAR](80) NOT NULL,
+    [BShortName] [NVARCHAR](50) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [Company_Unit] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_BedType] PRIMARY KEY CLUSTERED([BID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [BdType] UNIQUE NONCLUSTERED([BDesc] ASC, [BShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[BedType] WITH CHECK
+    ADD CONSTRAINT [FK_BedType_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[BedType] CHECK CONSTRAINT [FK_BedType_Branch];
+    ALTER TABLE [HOS].[BedType] WITH CHECK
+    ADD CONSTRAINT [FK_BedType_CompanyUnit] FOREIGN KEY([Company_Unit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[BedType] CHECK CONSTRAINT [FK_BedType_CompanyUnit];
+END;
+IF OBJECT_ID('HOS.DoctorType') IS NULL BEGIN
+    CREATE TABLE [HOS].[DoctorType] ([DtID] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](80) NULL,
+    [DrTypeDesc] [NVARCHAR](80) NOT NULL,
+    [DrTypeShortName] [NVARCHAR](50) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [Company_Unit] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Status] [BIT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_DoctorType] PRIMARY KEY CLUSTERED([DtID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [DrType] UNIQUE NONCLUSTERED([DrTypeDesc] ASC, [DrTypeShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[DoctorType] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorType_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[DoctorType] CHECK CONSTRAINT [FK_DoctorType_Branch];
+    ALTER TABLE [HOS].[DoctorType] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorType_CompanyUnit] FOREIGN KEY([Company_Unit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[DoctorType] CHECK CONSTRAINT [FK_DoctorType_CompanyUnit];
+END;
+IF OBJECT_ID('HOS.Doctor') IS NULL BEGIN
+    CREATE TABLE [HOS].[Doctor] ([DrId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](200) NULL,
+    [DrName] [NVARCHAR](200) NOT NULL,
+    [DrShortName] [NVARCHAR](50) NOT NULL,
+    [DrType] [INT] NULL,
+    [ContactNo] [NVARCHAR](50) NULL,
+    [Address] [NVARCHAR](150) NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnit] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NULL,
+    [EnterDate] [DATETIME] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Doctor] PRIMARY KEY CLUSTERED([DrId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [DoctorDesc] UNIQUE NONCLUSTERED([DrName] ASC, [DrShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[Doctor] WITH CHECK
+    ADD CONSTRAINT [FK_Doctor_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[Doctor] CHECK CONSTRAINT [FK_Doctor_Branch];
+    ALTER TABLE [HOS].[Doctor] WITH CHECK
+    ADD CONSTRAINT [FK_Doctor_CompanyUnit] FOREIGN KEY([CompanyUnit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[Doctor] CHECK CONSTRAINT [FK_Doctor_CompanyUnit];
+    ALTER TABLE [HOS].[Doctor] WITH CHECK
+    ADD CONSTRAINT [FK_Doctor_DoctorType] FOREIGN KEY([DrType])REFERENCES [HOS].[DoctorType]([DtID]);
+    ALTER TABLE [HOS].[Doctor] CHECK CONSTRAINT [FK_Doctor_DoctorType];
+END;
+IF OBJECT_ID('HOS.Department') IS NULL BEGIN
+    CREATE TABLE [HOS].[Department] ([DId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](80) NULL,
+    [DName] [NVARCHAR](80) NOT NULL,
+    [DCode] [NVARCHAR](50) NOT NULL,
+    [Dlevel] [CHAR](4) NOT NULL,
+    [DoctorId] [INT] NULL,
+    [ItemId] [BIGINT] NULL,
+    [ChargeAmt] [DECIMAL](18, 6) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_ID] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_HospitalDepartment] PRIMARY KEY CLUSTERED([DId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_Department_ShortName] UNIQUE NONCLUSTERED([DName] ASC, [DCode] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[Department] WITH CHECK
+    ADD CONSTRAINT [FK_Department_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[Department] CHECK CONSTRAINT [FK_Department_Branch];
+    ALTER TABLE [HOS].[Department] WITH CHECK
+    ADD CONSTRAINT [FK_Department_CompanyUnit] FOREIGN KEY([Company_ID])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[Department] CHECK CONSTRAINT [FK_Department_CompanyUnit];
+    ALTER TABLE [HOS].[Department] WITH CHECK
+    ADD CONSTRAINT [FK_Department_Doctor] FOREIGN KEY([DoctorId])REFERENCES [HOS].[Doctor]([DrId]);
+    ALTER TABLE [HOS].[Department] CHECK CONSTRAINT [FK_Department_Doctor];
+    ALTER TABLE [HOS].[Department] WITH CHECK
+    ADD CONSTRAINT [FK_Department_Product] FOREIGN KEY([ItemId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [HOS].[Department] CHECK CONSTRAINT [FK_Department_Product];
+END;
+IF OBJECT_ID('HOS.WardMaster') IS NULL BEGIN
+    CREATE TABLE [HOS].[WardMaster] ([WId] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](50) NULL,
+    [WDesc] [NVARCHAR](80) NOT NULL,
+    [WShortName] [NVARCHAR](50) NOT NULL,
+    [DepartmentId] [INT] NOT NULL,
+    [ChargeAmt] [DECIMAL](18, 6) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_ID] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_WardMaster] PRIMARY KEY CLUSTERED([WId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [WardMasterDesc] UNIQUE NONCLUSTERED([WDesc] ASC, [WShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[WardMaster] WITH CHECK
+    ADD CONSTRAINT [FK_WardMaster_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[WardMaster] CHECK CONSTRAINT [FK_WardMaster_Branch];
+    ALTER TABLE [HOS].[WardMaster] WITH CHECK
+    ADD CONSTRAINT [FK_WardMaster_CompanyUnit] FOREIGN KEY([Company_ID])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[WardMaster] CHECK CONSTRAINT [FK_WardMaster_CompanyUnit];
+    ALTER TABLE [HOS].[WardMaster] WITH CHECK
+    ADD CONSTRAINT [FK_WardMaster_Department] FOREIGN KEY([DepartmentId])REFERENCES [HOS].[Department]([DId]);
+    ALTER TABLE [HOS].[WardMaster] CHECK CONSTRAINT [FK_WardMaster_Department];
+END;
+IF OBJECT_ID('HOS.BedMaster') IS NULL BEGIN
+    CREATE TABLE [HOS].[BedMaster] ([BID] [INT] NOT NULL,
+    [NepaliDesc] [NVARCHAR](80) NULL,
+    [BedDesc] [NVARCHAR](80) NOT NULL,
+    [BedShortName] [NVARCHAR](50) NOT NULL,
+    [Bedtype] [INT] NOT NULL,
+    [WId] [INT] NOT NULL,
+    [ChargeAmt] [DECIMAL](18, 6) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [Company_ID] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_BedMaster] PRIMARY KEY CLUSTERED([BID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [BedMasterDesc] UNIQUE NONCLUSTERED([BedDesc] ASC, [BedShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[BedMaster] WITH CHECK
+    ADD CONSTRAINT [FK_BedMaster_BedType] FOREIGN KEY([Bedtype])REFERENCES [HOS].[BedType]([BID]);
+    ALTER TABLE [HOS].[BedMaster] CHECK CONSTRAINT [FK_BedMaster_BedType];
+    ALTER TABLE [HOS].[BedMaster] WITH CHECK
+    ADD CONSTRAINT [FK_BedMaster_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[BedMaster] CHECK CONSTRAINT [FK_BedMaster_Branch];
+    ALTER TABLE [HOS].[BedMaster] WITH CHECK
+    ADD CONSTRAINT [FK_BedMaster_CompanyUnit] FOREIGN KEY([Company_ID])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[BedMaster] CHECK CONSTRAINT [FK_BedMaster_CompanyUnit];
+    ALTER TABLE [HOS].[BedMaster] WITH CHECK
+    ADD CONSTRAINT [FK_BedMaster_WardMaster] FOREIGN KEY([WId])REFERENCES [HOS].[WardMaster]([WId]);
+    ALTER TABLE [HOS].[BedMaster] CHECK CONSTRAINT [FK_BedMaster_WardMaster];
+END;
+IF OBJECT_ID('HOS.PatientMaster') IS NULL BEGIN
+    CREATE TABLE [HOS].[PatientMaster] ([PaitentId] [BIGINT] NOT NULL,
+    [RefDate] [DATETIME] NOT NULL,
+    [IPDId] [BIGINT] NULL,
+    [Title] [CHAR](4) NOT NULL,
+    [NepaliDesc] [NVARCHAR](255) NULL,
+    [PaitentDesc] [NVARCHAR](255) NOT NULL,
+    [ShortName] [NVARCHAR](50) NOT NULL,
+    [TAddress] [NVARCHAR](255) NULL,
+    [PAddress] [NVARCHAR](255) NULL,
+    [AccountLedger] [NVARCHAR](255) NULL,
+    [ContactNo] [NVARCHAR](50) NULL,
+    [Age] [DECIMAL](18, 2) NOT NULL,
+    [AgeType] [CHAR](4) NULL,
+    [DateofBirth] [DATE] NULL,
+    [Gender] [CHAR](1) NULL,
+    [MaritalStatus] [CHAR](1) NULL,
+    [RegType] [CHAR](10) NULL,
+    [Nationality] [NVARCHAR](50) NULL,
+    [Religion] [VARCHAR](30) NULL,
+    [BloodGrp] [CHAR](4) NULL,
+    [DepartmentId] [INT] NULL,
+    [DrId] [INT] NULL,
+    [RefDrDesc] [NVARCHAR](50) NULL,
+    [EmailAdd] [NVARCHAR](255) NULL,
+    [PastHistory] [NVARCHAR](255) NULL,
+    [ContactPer] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnit] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_PatientMaster] PRIMARY KEY CLUSTERED([PaitentId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [PatientMasterDesc] UNIQUE NONCLUSTERED([AccountLedger] ASC, [ShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[PatientMaster] WITH CHECK
+    ADD CONSTRAINT [FK_PatientMaster_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[PatientMaster] CHECK CONSTRAINT [FK_PatientMaster_Branch];
+    ALTER TABLE [HOS].[PatientMaster] WITH CHECK
+    ADD CONSTRAINT [FK_PatientMaster_CompanyUnit] FOREIGN KEY([CompanyUnit])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[PatientMaster] CHECK CONSTRAINT [FK_PatientMaster_CompanyUnit];
+    ALTER TABLE [HOS].[PatientMaster] WITH CHECK
+    ADD CONSTRAINT [FK_PatientMaster_Department] FOREIGN KEY([DepartmentId])REFERENCES [HOS].[Department]([DId]);
+    ALTER TABLE [HOS].[PatientMaster] CHECK CONSTRAINT [FK_PatientMaster_Department];
+    ALTER TABLE [HOS].[PatientMaster] WITH CHECK
+    ADD CONSTRAINT [FK_PatientMaster_Doctor] FOREIGN KEY([DrId])REFERENCES [HOS].[Doctor]([DrId]);
+    ALTER TABLE [HOS].[PatientMaster] CHECK CONSTRAINT [FK_PatientMaster_Doctor];
+END;
+IF OBJECT_ID('HOS.DoctorCommission') IS NULL BEGIN
+    CREATE TABLE [HOS].[DoctorCommission] ([Sno] [INT] NOT NULL,
+    [DrId] [INT] NOT NULL,
+    [ProductId] [BIGINT] NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [CommPerson] [DECIMAL](18, 6) NOT NULL,
+    [CommissionAmount] [DECIMAL](18, 6) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [IX_DoctorCommission_DrId_ProductId_Sno] UNIQUE NONCLUSTERED([Sno] ASC, [DrId] ASC, [ProductId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [HOS].[DoctorCommission] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorCommission_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HOS].[DoctorCommission] CHECK CONSTRAINT [FK_DoctorCommission_Branch];
+    ALTER TABLE [HOS].[DoctorCommission] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorCommission_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HOS].[DoctorCommission] CHECK CONSTRAINT [FK_DoctorCommission_CompanyUnit];
+    ALTER TABLE [HOS].[DoctorCommission] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorCommission_Doctor] FOREIGN KEY([DrId])REFERENCES [HOS].[Doctor]([DrId]);
+    ALTER TABLE [HOS].[DoctorCommission] CHECK CONSTRAINT [FK_DoctorCommission_Doctor];
+    ALTER TABLE [HOS].[DoctorCommission] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorCommission_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [HOS].[DoctorCommission] CHECK CONSTRAINT [FK_DoctorCommission_FiscalYear];
+    ALTER TABLE [HOS].[DoctorCommission] WITH CHECK
+    ADD CONSTRAINT [FK_DoctorCommission_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [HOS].[DoctorCommission] CHECK CONSTRAINT [FK_DoctorCommission_Product];
+END;
+IF OBJECT_ID('AMS.BudgetLedger') IS NULL BEGIN
+    CREATE TABLE [AMS].[BudgetLedger] ([BLID] [INT] IDENTITY(1, 1) NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [MonthsDesc] [NVARCHAR](50) NULL,
+    [Amount] [DECIMAL](16, 6) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_BudgetLedger] PRIMARY KEY CLUSTERED([BLID] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[BudgetLedger] WITH CHECK
+    ADD CONSTRAINT [FK_BudgetLedger_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[BudgetLedger] CHECK CONSTRAINT [FK_BudgetLedger_Branch];
+    ALTER TABLE [AMS].[BudgetLedger] WITH CHECK
+    ADD CONSTRAINT [FK_BudgetLedger_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[BudgetLedger] CHECK CONSTRAINT [FK_BudgetLedger_CompanyUnit];
+    ALTER TABLE [AMS].[BudgetLedger] WITH CHECK
+    ADD CONSTRAINT [FK_BudgetLedger_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[BudgetLedger] CHECK CONSTRAINT [FK_BudgetLedger_FiscalYear];
+    ALTER TABLE [AMS].[BudgetLedger] WITH CHECK
+    ADD CONSTRAINT [FK_BudgetLedger_GeneralLedger] FOREIGN KEY([LedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[BudgetLedger] CHECK CONSTRAINT [FK_BudgetLedger_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.Budget') IS NULL BEGIN
+    CREATE TABLE [AMS].[Budget] ([BudgetId] [INT] NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [Dep1] [INT] NULL,
+    [Dep2] [INT] NULL,
+    [Dep3] [INT] NULL,
+    [Dep4] [INT] NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL,
+    [MonthDesc] [VARCHAR](50) NOT NULL,
+    [Date] [DATE] NULL,
+    [Miti] [VARCHAR](10) NULL,
+    [EnterBy] [NVARCHAR](50) NULL,
+    [EnterDate] [DATETIME] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Budget] PRIMARY KEY CLUSTERED([BudgetId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Budget] WITH CHECK
+    ADD CONSTRAINT [FK_Budget_Department] FOREIGN KEY([Dep1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[Budget] CHECK CONSTRAINT [FK_Budget_Department];
+    ALTER TABLE [AMS].[Budget] WITH CHECK
+    ADD CONSTRAINT [FK_Budget_GeneralLedger] FOREIGN KEY([LedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[Budget] CHECK CONSTRAINT [FK_Budget_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.UnitWiseLedger') IS NULL BEGIN
+    CREATE TABLE [AMS].[UnitWiseLedger] ([UnitId] [INT] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [Mapped] [BIT] NULL,
+    [Category] [NVARCHAR](50) NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[UnitWiseLedger] WITH CHECK
+    ADD CONSTRAINT [FK_UnitWiseLedger_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[UnitWiseLedger] CHECK CONSTRAINT [FK_UnitWiseLedger_Branch];
+    ALTER TABLE [AMS].[UnitWiseLedger] WITH CHECK
+    ADD CONSTRAINT [FK_UnitWiseLedger_CompanyUnit] FOREIGN KEY([UnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[UnitWiseLedger] CHECK CONSTRAINT [FK_UnitWiseLedger_CompanyUnit];
+    ALTER TABLE [AMS].[UnitWiseLedger] WITH CHECK
+    ADD CONSTRAINT [FK_UnitWiseLedger_GeneralLedger] FOREIGN KEY([LedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[UnitWiseLedger] CHECK CONSTRAINT [FK_UnitWiseLedger_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.VehicleColors') IS NULL BEGIN
+    CREATE TABLE [AMS].[VehicleColors] ([VHColorsId] [INT] IDENTITY(1, 1) NOT NULL,
+    [VHColorsDesc] [NVARCHAR](200) NOT NULL,
+    [VHColorsShortName] [NVARCHAR](50) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [IsActive] [BIT] NOT NULL,
+    [EntryBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_VehicleColors] PRIMARY KEY CLUSTERED([VHColorsId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_VehicleColors_ShortName] UNIQUE NONCLUSTERED([VHColorsDesc] ASC, [VHColorsShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[VehicleColors] WITH CHECK
+    ADD CONSTRAINT [FK_VehicleColors_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[VehicleColors] CHECK CONSTRAINT [FK_VehicleColors_Branch];
+    ALTER TABLE [AMS].[VehicleColors] WITH CHECK
+    ADD CONSTRAINT [FK_VehicleColors_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[VehicleColors] CHECK CONSTRAINT [FK_VehicleColors_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.VehicleNumber') IS NULL BEGIN
+    CREATE TABLE [AMS].[VehicleNumber] ([VHNoId] [INT] IDENTITY(1, 1) NOT NULL,
+    [VNDesc] [NVARCHAR](200) NOT NULL,
+    [VNShortName] [NVARCHAR](50) NOT NULL,
+    [VNState] [NVARCHAR](50) NOT NULL,
+    [IsActive] [BIT] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_VehicleNumber] PRIMARY KEY CLUSTERED([VHNoId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_VehicleNumber] UNIQUE NONCLUSTERED([VNDesc] ASC, [VNShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[VehicleNumber] WITH CHECK
+    ADD CONSTRAINT [FK_VehicleNumber_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[VehicleNumber] CHECK CONSTRAINT [FK_VehicleNumber_Branch];
+    ALTER TABLE [AMS].[VehicleNumber] WITH CHECK
+    ADD CONSTRAINT [FK_VehicleNumber_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[VehicleNumber] CHECK CONSTRAINT [FK_VehicleNumber_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.VehileModel') IS NULL BEGIN
+    CREATE TABLE [AMS].[VehileModel] ([VHModelId] [INT] IDENTITY(1, 1) NOT NULL,
+    [VHModelDesc] [NVARCHAR](200) NOT NULL,
+    [VHModelShortName] [NVARCHAR](50) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [IsActive] [BIT] NOT NULL,
+    [EntryBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_VehileModel] PRIMARY KEY CLUSTERED([VHModelId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_VehileModel] UNIQUE NONCLUSTERED([VHModelDesc] ASC, [VHModelShortName] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[VehileModel] WITH CHECK
+    ADD CONSTRAINT [FK_VehileModel_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[VehileModel] CHECK CONSTRAINT [FK_VehileModel_Branch];
+    ALTER TABLE [AMS].[VehileModel] WITH CHECK
+    ADD CONSTRAINT [FK_VehileModel_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[VehileModel] CHECK CONSTRAINT [FK_VehileModel_CompanyUnit];
+END;
+IF OBJECT_ID('HR.Employee') IS NULL BEGIN
+    CREATE TABLE [HR].[Employee] ([EmployeeId] [INT] NOT NULL,
+    [Title] [NVARCHAR](50) NOT NULL,
+    [FirstName] [NVARCHAR](50) NOT NULL,
+    [MiddleName] [NVARCHAR](50) NULL,
+    [LastName] [NVARCHAR](50) NOT NULL,
+    [InNepali] [NVARCHAR](250) NULL,
+    [FullDescription] [NVARCHAR](150) NULL,
+    [Gender] [CHAR](2) NOT NULL,
+    [MaritalStatus] [CHAR](2) NOT NULL,
+    [Religion] [CHAR](2) NOT NULL,
+    [BloodGroup] [CHAR](5) NOT NULL,
+    [Nationality] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [MobileNo] [NVARCHAR](50) NULL,
+    [Email] [NVARCHAR](100) NULL,
+    [Address] [NVARCHAR](250) NULL,
+    [Qualification] [NVARCHAR](50) NULL,
+    [PassoutYear] [INT] NULL,
+    [Experiance] [NVARCHAR](50) NULL,
+    [AttachedDocuments] [IMAGE] NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED([EmployeeId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [HR].[Employee] WITH CHECK
+    ADD CONSTRAINT [FK_Employee_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [HR].[Employee] CHECK CONSTRAINT [FK_Employee_Branch];
+    ALTER TABLE [HR].[Employee] WITH CHECK
+    ADD CONSTRAINT [FK_Employee_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [HR].[Employee] CHECK CONSTRAINT [FK_Employee_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.SystemSetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[SystemSetting] ([SyId] [TINYINT] NOT NULL,
+    [EnglishDate] [BIT] NULL,
+    [AuditTrial] [BIT] NULL,
+    [Udf] [BIT] NULL,
+    [Autopoplist] [BIT] NULL,
+    [CurrentDate] [BIT] NULL,
+    [ConformSave] [BIT] NULL,
+    [ConformCancel] [BIT] NULL,
+    [ConformExits] [BIT] NULL,
+    [CurrencyRate] [FLOAT] NULL,
+    [CurrencyId] [INT] NULL,
+    [DefaultPrinter] [NVARCHAR](100) NULL,
+    [AmountFormat] [NVARCHAR](10) NULL,
+    [RateFormat] [NVARCHAR](10) NULL,
+    [QtyFormat] [NVARCHAR](10) NULL,
+    [CurrencyFormatF] [NVARCHAR](10) NULL,
+    [DefaultFiscalYearId] [INT] NULL,
+    [DefaultOrderPrinter] [NVARCHAR](100) NULL,
+    [DefaultInvoicePrinter] [NVARCHAR](100) NULL,
+    [DefaultOrderNumbering] [NVARCHAR](100) NULL,
+    [DefaultInvoiceNumbering] [NVARCHAR](100) NULL,
+    [DefaultAvtInvoiceNumbering] [NVARCHAR](100) NULL,
+    [DefaultOrderDesign] [NVARCHAR](100) NULL,
+    [IsOrderPrint] [BIT] NULL,
+    [DefaultInvoiceDesign] [NVARCHAR](100) NULL,
+    [IsInvoicePrint] [BIT] NULL,
+    [IsPrintBranch] [BIT] NULL,
+    [DefaultAvtDesign] [NVARCHAR](100) NULL,
+    [DefaultFontsName] [NVARCHAR](100) NULL,
+    [DefaultFontsSize] [INT] NULL,
+    [DefaultPaperSize] [NVARCHAR](100) NULL,
+    [DefaultReportStyle] [NVARCHAR](100) NULL,
+    [DefaultPrintDateTime] [BIT] NULL,
+    [DefaultFormColor] [NVARCHAR](100) NULL,
+    [DefaultTextColor] [NVARCHAR](100) NULL,
+    [DebtorsGroupId] [INT] NULL,
+    [CreditorGroupId] [INT] NULL,
+    [SalaryLedgerId] [BIGINT] NULL,
+    [TDSLedgerId] [BIGINT] NULL,
+    [PFLedgerId] [BIGINT] NULL,
+    [DefaultEmail] [NVARCHAR](300) NULL,
+    [DefaultEmailPassword] [NVARCHAR](500) NULL,
+    [BackupDays] [INT] NULL,
+    [BackupLocation] [NVARCHAR](500) NULL,
+    CONSTRAINT [PK_SystemSetting] PRIMARY KEY CLUSTERED([SyId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_AccountGroup_Creditors] FOREIGN KEY([CreditorGroupId])REFERENCES [AMS].[AccountGroup]([GrpId]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_AccountGroup_Creditors];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_AccountGroup_Debtors] FOREIGN KEY([DebtorsGroupId])REFERENCES [AMS].[AccountGroup]([GrpId]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_AccountGroup_Debtors];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_Currency] FOREIGN KEY([CurrencyId])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_Currency];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_FiscalYear] FOREIGN KEY([DefaultFiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_FiscalYear];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_GeneralLedger_PfLedgerId] FOREIGN KEY([PFLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_GeneralLedger_PfLedgerId];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_GeneralLedger_SalaryLedger] FOREIGN KEY([SalaryLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_GeneralLedger_SalaryLedger];
+    ALTER TABLE [AMS].[SystemSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SystemSetting_GeneralLedger_TdsLedger] FOREIGN KEY([TDSLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SystemSetting] CHECK CONSTRAINT [FK_SystemSetting_GeneralLedger_TdsLedger];
+END;
+IF OBJECT_ID('AMS.FinanceSetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[FinanceSetting] ([FinId] [TINYINT] NOT NULL,
+    [ProfiLossId] [BIGINT] NULL,
+    [CashId] [BIGINT] NULL,
+    [VATLedgerId] [BIGINT] NULL,
+    [PDCBankLedgerId] [BIGINT] NULL,
+    [ShortNameWisTransaction] [BIT] NULL,
+    [WarngNegativeTransaction] [BIT] NULL,
+    [NegativeTransaction] [CHAR](1) NULL,
+    [VoucherDate] [BIT] NULL,
+    [AgentEnable] [BIT] NULL,
+    [AgentMandetory] [BIT] NULL,
+    [DepartmentEnable] [BIT] NULL,
+    [DepartmentMandetory] [BIT] NULL,
+    [RemarksEnable] [BIT] NULL,
+    [RemarksMandetory] [BIT] NULL,
+    [NarrationMandetory] [BIT] NULL,
+    [CurrencyEnable] [BIT] NULL,
+    [CurrencyMandetory] [BIT] NULL,
+    [SubledgerEnable] [BIT] NULL,
+    [SubledgerMandetory] [BIT] NULL,
+    [DetailsClassEnable] [BIT] NULL,
+    [DetailsClassMandetory] [BIT] NULL,
+    CONSTRAINT [PK_FinanceSetting] PRIMARY KEY CLUSTERED([FinId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[FinanceSetting] WITH CHECK
+    ADD CONSTRAINT [FK_FinanceSetting_GeneralLedger_CashLedger] FOREIGN KEY([CashId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[FinanceSetting] CHECK CONSTRAINT [FK_FinanceSetting_GeneralLedger_CashLedger];
+    ALTER TABLE [AMS].[FinanceSetting] WITH CHECK
+    ADD CONSTRAINT [FK_FinanceSetting_GeneralLedger_ProfitLossLedger] FOREIGN KEY([ProfiLossId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[FinanceSetting] CHECK CONSTRAINT [FK_FinanceSetting_GeneralLedger_ProfitLossLedger];
+    ALTER TABLE [AMS].[FinanceSetting] WITH CHECK
+    ADD CONSTRAINT [FK_FinanceSetting_GeneralLedger_VatLedger] FOREIGN KEY([VATLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[FinanceSetting] CHECK CONSTRAINT [FK_FinanceSetting_GeneralLedger_VatLedger];
+END;
+IF OBJECT_ID('AMS.PurchaseSetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[PurchaseSetting] ([PurId] [TINYINT] NOT NULL,
+    [PBLedgerId] [BIGINT] NULL,
+    [PRLedgerId] [BIGINT] NULL,
+    [PBVatTerm] [INT] NULL,
+    [PBDiscountTerm] [INT] NULL,
+    [PBProductDiscountTerm] [INT] NULL,
+    [PBAdditionalTerm] [INT] NULL,
+    [PBDateChange] [BIT] NULL,
+    [PBCreditDays] [CHAR](1) NULL,
+    [PBCreditLimit] [CHAR](1) NULL,
+    [PBCarryRate] [BIT] NULL,
+    [PBChangeRate] [BIT] NULL,
+    [PBLastRate] [BIT] NULL,
+    [POEnable] [BIT] NULL,
+    [POMandetory] [BIT] NULL,
+    [PCEnable] [BIT] NULL,
+    [PCMandetory] [BIT] NULL,
+    [PBSublegerEnable] [BIT] NULL,
+    [PBSubledgerMandetory] [BIT] NULL,
+    [PBAgentEnable] [BIT] NULL,
+    [PBAgentMandetory] [BIT] NULL,
+    [PBDepartmentEnable] [BIT] NULL,
+    [PBDepartmentMandetory] [BIT] NULL,
+    [PBCurrencyEnable] [BIT] NULL,
+    [PBCurrencyMandetory] [BIT] NULL,
+    [PBCurrencyRateChange] [BIT] NULL,
+    [PBGodownEnable] [BIT] NULL,
+    [PBGodownMandetory] [BIT] NULL,
+    [PBAlternetUnitEnable] [BIT] NULL,
+    [PBIndent] [BIT] NULL,
+    [PBNarration] [BIT] NULL,
+    [PBBasicAmount] [BIT] NULL,
+    [PBRemarksEnable] [BIT] NULL,
+    [PBRemarksMandatory] [BIT] NULL,
+    [PBIndentMandatory] [BIT] NULL,
+    CONSTRAINT [PK_PurchaseSetting] PRIMARY KEY CLUSTERED([PurId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PurchaseSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PurchaseSetting_GeneralLedger_PurchaseLedger] FOREIGN KEY([PBLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PurchaseSetting] CHECK CONSTRAINT [FK_PurchaseSetting_GeneralLedger_PurchaseLedger];
+    ALTER TABLE [AMS].[PurchaseSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PurchaseSetting_GeneralLedger_ReturnLedger] FOREIGN KEY([PRLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PurchaseSetting] CHECK CONSTRAINT [FK_PurchaseSetting_GeneralLedger_ReturnLedger];
+    ALTER TABLE [AMS].[PurchaseSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PurchaseSetting_PT_Term_AdditionalVat] FOREIGN KEY([PBAdditionalTerm])REFERENCES [AMS].[PT_Term]([PT_Id]);
+    ALTER TABLE [AMS].[PurchaseSetting] CHECK CONSTRAINT [FK_PurchaseSetting_PT_Term_AdditionalVat];
+    ALTER TABLE [AMS].[PurchaseSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PurchaseSetting_PT_Term_DiscountTerm] FOREIGN KEY([PBDiscountTerm])REFERENCES [AMS].[PT_Term]([PT_Id]);
+    ALTER TABLE [AMS].[PurchaseSetting] CHECK CONSTRAINT [FK_PurchaseSetting_PT_Term_DiscountTerm];
+    ALTER TABLE [AMS].[PurchaseSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PurchaseSetting_PT_Term_ProductDiscountTerm] FOREIGN KEY([PBProductDiscountTerm])REFERENCES [AMS].[PT_Term]([PT_Id]);
+    ALTER TABLE [AMS].[PurchaseSetting] CHECK CONSTRAINT [FK_PurchaseSetting_PT_Term_ProductDiscountTerm];
+    ALTER TABLE [AMS].[PurchaseSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PurchaseSetting_PT_Term_VatTermId] FOREIGN KEY([PBVatTerm])REFERENCES [AMS].[PT_Term]([PT_Id]);
+    ALTER TABLE [AMS].[PurchaseSetting] CHECK CONSTRAINT [FK_PurchaseSetting_PT_Term_VatTermId];
+END;
+IF OBJECT_ID('AMS.SalesSetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[SalesSetting] ([SalesId] [TINYINT] NOT NULL,
+    [SBLedgerId] [BIGINT] NULL,
+    [SRLedgerId] [BIGINT] NULL,
+    [SBVatTerm] [INT] NULL,
+    [SBDiscountTerm] [INT] NULL,
+    [SBProductDiscountTerm] [INT] NULL,
+    [SBAdditionalTerm] [INT] NULL,
+    [SBServiceCharge] [INT] NULL,
+    [SBDateChange] [BIT] NULL,
+    [SBCreditDays] [CHAR](1) NULL,
+    [SBCreditLimit] [CHAR](1) NULL,
+    [SBCarryRate] [BIT] NULL,
+    [SBChangeRate] [BIT] NULL,
+    [SBLastRate] [BIT] NULL,
+    [SBQuotationEnable] [BIT] NULL,
+    [SBQuotationMandetory] [BIT] NULL,
+    [SBDispatchOrderEnable] [BIT] NULL,
+    [SBDispatchMandetory] [BIT] NULL,
+    [SOEnable] [BIT] NULL,
+    [SOMandetory] [BIT] NULL,
+    [SCEnable] [BIT] NULL,
+    [SCMandetory] [BIT] NULL,
+    [SBSublegerEnable] [BIT] NULL,
+    [SBSubledgerMandetory] [BIT] NULL,
+    [SBAgentEnable] [BIT] NULL,
+    [SBAgentMandetory] [BIT] NULL,
+    [SBDepartmentEnable] [BIT] NULL,
+    [SBDepartmentMandetory] [BIT] NULL,
+    [SBCurrencyEnable] [BIT] NULL,
+    [SBCurrencyMandetory] [BIT] NULL,
+    [SBCurrencyRateChange] [BIT] NULL,
+    [SBGodownEnable] [BIT] NULL,
+    [SBGodownMandetory] [BIT] NULL,
+    [SBAlternetUnitEnable] [BIT] NULL,
+    [SBIndent] [BIT] NULL,
+    [SBNarration] [BIT] NULL,
+    [SBBasicAmount] [BIT] NULL,
+    [SBAviableStock] [BIT] NULL,
+    [SBReturnValue] [BIT] NULL,
+    [PartyInfo] [BIT] NULL,
+    [SBRemarksEnable] [BIT] NULL,
+    [SBRemarksMandatory] [BIT] NULL,
+    CONSTRAINT [PK_SalesSetting] PRIMARY KEY CLUSTERED([SalesId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_GeneralLedger_ReturnLedger] FOREIGN KEY([SRLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_GeneralLedger_ReturnLedger];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_GeneralLedger_SalesLedger] FOREIGN KEY([SBLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_GeneralLedger_SalesLedger];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_ST_Term_AdditionalTermId] FOREIGN KEY([SBAdditionalTerm])REFERENCES [AMS].[ST_Term]([ST_ID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_ST_Term_AdditionalTermId];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_ST_Term_DiscountTermId] FOREIGN KEY([SBDiscountTerm])REFERENCES [AMS].[ST_Term]([ST_ID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_ST_Term_DiscountTermId];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_ST_Term_ProductTermId] FOREIGN KEY([SBProductDiscountTerm])REFERENCES [AMS].[ST_Term]([ST_ID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_ST_Term_ProductTermId];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_ST_Term_ServiceChargeTermId] FOREIGN KEY([SBServiceCharge])REFERENCES [AMS].[ST_Term]([ST_ID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_ST_Term_ServiceChargeTermId];
+    ALTER TABLE [AMS].[SalesSetting] WITH CHECK
+    ADD CONSTRAINT [FK_SalesSetting_ST_Term_VatTermId] FOREIGN KEY([SBVatTerm])REFERENCES [AMS].[ST_Term]([ST_ID]);
+    ALTER TABLE [AMS].[SalesSetting] CHECK CONSTRAINT [FK_SalesSetting_ST_Term_VatTermId];
+END;
+IF OBJECT_ID('AMS.InventorySetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[InventorySetting] ([InvId] [TINYINT] NOT NULL,
+    [OPLedgerId] [BIGINT] NULL,
+    [CSPLLedgerId] [BIGINT] NULL,
+    [CSBSLedgerId] [BIGINT] NULL,
+    [NegativeStock] [CHAR](1) NULL,
+    [AlternetUnit] [BIT] NULL,
+    [CostCenterEnable] [BIT] NULL,
+    [CostCenterMandetory] [BIT] NULL,
+    [CostCenterItemEnable] [BIT] NULL,
+    [CostCenterItemMandetory] [BIT] NULL,
+    [ChangeUnit] [BIT] NULL,
+    [GodownEnable] [BIT] NULL,
+    [GodownMandetory] [BIT] NULL,
+    [RemarksEnable] [BIT] NULL,
+    [GodownItemEnable] [BIT] NULL,
+    [GodownItemMandetory] [BIT] NULL,
+    [NarrationEnable] [BIT] NULL,
+    [ShortNameWise] [BIT] NULL,
+    [BatchWiseQtyEnable] [BIT] NULL,
+    [ExpiryDate] [BIT] NULL,
+    [FreeQty] [BIT] NULL,
+    [GodownWiseFilter] [BIT] NULL,
+    [GodownWiseStock] [BIT] NULL,
+    CONSTRAINT [PK_InventorySetting] PRIMARY KEY CLUSTERED([InvId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[InventorySetting] WITH CHECK
+    ADD CONSTRAINT [FK_InventorySetting_GeneralLedger_ClosingStockLedger] FOREIGN KEY([CSPLLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[InventorySetting] CHECK CONSTRAINT [FK_InventorySetting_GeneralLedger_ClosingStockLedger];
+    ALTER TABLE [AMS].[InventorySetting] WITH CHECK
+    ADD CONSTRAINT [FK_InventorySetting_GeneralLedger_OpeningLedger] FOREIGN KEY([OPLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[InventorySetting] CHECK CONSTRAINT [FK_InventorySetting_GeneralLedger_OpeningLedger];
+    ALTER TABLE [AMS].[InventorySetting] WITH CHECK
+    ADD CONSTRAINT [FK_InventorySetting_GeneralLedger_StockInHand] FOREIGN KEY([CSBSLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[InventorySetting] CHECK CONSTRAINT [FK_InventorySetting_GeneralLedger_StockInHand];
+END;
+IF OBJECT_ID('AMS.IRDAPISetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[IRDAPISetting] ([IRDAPI] [NVARCHAR](MAX) NOT NULL,
+    [IrdUser] [NVARCHAR](500) NOT NULL,
+    [IrdUserPassword] [NVARCHAR](500) NOT NULL,
+    [IrdCompanyPan] [NVARCHAR](50) NOT NULL,
+    [IsIRDRegister] [TINYINT] NOT NULL) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.PaymentSetting') IS NULL BEGIN
+    CREATE TABLE [AMS].[PaymentSetting] ([PaymentId] [INT] NOT NULL,
+    [CashLedgerId] [BIGINT] NULL,
+    [CardLedgerId] [BIGINT] NULL,
+    [BankLedgerId] [BIGINT] NULL,
+    [PhonePayLedgerId] [BIGINT] NULL,
+    [EsewaLedgerId] [BIGINT] NULL,
+    [KhaltiLedgerId] [BIGINT] NULL,
+    [RemitLedgerId] [BIGINT] NULL,
+    [ConnectIpsLedgerId] [BIGINT] NULL,
+    [PartialLedgerId] [BIGINT] NULL,
+    CONSTRAINT [PK_PaymentSetting] PRIMARY KEY CLUSTERED([PaymentId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_BankGeneralLedger] FOREIGN KEY([BankLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_BankGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_CardGeneralLedger] FOREIGN KEY([CardLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_CardGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_CashGeneralLedger] FOREIGN KEY([CashLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_CashGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_ConnectIpsGeneralLedger] FOREIGN KEY([ConnectIpsLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_ConnectIpsGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_EsewaGeneralLedger] FOREIGN KEY([EsewaLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_EsewaGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_KhaltiGeneralLedger] FOREIGN KEY([KhaltiLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_KhaltiGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_PhonePayGeneralLedger] FOREIGN KEY([PhonePayLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_PhonePayGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_RemitGeneralLedger] FOREIGN KEY([RemitLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_RemitGeneralLedger];
+    ALTER TABLE [AMS].[PaymentSetting] WITH CHECK
+    ADD CONSTRAINT [FK_PaymentSetting_PartialGeneralLedger] FOREIGN KEY([PartialLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PaymentSetting] CHECK CONSTRAINT [FK_PaymentSetting_PartialGeneralLedger];
+END;
+IF OBJECT_ID('AMS.LedgerOpening') IS NULL BEGIN
+    CREATE TABLE [AMS].[LedgerOpening] ([Opening_Id] [INT] NOT NULL,
+    [Module] [CHAR](4) NOT NULL,
+    [Serial_No] [INT] NOT NULL,
+    [Voucher_No] [NVARCHAR](50) NOT NULL,
+    [OP_Date] [DATETIME] NOT NULL,
+    [OP_Miti] [NVARCHAR](50) NOT NULL,
+    [Ledger_Id] [BIGINT] NOT NULL,
+    [Subledger_Id] [INT] NULL,
+    [Agent_Id] [INT] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [Currency_Id] [INT] NOT NULL,
+    [Currency_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Debit] [DECIMAL](18, 6) NOT NULL,
+    [LocalDebit] [DECIMAL](18, 6) NOT NULL,
+    [Credit] [DECIMAL](18, 6) NOT NULL,
+    [LocalCredit] [DECIMAL](18, 6) NOT NULL,
+    [Narration] [NVARCHAR](512) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Enter_By] [NVARCHAR](50) NOT NULL,
+    [Enter_Date] [DATETIME] NOT NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATETIME] NULL,
+    [Branch_Id] [INT] NOT NULL,
+    [Company_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelRemarks] [NVARCHAR](512) NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [IX_LedgerOpening_Id_Module_SerialNo_VoucherNo] UNIQUE CLUSTERED([Opening_Id] ASC, [Module] ASC, [Serial_No] ASC, [Voucher_No] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_Branch] FOREIGN KEY([Branch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_Branch];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_CompanyUnit] FOREIGN KEY([Company_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_CompanyUnit];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_Currency] FOREIGN KEY([Currency_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_Currency];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_Department];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_FiscalYear];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_GeneralLedger] FOREIGN KEY([Ledger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_GeneralLedger];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_JuniorAgent];
+    ALTER TABLE [AMS].[LedgerOpening] WITH CHECK
+    ADD CONSTRAINT [FK_LedgerOpening_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[LedgerOpening] CHECK CONSTRAINT [FK_LedgerOpening_Subledger];
+END;
+IF OBJECT_ID('AMS.ProductOpening') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductOpening] ([OpeningId] [INT] NOT NULL,
+    [Voucher_No] [NVARCHAR](50) NOT NULL,
+    [Serial_No] [INT] NOT NULL,
+    [OP_Date] [DATETIME] NOT NULL,
+    [OP_Miti] [VARCHAR](10) NOT NULL,
+    [Product_Id] [BIGINT] NOT NULL,
+    [Godown_Id] [INT] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [Currency_Id] [INT] NOT NULL,
+    [Currency_Rate] [DECIMAL](18, 6) NOT NULL,
+    [AltQty] [DECIMAL](18, 6) NOT NULL,
+    [AltUnit] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [QtyUnit] [INT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [LocalRate] [DECIMAL](18, 6) NOT NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL,
+    [LocalAmount] [DECIMAL](18, 6) NOT NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelRemarks] [NVARCHAR](512) NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Enter_By] [NVARCHAR](50) NOT NULL,
+    [Enter_Date] [DATETIME] NOT NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATE] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [IX_ProductOpening_Id_VoucherNo_SerialNo_ProductId] UNIQUE NONCLUSTERED([OpeningId] ASC, [Voucher_No] ASC, [Serial_No] ASC, [Product_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_Branch];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_CompanyUnit];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_Currency] FOREIGN KEY([Currency_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_Currency];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_Department];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_FiscalYear];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_Godown] FOREIGN KEY([Godown_Id])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_Godown];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_Product] FOREIGN KEY([Product_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_Product];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_ProductAltUnit] FOREIGN KEY([AltUnit])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_ProductAltUnit];
+    ALTER TABLE [AMS].[ProductOpening] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpening_ProductUnit] FOREIGN KEY([QtyUnit])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[ProductOpening] CHECK CONSTRAINT [FK_ProductOpening_ProductUnit];
+END;
+IF OBJECT_ID('AMS.ProductOpeningBatchWise') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductOpeningBatchWise] ([OpeningId] [INT] NOT NULL,
+    [VoucherNo] [NVARCHAR](50) NOT NULL,
+    [ProductId] [BIGINT] NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [BatchNo] [NVARCHAR](50) NOT NULL,
+    [MfgDate] [DATE] NOT NULL,
+    [ExpiryDate] [DATE] NOT NULL,
+    [StockAltQty] [DECIMAL](18, 6) NOT NULL,
+    [StockQty] [DECIMAL](18, 6) NOT NULL,
+    [MRPRate] [DECIMAL](18, 6) NOT NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductOpeningBatchWise] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpeningBatchWise_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[ProductOpeningBatchWise] CHECK CONSTRAINT [FK_ProductOpeningBatchWise_Product];
+    ALTER TABLE [AMS].[ProductOpeningBatchWise] WITH CHECK
+    ADD CONSTRAINT [FK_ProductOpeningBatchWise_ProductOpening] FOREIGN KEY([OpeningId], [VoucherNo], [SNo], [ProductId])REFERENCES [AMS].[ProductOpening]([OpeningId], [Voucher_No], [Serial_No], [Product_Id]);
+    ALTER TABLE [AMS].[ProductOpeningBatchWise] CHECK CONSTRAINT [FK_ProductOpeningBatchWise_ProductOpening];
+END;
+IF OBJECT_ID('AMS.PostDateCheque') IS NULL BEGIN
+    CREATE TABLE [AMS].[PostDateCheque] ([PDCId] [INT] IDENTITY(1, 1) NOT NULL,
+    [VoucherNo] [NVARCHAR](50) NOT NULL,
+    [VoucherDate] [DATE] NOT NULL,
+    [VoucherTime] [DATETIME] NOT NULL,
+    [VoucherMiti] [VARCHAR](10) NOT NULL,
+    [BankLedgerId] [BIGINT] NOT NULL,
+    [VoucherType] [CHAR](10) NOT NULL,
+    [Status] [CHAR](10) NOT NULL,
+    [BankName] [NVARCHAR](500) NOT NULL,
+    [BranchName] [NVARCHAR](500) NOT NULL,
+    [ChequeNo] [NVARCHAR](50) NULL,
+    [ChqDate] [DATE] NULL,
+    [ChqMiti] [VARCHAR](10) NULL,
+    [DrawOn] [NVARCHAR](500) NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [SubLedgerId] [INT] NULL,
+    [AgentId] [INT] NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [DepositedBy] [NVARCHAR](50) NULL,
+    [DepositeDate] [DATE] NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelReason] [NVARCHAR](512) NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_PostDateCheque] PRIMARY KEY CLUSTERED([PDCId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY],
+    CONSTRAINT [IX_PostDateCheque] UNIQUE NONCLUSTERED([VoucherNo] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_Branch];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_CompanyUnit];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_Department];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_FiscalYear];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_GeneralLedger_BankLedger] FOREIGN KEY([BankLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_GeneralLedger_BankLedger];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_GeneralLedger_Ledger] FOREIGN KEY([LedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_GeneralLedger_Ledger];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_JuniorAgent] FOREIGN KEY([AgentId])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_JuniorAgent];
+    ALTER TABLE [AMS].[PostDateCheque] WITH CHECK
+    ADD CONSTRAINT [FK_PostDateCheque_Subledger] FOREIGN KEY([SubLedgerId])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[PostDateCheque] CHECK CONSTRAINT [FK_PostDateCheque_Subledger];
+END;
+IF OBJECT_ID('AMS.PIN_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[PIN_Master] ([PIN_Invoice] [NVARCHAR](50) NOT NULL,
+    [PIN_Date] [DATE] NOT NULL,
+    [PIN_Miti] [VARCHAR](10) NOT NULL,
+    [Person] [NVARCHAR](100) NOT NULL,
+    [Sub_Ledger] [INT] NULL,
+    [AgentId] [INT] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [EnterBY] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [ActionType] [CHAR](10) NOT NULL,
+    [Remarks] [NVARCHAR](1024) NULL,
+    [Print_value] [INT] NOT NULL,
+    [R_Invoice] BIT NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelRemarks] [NVARCHAR](1024) NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_PIN_Master] PRIMARY KEY CLUSTERED([PIN_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PIN_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Master_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[PIN_Master] CHECK CONSTRAINT [FK_PIN_Master_Branch];
+    ALTER TABLE [AMS].[PIN_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Master_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[PIN_Master] CHECK CONSTRAINT [FK_PIN_Master_CompanyUnit];
+    ALTER TABLE [AMS].[PIN_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[PIN_Master] CHECK CONSTRAINT [FK_PIN_Master_Department];
+    ALTER TABLE [AMS].[PIN_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[PIN_Master] CHECK CONSTRAINT [FK_PIN_Master_FiscalYear];
+    ALTER TABLE [AMS].[PIN_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Master_JuniorAgent] FOREIGN KEY([AgentId])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[PIN_Master] CHECK CONSTRAINT [FK_PIN_Master_JuniorAgent];
+    ALTER TABLE [AMS].[PIN_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Master_Subledger] FOREIGN KEY([Sub_Ledger])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[PIN_Master] CHECK CONSTRAINT [FK_PIN_Master_Subledger];
+END;
+IF OBJECT_ID('AMS.PIN_Details') IS NULL BEGIN
+    CREATE TABLE [AMS].[PIN_Details] ([PIN_Invoice] [NVARCHAR](50) NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [P_Id] [BIGINT] NOT NULL,
+    [Gdn_Id] [INT] NULL,
+    [Alt_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Alt_Unit] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [Unit] [INT] NULL,
+    [AltStock_Qty] [DECIMAL](18, 6) NOT NULL,
+    [StockQty] [DECIMAL](18, 6) NOT NULL,
+    [Issue_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Narration] [VARCHAR](512) NULL,
+    CONSTRAINT [IX_PIN_Details] UNIQUE CLUSTERED([PIN_Invoice] ASC, [SNo] ASC, [P_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PIN_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Details_Godown] FOREIGN KEY([Gdn_Id])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[PIN_Details] CHECK CONSTRAINT [FK_PIN_Details_Godown];
+    ALTER TABLE [AMS].[PIN_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Details_PIN_Master] FOREIGN KEY([PIN_Invoice])REFERENCES [AMS].[PIN_Master]([PIN_Invoice]);
+    ALTER TABLE [AMS].[PIN_Details] CHECK CONSTRAINT [FK_PIN_Details_PIN_Master];
+    ALTER TABLE [AMS].[PIN_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Details_Product] FOREIGN KEY([P_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[PIN_Details] CHECK CONSTRAINT [FK_PIN_Details_Product];
+    ALTER TABLE [AMS].[PIN_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Details_ProductAltUnit] FOREIGN KEY([Alt_Unit])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[PIN_Details] CHECK CONSTRAINT [FK_PIN_Details_ProductAltUnit];
+    ALTER TABLE [AMS].[PIN_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PIN_Details_ProductUnit] FOREIGN KEY([Unit])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[PIN_Details] CHECK CONSTRAINT [FK_PIN_Details_ProductUnit];
+END;
+IF OBJECT_ID('AMS.PO_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[PO_Master] ([PO_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_Date] [DATE] NOT NULL,
+    [Invoice_Miti] [VARCHAR](50) NOT NULL,
+    [Invoice_Time] [DATETIME] NOT NULL,
+    [PB_Vno] [VARCHAR](10) NULL,
+    [Vno_Date] [DATE] NULL,
+    [Vno_Miti] [VARCHAR](10) NULL,
+    [Vendor_ID] [BIGINT] NOT NULL,
+    [PartyLedgerId] [BIGINT] NULL,
+    [Party_Name] [NVARCHAR](100) NULL,
+    [Vat_No] [NVARCHAR](50) NULL,
+    [Contact_Person] [NVARCHAR](50) NULL,
+    [Mobile_No] [NVARCHAR](50) NULL,
+    [Address] [NVARCHAR](90) NULL,
+    [ChqNo] [VARCHAR](50) NULL,
+    [ChqDate] [DATE] NULL,
+    [ChqMiti] [VARCHAR](10) NULL,
+    [Invoice_Type] [CHAR](10) NOT NULL,
+    [Invoice_In] [CHAR](10) NOT NULL,
+    [DueDays] [NUMERIC](18, 0) NOT NULL,
+    [DueDate] [DATE] NULL,
+    [Agent_Id] [INT] NULL,
+    [Subledger_Id] [INT] NULL,
+    [PIN_Invoice] [NVARCHAR](50) NULL,
+    [PIN_Date] [DATE] NULL,
+    [PQT_Invoice] [NVARCHAR](250) NULL,
+    [PQT_Date] [DATE] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [Cur_Id] [INT] NOT NULL,
+    [Cur_Rate] [DECIMAL](18, 6) NOT NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [LN_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tbl_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Action_type] [NVARCHAR](50) NOT NULL,
+    [R_Invoice] [BIT] NOT NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelRemarks] [NVARCHAR](512) NULL,
+    [No_Print] [INT] NOT NULL,
+    [In_Words] [NVARCHAR](512) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Audit_Lock] [BIT] NOT NULL,
+    [Enter_By] [NVARCHAR](50) NOT NULL,
+    [Enter_Date] [DATETIME] NOT NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATETIME] NULL,
+    [Auth_By] [NVARCHAR](50) NULL,
+    [Auth_Date] [DATETIME] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_PO] PRIMARY KEY CLUSTERED([PO_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_Branch];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_CompanyUnit];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_Currency] FOREIGN KEY([Cur_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_Currency];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_Department];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_FiscalYear];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_GeneralLedger] FOREIGN KEY([Vendor_ID])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_GeneralLedger];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_GeneralLedger_PartyLedger] FOREIGN KEY([PartyLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_GeneralLedger_PartyLedger];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_JuniorAgent];
+    ALTER TABLE [AMS].[PO_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Master_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[PO_Master] CHECK CONSTRAINT [FK_PO_Master_Subledger];
+END;
+IF OBJECT_ID('AMS.PO_Details') IS NULL BEGIN
+    CREATE TABLE [AMS].[PO_Details] ([PO_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_SNo] [NUMERIC](18, 0) NOT NULL,
+    [P_Id] [BIGINT] NOT NULL,
+    [Gdn_Id] [INT] NULL,
+    [Alt_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Alt_UnitId] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [Unit_Id] [INT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [AltStock_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Stock_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Narration] [NVARCHAR](512) NULL,
+    [PIN_Invoice] [NVARCHAR](50) NULL,
+    [PIN_Sno] [INT] NULL,
+    [PQT_Invoice] [NVARCHAR](50) NULL,
+    [PQT_SNo] [INT] NULL,
+    [Tax_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Issue_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Free_Unit_Id] [INT] NULL,
+    [Free_Qty] [DECIMAL](18, 6) NOT NULL,
+    [StockFree_Qty] [DECIMAL](18, 6) NOT NULL,
+    [ExtraFree_Unit_Id] [INT] NULL,
+    [ExtraFree_Qty] [DECIMAL](18, 6) NOT NULL,
+    [ExtraStockFree_Qty] [DECIMAL](18, 6) NOT NULL,
+    [T_Product] [BIT] NULL,
+    [P_Ledger] [BIGINT] NULL,
+    [PR_Ledger] [BIGINT] NULL,
+    [SZ1] [NVARCHAR](50) NULL,
+    [SZ2] [NVARCHAR](50) NULL,
+    [SZ3] [NVARCHAR](50) NULL,
+    [SZ4] [NVARCHAR](50) NULL,
+    [SZ5] [NVARCHAR](50) NULL,
+    [SZ6] [NVARCHAR](50) NULL,
+    [SZ7] [NVARCHAR](50) NULL,
+    [SZ8] [NVARCHAR](50) NULL,
+    [SZ9] [NVARCHAR](50) NULL,
+    [SZ10] [NVARCHAR](50) NULL,
+    [Serial_No] [NVARCHAR](50) NULL,
+    [Batch_No] [NVARCHAR](50) NULL,
+    [Exp_Date] [DATE] NULL,
+    [Manu_Date] [DATE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [IX_PO_Details_VoucherNo_SerialNo_ProductId] UNIQUE NONCLUSTERED([PO_Invoice] ASC, [Invoice_SNo] ASC, [P_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_GeneralLedger_Purchase] FOREIGN KEY([P_Ledger])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_GeneralLedger_Purchase];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_GeneralLedger_ReturnLedger] FOREIGN KEY([PR_Ledger])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_GeneralLedger_ReturnLedger];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_Godown] FOREIGN KEY([Gdn_Id])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_Godown];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_PO_Master] FOREIGN KEY([PO_Invoice])REFERENCES [AMS].[PO_Master]([PO_Invoice]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_PO_Master];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_Product] FOREIGN KEY([P_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_Product];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_ProductAltUnit] FOREIGN KEY([Alt_UnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_ProductAltUnit];
+    ALTER TABLE [AMS].[PO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Details_ProductUnit] FOREIGN KEY([Unit_Id])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[PO_Details] CHECK CONSTRAINT [FK_PO_Details_ProductUnit];
+END;
+IF OBJECT_ID('AMS.PO_Term') IS NULL BEGIN
+    CREATE TABLE [AMS].[PO_Term] ([PO_VNo] [NVARCHAR](50) NOT NULL,
+    [PT_Id] [INT] NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [Term_Type] [CHAR](2) NOT NULL,
+    [Product_Id] [BIGINT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL,
+    [Taxable] [CHAR](1) NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [IX_PO_Term] UNIQUE NONCLUSTERED([PO_VNo] ASC, [Product_Id] ASC, [SNo] ASC, [Term_Type] ASC, [PT_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[PO_Term] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Term_PO_Master] FOREIGN KEY([PO_VNo])REFERENCES [AMS].[PO_Master]([PO_Invoice]);
+    ALTER TABLE [AMS].[PO_Term] CHECK CONSTRAINT [FK_PO_Term_PO_Master];
+    ALTER TABLE [AMS].[PO_Term] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Term_Product] FOREIGN KEY([Product_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[PO_Term] CHECK CONSTRAINT [FK_PO_Term_Product];
+    ALTER TABLE [AMS].[PO_Term] WITH CHECK
+    ADD CONSTRAINT [FK_PO_Term_PT_Term] FOREIGN KEY([PT_Id])REFERENCES [AMS].[PT_Term]([PT_Id]);
+    ALTER TABLE [AMS].[PO_Term] CHECK CONSTRAINT [FK_PO_Term_PT_Term];
+END;
+IF OBJECT_ID('AMS.PC_Master') IS NULL BEGIN
+    CREATE TABLE AMS.PC_Master (PC_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti NVARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    PB_Vno NVARCHAR(50) NULL,
+    Vno_Date DATE NULL,
+    Vno_Miti NVARCHAR(10) NULL,
+    Vendor_ID BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATETIME NULL,
+    ChqMiti VARCHAR(10) NULL,
+    Invoice_Type NVARCHAR(50) NOT NULL,
+    Invoice_In NVARCHAR(50) NOT NULL,
+    DueDays INT NULL,
+    DueDate DATETIME NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    PO_Invoice NVARCHAR(250) NULL,
+    PO_Date DATETIME NULL,
+    QOT_Invoice NVARCHAR(250) NULL,
+    QOT_Date DATETIME NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Cur_Id INT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    Counter_ID INT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Change_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    Tbl_Amount DECIMAL(18, 6) NOT NULL,
+    Action_type NVARCHAR(50) NULL,
+    R_Invoice BIT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    No_Print INT NOT NULL,
+    In_Words NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    Audit_Lock BIT NOT NULL,
+    Enter_By NVARCHAR(50) NULL,
+    Enter_Date DATETIME NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATETIME NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_PC PRIMARY KEY CLUSTERED(PC_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PC_Master ON AMS.PC_Master(PC_Invoice)ON [PRIMARY];
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_Counter FOREIGN KEY(Counter_ID)REFERENCES AMS.Counter(CId);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_GeneralLedger FOREIGN KEY(Vendor_ID)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.PC_Master
+    ADD CONSTRAINT FK_PC_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.PC_Details') IS NULL BEGIN
+    CREATE TABLE AMS.PC_Details (PC_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    PO_Invoice NVARCHAR(50) NULL,
+    PO_Sno INT NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_SNo INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Issue_Qty DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NOT NULL,
+    P_Ledger BIGINT NULL,
+    PR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE CLUSTERED INDEX IX_PC_Details_VoucherNo_SerialNo_Product
+    ON AMS.PC_Details(PC_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_GeneralLedger_Purchase FOREIGN KEY(P_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_GeneralLedger_Return FOREIGN KEY(PR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_PC_Master FOREIGN KEY(PC_Invoice)REFERENCES AMS.PC_Master(PC_Invoice);
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.PC_Details
+    ADD CONSTRAINT FK_PC_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('AMS.PC_Term') IS NULL BEGIN
+    CREATE TABLE AMS.PC_Term (PC_VNo NVARCHAR(50) NOT NULL,
+    PT_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE CLUSTERED INDEX IX_PC_Term
+    ON AMS.PC_Term(PC_VNo, SNo, PT_Id, Product_Id, Taxable)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PC_Term
+    ADD CONSTRAINT FK_PC_Term_PC_Master FOREIGN KEY(PC_VNo)REFERENCES AMS.PC_Master(PC_Invoice);
+    ALTER TABLE AMS.PC_Term
+    ADD CONSTRAINT FK_PC_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PC_Term
+    ADD CONSTRAINT FK_PC_Term_PT_Term FOREIGN KEY(PT_Id)REFERENCES AMS.PT_Term(PT_Id);
+END;
+IF OBJECT_ID('AMS.PCR_Master') IS NULL BEGIN
+    CREATE TABLE AMS.PCR_Master (PCR_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti NVARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    PB_Vno NVARCHAR(50) NULL,
+    Vno_Date DATE NULL,
+    Vno_Miti NVARCHAR(10) NULL,
+    Vendor_ID BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATETIME NULL,
+    ChqMiti VARCHAR(10) NULL,
+    Invoice_Type NVARCHAR(50) NOT NULL,
+    Invoice_In NVARCHAR(50) NOT NULL,
+    DueDays INT NULL,
+    DueDate DATETIME NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    PO_Invoice NVARCHAR(250) NULL,
+    PO_Date DATETIME NULL,
+    QOT_Invoice NVARCHAR(250) NULL,
+    QOT_Date DATETIME NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Cur_Id INT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    Counter_ID INT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Change_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    Tbl_Amount DECIMAL(18, 6) NOT NULL,
+    Action_type NVARCHAR(50) NULL,
+    R_Invoice BIT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    No_Print INT NOT NULL,
+    In_Words NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    Audit_Lock BIT NOT NULL,
+    Enter_By NVARCHAR(50) NULL,
+    Enter_Date DATETIME NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATETIME NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_PCR PRIMARY KEY CLUSTERED(PCR_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PCR_Master
+    ON AMS.PCR_Master(PCR_Invoice)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_Counter FOREIGN KEY(Counter_ID)REFERENCES AMS.Counter(CId);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_GeneralLedger FOREIGN KEY(Vendor_ID)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.PCR_Master
+    ADD CONSTRAINT FK_PCR_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.PCR_Details') IS NULL BEGIN
+    CREATE TABLE AMS.PCR_Details (PCR_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    PO_Invoice NVARCHAR(50) NULL,
+    PO_Sno INT NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_SNo INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Issue_Qty DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NOT NULL,
+    P_Ledger BIGINT NULL,
+    PR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE CLUSTERED INDEX IX_PCR_Details_VoucherNo_SerialNo_Product
+    ON AMS.PCR_Details(PCR_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_GeneralLedger_Purchase FOREIGN KEY(P_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_GeneralLedger_Return FOREIGN KEY(PR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_PCR_Master FOREIGN KEY(PCR_Invoice)REFERENCES AMS.PCR_Master(PCR_Invoice);
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.PCR_Details
+    ADD CONSTRAINT FK_PCR_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('AMS.PCR_Term') IS NULL BEGIN
+    CREATE TABLE AMS.PCR_Term (PCR_VNo NVARCHAR(50) NOT NULL,
+    PT_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE CLUSTERED INDEX IX_PCR_Term
+    ON AMS.PCR_Term(PCR_VNo, SNo, PT_Id, Product_Id, Taxable)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PCR_Term
+    ADD CONSTRAINT FK_PCR_Term_PCR_Master FOREIGN KEY(PCR_VNo)REFERENCES AMS.PCR_Master(PCR_Invoice);
+    ALTER TABLE AMS.PCR_Term
+    ADD CONSTRAINT FK_PCR_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PCR_Term
+    ADD CONSTRAINT FK_PCR_Term_PT_Term FOREIGN KEY(PT_Id)REFERENCES AMS.PT_Term(PT_Id);
+END;
+IF OBJECT_ID('AMS.PB_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[PB_Master] ([PB_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_Date] [DATE] NOT NULL,
+    [Invoice_Miti] [NVARCHAR](10) NOT NULL,
+    [Invoice_Time] [DATETIME] NOT NULL,
+    [PB_Vno] [NVARCHAR](50) NULL,
+    [Vno_Date] [DATE] NULL,
+    [Vno_Miti] [NVARCHAR](10) NULL,
+    [Vendor_ID] [BIGINT] NOT NULL,
+    [PartyLedgerId] [BIGINT] NULL,
+    [Party_Name] [NVARCHAR](100) NULL,
+    [Vat_No] [NVARCHAR](50) NULL,
+    [Contact_Person] [NVARCHAR](50) NULL,
+    [Mobile_No] [NVARCHAR](50) NULL,
+    [Address] [NVARCHAR](90) NULL,
+    [ChqNo] [NVARCHAR](50) NULL,
+    [ChqDate] [DATE] NULL,
+    [ChqMiti] [VARCHAR](10) NULL,
+    [Invoice_Type] [CHAR](10) NOT NULL,
+    [Invoice_In] [CHAR](10) NOT NULL,
+    [DueDays] [INT] NULL,
+    [DueDate] [DATE] NULL,
+    [Agent_Id] [INT] NULL,
+    [Subledger_Id] [INT] NULL,
+    [PO_Invoice] [NVARCHAR](250) NULL,
+    [PO_Date] [DATETIME] NULL,
+    [PC_Invoice] [NVARCHAR](250) NULL,
+    [PC_Date] [DATETIME] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [Cur_Id] [INT] NOT NULL,
+    [Cur_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Counter_ID] [INT] NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [LN_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tender_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Change_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tbl_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Action_type] [CHAR](10) NULL,
+    [R_Invoice] [BIT] NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelRemarks] [NVARCHAR](512) NULL,
+    [No_Print] [NUMERIC](18, 0) NOT NULL,
+    [In_Words] [NVARCHAR](512) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Audit_Lock] [BIT] NOT NULL,
+    [Enter_By] [NVARCHAR](50) NOT NULL,
+    [Enter_Date] [DATETIME] NOT NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATETIME] NULL,
+    [Auth_By] [NVARCHAR](50) NULL,
+    [Auth_Date] [DATETIME] NULL,
+    [Cleared_By] [NVARCHAR](50) NULL,
+    [Cleared_Date] [DATETIME] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_PB_Invoice] PRIMARY KEY CLUSTERED([PB_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_Branch];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_CompanyUnit];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_Counter] FOREIGN KEY([Counter_ID])REFERENCES [AMS].[Counter]([CId]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_Counter];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_Currency] FOREIGN KEY([Cur_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_Currency];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_Department];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_FiscalYear];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_GeneralLedger] FOREIGN KEY([Vendor_ID])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_GeneralLedger];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_GeneralLedger_PartyLedger] FOREIGN KEY([PartyLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_GeneralLedger_PartyLedger];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_JuniorAgent];
+    ALTER TABLE [AMS].[PB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_PB_Master_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[PB_Master] CHECK CONSTRAINT [FK_PB_Master_Subledger];
+END;
+IF OBJECT_ID('AMS.PB_Details') IS NULL BEGIN
+    CREATE TABLE AMS.PB_Details (PB_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    PO_Invoice NVARCHAR(50) NULL,
+    PO_Sno INT NULL,
+    PC_Invoice NVARCHAR(50) NULL,
+    PC_SNo INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NOT NULL,
+    P_Ledger BIGINT NULL,
+    PR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    TaxExempted_Amount DECIMAL(18, 6) NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATETIME NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PB_Details_VoucherNo_SerialNo_ProductId
+    ON AMS.PB_Details(PB_Invoice, Invoice_SNo, P_Id)
+    WHERE([PB_Invoice] IS NOT NULL AND [Invoice_SNo] IS NOT NULL AND [P_Id] IS NOT NULL)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_GeneralLedger FOREIGN KEY(PR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_GeneralLedger_Purchase FOREIGN KEY(P_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_PB_Master FOREIGN KEY(PB_Invoice)REFERENCES AMS.PB_Master(PB_Invoice);
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.PB_Details
+    ADD CONSTRAINT FK_PB_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('AMS.PB_OtherMaster') IS NULL BEGIN
+    CREATE TABLE [AMS].[PB_OtherMaster] ([PAB_Invoice] [NVARCHAR](50) NOT NULL,
+    [PPNo] [NVARCHAR](50) NULL,
+    [PPDate] [DATE] NULL,
+    [TaxableAmount] [DECIMAL](18, 6) NULL,
+    [VatAmount] [DECIMAL](18, 6) NULL,
+    [CustomAgent] [NVARCHAR](50) NULL,
+    [Transportation] [NVARCHAR](50) NULL,
+    [VechileNo] [NVARCHAR](50) NULL,
+    [Cn_No] [VARCHAR](25) NULL,
+    [Cn_Date] [DATE] NULL,
+    [BankDoc] [NVARCHAR](50) NULL,
+    CONSTRAINT [PK_Purchase_OtherDetails_InvoiceNo] PRIMARY KEY CLUSTERED([PAB_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.PB_Term') IS NULL BEGIN
+    CREATE TABLE AMS.PB_Term (PB_VNo NVARCHAR(50) NOT NULL,
+    PT_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PB_Term
+    ON AMS.PB_Term(PB_VNo, PT_Id, SNo, Product_Id, Term_Type)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PB_Term
+    ADD CONSTRAINT FK_PB_Term_PB_Master FOREIGN KEY(PB_VNo)REFERENCES AMS.PB_Master(PB_Invoice);
+    ALTER TABLE AMS.PB_Term
+    ADD CONSTRAINT FK_PB_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PB_Term
+    ADD CONSTRAINT FK_PB_Term_PT_Term FOREIGN KEY(PT_Id)REFERENCES AMS.PT_Term(PT_Id);
+END;
+IF OBJECT_ID('AMS.PR_Master') IS NULL BEGIN
+    CREATE TABLE AMS.PR_Master (PR_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti NVARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    PB_Invoice NVARCHAR(50) NULL,
+    PB_Date DATE NULL,
+    PB_Miti VARCHAR(10) NULL,
+    Vendor_ID BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATETIME NULL,
+    ChqMiti VARCHAR(10) NULL,
+    Invoice_Type CHAR(10) NULL,
+    Invoice_In CHAR(10) NULL,
+    DueDays INT NULL,
+    DueDate DATE NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Cur_Id INT NOT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Change_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    Tbl_Amount DECIMAL(18, 6) NOT NULL,
+    Action_type CHAR(10) NOT NULL,
+    No_Print DECIMAL NOT NULL,
+    In_Words NVARCHAR(512) NOT NULL,
+    Remarks NVARCHAR(512) NULL,
+    Audit_Lock BIT NULL,
+    Enter_By NVARCHAR(50) NOT NULL,
+    Enter_Date DATETIME NOT NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    Cleared_By NVARCHAR(50) NULL,
+    Cleared_Date DATETIME NULL,
+    R_Invoice BIT NOT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelRemarks NVARCHAR(512) NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_PR_Invoice PRIMARY KEY CLUSTERED(PR_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PR_Master ON AMS.PR_Master(PR_Invoice)ON [PRIMARY];
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_GeneralLedger FOREIGN KEY(Vendor_ID)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.PR_Master
+    ADD CONSTRAINT FK_PR_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.PR_Details') IS NULL BEGIN
+    CREATE TABLE AMS.PR_Details (PR_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    PB_Invoice NVARCHAR(50) NULL,
+    PB_Sno INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NOT NULL,
+    P_Ledger BIGINT NULL,
+    PR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PR_Details
+    ON AMS.PR_Details(PR_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PR_Details
+    ADD CONSTRAINT FK_PR_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.PR_Details
+    ADD CONSTRAINT FK_PR_Details_PR_Master FOREIGN KEY(PR_Invoice)REFERENCES AMS.PR_Master(PR_Invoice);
+    ALTER TABLE AMS.PR_Details
+    ADD CONSTRAINT FK_PR_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PR_Details
+    ADD CONSTRAINT FK_PR_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.PR_Details
+    ADD CONSTRAINT FK_PR_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('AMS.PR_Term') IS NULL BEGIN
+    CREATE TABLE AMS.PR_Term (PR_VNo NVARCHAR(50) NOT NULL,
+    PT_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_PR_Term
+    ON AMS.PR_Term(PR_VNo, PT_Id, SNo, Product_Id, Taxable)
+    ON [PRIMARY];
+    ALTER TABLE AMS.PR_Term
+    ADD CONSTRAINT FK_PR_Term_PR_Master FOREIGN KEY(PR_VNo)REFERENCES AMS.PR_Master(PR_Invoice);
+    ALTER TABLE AMS.PR_Term
+    ADD CONSTRAINT FK_PR_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PR_Term
+    ADD CONSTRAINT FK_PR_Term_PT_Term FOREIGN KEY(PT_Id)REFERENCES AMS.PT_Term(PT_Id);
+END;
+IF OBJECT_ID('AMS.PAB_Master') IS NULL BEGIN
+    CREATE TABLE AMS.PAB_Master (PAB_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti NVARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    PB_Invoice NVARCHAR(50) NOT NULL,
+    PB_Date DATE NOT NULL,
+    PB_Miti NVARCHAR(10) NOT NULL,
+    PB_Qty DECIMAL(18, 6) NOT NULL,
+    PB_Amount DECIMAL(18, 6) NOT NULL,
+    LocalAmount DECIMAL(18, 6) NOT NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Agent_Id INT NULL,
+    Cur_Id INT NOT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    Remarks NVARCHAR(512) NULL,
+    Action_Type NVARCHAR(50) NOT NULL,
+    No_Print INT NOT NULL,
+    In_Words NVARCHAR(512) NULL,
+    Audit_Lock BIT NULL,
+    Enter_By NVARCHAR(50) NULL,
+    Enter_Date DATETIME NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    Cleared_By NVARCHAR(50) NULL,
+    Cleared_Date DATETIME NULL,
+    R_Invoice BIT NULL,
+    Cancel_By NVARCHAR(50) NULL,
+    Cancel_Date DATETIME NULL,
+    Cancel_Remarks NVARCHAR(512) NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_PAB_Master PRIMARY KEY CLUSTERED(PAB_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.PAB_Master
+    ADD CONSTRAINT FK_PAB_Master_PB_Master FOREIGN KEY(PB_Invoice)REFERENCES AMS.PB_Master(PB_Invoice);
+END;
+IF OBJECT_ID('AMS.PAB_Details') IS NULL BEGIN
+    CREATE TABLE AMS.PAB_Details (PAB_Invoice NVARCHAR(50) NOT NULL,
+    SNo INT NOT NULL,
+    PT_Id INT NOT NULL,
+    Ledger_Id BIGINT NOT NULL,
+    CBLedger_Id BIGINT NULL,
+    Subledger_Id INT NULL,
+    Agent_Id INT NULL,
+    DepartmentId INT NULL,
+    Product_Id BIGINT NULL,
+    Percentage DECIMAL(18, 6) NULL,
+    Amount DECIMAL(18, 6) NULL,
+    N_Amount DECIMAL(18, 6) NULL,
+    Term_Type CHAR(2) NULL,
+    PAB_Narration VARCHAR(512) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_Department FOREIGN KEY(DepartmentId)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_GeneralLedger FOREIGN KEY(Ledger_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_GeneralLedger_PartyLedgerId FOREIGN KEY(CBLedger_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_PAB_Master FOREIGN KEY(PAB_Invoice)REFERENCES AMS.PAB_Master(PAB_Invoice);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_PT_Term FOREIGN KEY(PT_Id)REFERENCES AMS.PT_Term(PT_Id);
+    ALTER TABLE AMS.PAB_Details
+    ADD CONSTRAINT FK_PAB_Details_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.SQ_Master') IS NULL BEGIN
+    CREATE TABLE AMS.SQ_Master (SQ_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti VARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    Expiry_Date DATETIME NOT NULL,
+    Ref_Vno NVARCHAR(50) NULL,
+    Ref_VDate DATE NULL,
+    Ref_VMiti VARCHAR(10) NULL,
+    Customer_Id BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATE NULL,
+    ChqMiti VARCHAR(10) NULL,
+    Invoice_Type NVARCHAR(50) NULL,
+    Invoice_Mode NVARCHAR(50) NULL,
+    Payment_Mode NVARCHAR(50) NULL,
+    DueDays INT NULL,
+    DueDate DATE NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    IND_Invoice NVARCHAR(50) NULL,
+    IND_Date DATE NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Cur_Id INT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    Tbl_Amount DECIMAL(18, 6) NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Return_Amount DECIMAL(18, 6) NOT NULL,
+    Action_Type NVARCHAR(50) NULL,
+    In_Words NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    R_Invoice BIT NOT NULL,
+    Cancel_By NVARCHAR(50) NULL,
+    Cancel_Date DATETIME NULL,
+    Cancel_Remarks NVARCHAR(1024) NULL,
+    Is_Printed BIT NOT NULL,
+    No_Print INT NOT NULL,
+    Printed_By NVARCHAR(50) NULL,
+    Printed_Date DATETIME NULL,
+    Audit_Lock BIT NOT NULL,
+    Enter_By NVARCHAR(50) NULL,
+    Enter_Date DATETIME NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    Cleared_By NVARCHAR(50) NULL,
+    Cleared_Date DATETIME NULL,
+    CUnit_Id INT NULL,
+    CBranch_Id INT NOT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_SQ_Master PRIMARY KEY CLUSTERED(SQ_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SQ_Master ON AMS.SQ_Master(SQ_Invoice)ON [PRIMARY];
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_GeneralLedger FOREIGN KEY(Customer_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.SQ_Master
+    ADD CONSTRAINT FK_SQ_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.SQ_Details') IS NULL BEGIN
+    CREATE TABLE AMS.SQ_Details (SQ_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    IND_Invoice NVARCHAR(50) NULL,
+    IND_Sno INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Issue_Qty DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    PG_Id INT NULL,
+    T_Product BIT NOT NULL,
+    S_Ledger BIGINT NULL,
+    SR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SQ_Details
+    ON AMS.SQ_Details(SQ_Invoice, Serial_No, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_GeneralLedger_Return FOREIGN KEY(SR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_GeneralLedger_Sales FOREIGN KEY(S_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_ProductGroup FOREIGN KEY(PG_Id)REFERENCES AMS.ProductGroup(PGrpId);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_ProductUnit_FreeQty FOREIGN KEY(Free_Unit_Id)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SQ_Details
+    ADD CONSTRAINT FK_SQ_Details_SQ_Master FOREIGN KEY(SQ_Invoice)REFERENCES AMS.SQ_Master(SQ_Invoice);
+END;
+IF OBJECT_ID('AMS.SQ_Term') IS NULL BEGIN
+    CREATE TABLE [AMS].[SQ_Term] ([SQ_Vno] [NVARCHAR](50) NOT NULL,
+    [ST_Id] [INT] NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [Term_Type] [CHAR](2) NULL,
+    [Product_Id] [BIGINT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL,
+    [Taxable] [CHAR](1) NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE NONCLUSTERED INDEX [IX_SQ_Term]
+    ON [AMS].[SQ_Term]([SQ_Vno] ASC, [SNo] ASC, [ST_Id] ASC, [Term_Type] ASC, [Product_Id] ASC)
+    WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, SORT_IN_TEMPDB=OFF, IGNORE_DUP_KEY=OFF, DROP_EXISTING=OFF, ONLINE=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)
+    ON [PRIMARY];
+    ALTER TABLE [AMS].[SQ_Term] WITH CHECK
+    ADD CONSTRAINT [FK_SQ_Term_Product] FOREIGN KEY([Product_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[SQ_Term] CHECK CONSTRAINT [FK_SQ_Term_Product];
+    ALTER TABLE [AMS].[SQ_Term] WITH CHECK
+    ADD CONSTRAINT [FK_SQ_Term_SQ_Master] FOREIGN KEY([SQ_Vno])REFERENCES [AMS].[SQ_Master]([SQ_Invoice]);
+    ALTER TABLE [AMS].[SQ_Term] CHECK CONSTRAINT [FK_SQ_Term_SQ_Master];
+    ALTER TABLE [AMS].[SQ_Term] WITH CHECK
+    ADD CONSTRAINT [FK_SQ_Term_ST_Term] FOREIGN KEY([ST_Id])REFERENCES [AMS].[ST_Term]([ST_ID]);
+    ALTER TABLE [AMS].[SQ_Term] CHECK CONSTRAINT [FK_SQ_Term_ST_Term];
+END;
+IF OBJECT_ID('AMS.SO_Master') IS NULL BEGIN
+    CREATE TABLE AMS.SO_Master (SO_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti VARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    Ref_Vno NVARCHAR(50) NULL,
+    Ref_Date DATE NULL,
+    Ref_Miti VARCHAR(10) NULL,
+    Customer_Id BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATE NULL,
+    ChqMiti VARCHAR(10) NULL,
+    Invoice_Type CHAR(10) NULL,
+    Invoice_Mode CHAR(10) NULL,
+    Payment_Mode CHAR(10) NULL,
+    DueDays INT NULL,
+    DueDate DATE NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    IND_Invoice NVARCHAR(50) NULL,
+    IND_Date DATE NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_Date DATE NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    CounterId INT NULL,
+    TableId INT NULL,
+    CombineTableId NVARCHAR(100) NULL,
+    NoOfPerson INT NULL,
+    Cur_Id INT NOT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    Tbl_Amount DECIMAL(18, 6) NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Return_Amount DECIMAL(18, 6) NOT NULL,
+    Action_Type CHAR(10) NULL,
+    In_Words NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    R_Invoice BIT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    Is_Printed BIT NOT NULL,
+    No_Print INT NOT NULL,
+    Printed_By NVARCHAR(50) NULL,
+    Printed_Date DATETIME NULL,
+    Audit_Lock BIT NOT NULL,
+    Enter_By NVARCHAR(50) NOT NULL,
+    Enter_Date DATETIME NOT NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_SO PRIMARY KEY CLUSTERED(SO_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_Counter FOREIGN KEY(CounterId)REFERENCES AMS.Counter(CId);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_GeneralLedger FOREIGN KEY(Customer_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+    ALTER TABLE AMS.SO_Master
+    ADD CONSTRAINT FK_SO_Master_TableMaster FOREIGN KEY(TableId)REFERENCES AMS.TableMaster(TableId);
+END;
+IF OBJECT_ID('AMS.SO_Details') IS NULL BEGIN
+    CREATE TABLE [AMS].[SO_Details] ([SO_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_SNo] [INT] NOT NULL,
+    [P_Id] [BIGINT] NOT NULL,
+    [Gdn_Id] [INT] NULL,
+    [Alt_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Alt_UnitId] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [Unit_Id] [INT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [AltStock_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Stock_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Narration] [NVARCHAR](512) NULL,
+    [IND_Invoice] [NVARCHAR](50) NULL,
+    [IND_Sno] [INT] NULL,
+    [QOT_Invoice] [NVARCHAR](50) NULL,
+    [QOT_SNo] [INT] NULL,
+    [Tax_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Issue_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Free_Unit_Id] [INT] NULL,
+    [Free_Qty] [DECIMAL](18, 6) NOT NULL,
+    [StockFree_Qty] [DECIMAL](18, 6) NOT NULL,
+    [ExtraFree_Unit_Id] [INT] NULL,
+    [ExtraFree_Qty] [DECIMAL](18, 6) NOT NULL,
+    [ExtraStockFree_Qty] [DECIMAL](18, 6) NOT NULL,
+    [T_Product] [BIT] NULL,
+    [S_Ledger] [BIGINT] NULL,
+    [SR_Ledger] [BIGINT] NULL,
+    [SZ1] [NVARCHAR](50) NULL,
+    [SZ2] [NVARCHAR](50) NULL,
+    [SZ3] [NVARCHAR](50) NULL,
+    [SZ4] [NVARCHAR](50) NULL,
+    [SZ5] [NVARCHAR](50) NULL,
+    [SZ6] [NVARCHAR](50) NULL,
+    [SZ7] [NVARCHAR](50) NULL,
+    [SZ8] [NVARCHAR](50) NULL,
+    [SZ9] [NVARCHAR](50) NULL,
+    [SZ10] [NVARCHAR](50) NULL,
+    [Serial_No] [NVARCHAR](50) NULL,
+    [Batch_No] [NVARCHAR](50) NULL,
+    [Exp_Date] [DATE] NULL,
+    [Manu_Date] [DATE] NULL,
+    [Notes] [NVARCHAR](512) NULL,
+    [PrintedItem] [BIT] NULL,
+    [PrintKOT] [BIT] NULL,
+    [OrderTime] [DATETIME] NULL,
+    [Print_Time] [DATETIME] NULL,
+    [Is_Canceled] [BIT] NULL,
+    [CancelNotes] [NVARCHAR](512) NULL,
+    [PDiscountRate] [DECIMAL](18, 6) NOT NULL,
+    [PDiscount] [DECIMAL](18, 6) NOT NULL,
+    [BDiscountRate] [DECIMAL](18, 6) NOT NULL,
+    [BDiscount] [DECIMAL](18, 6) NOT NULL,
+    [ServiceChargeRate] [DECIMAL](18, 6) NOT NULL,
+    [ServiceCharge] [DECIMAL](18, 6) NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    [MasterKeyId] [BIGINT] NOT NULL,
+    [Id] [INT] IDENTITY(1, 1) NOT NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SO_Details] ADD DEFAULT((0))FOR [MasterKeyId];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_GeneralLedger] FOREIGN KEY([S_Ledger])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_GeneralLedger];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_GeneralLedger1] FOREIGN KEY([SR_Ledger])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_GeneralLedger1];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_Godown] FOREIGN KEY([Gdn_Id])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_Godown];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_Product] FOREIGN KEY([P_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_Product];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_ProductAltUnit] FOREIGN KEY([Unit_Id])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_ProductAltUnit];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_ProductUnit] FOREIGN KEY([Alt_UnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_ProductUnit];
+    ALTER TABLE [AMS].[SO_Details] WITH CHECK
+    ADD CONSTRAINT [FK_SO_Details_SO_Master] FOREIGN KEY([SO_Invoice])REFERENCES [AMS].[SO_Master]([SO_Invoice]);
+    ALTER TABLE [AMS].[SO_Details] CHECK CONSTRAINT [FK_SO_Details_SO_Master];
+END;
+IF OBJECT_ID('AMS.SO_Master_OtherDetails') IS NULL BEGIN
+    CREATE TABLE AMS.SO_Master_OtherDetails (SO_Invoice NVARCHAR(50) NOT NULL,
+    Transport NVARCHAR(255) NULL,
+    VechileNo NVARCHAR(50) NULL,
+    BiltyNo NVARCHAR(50) NULL,
+    Package NVARCHAR(100) NULL,
+    BiltyDate DATE NULL,
+    BiltyType NVARCHAR(50) NULL,
+    Driver NVARCHAR(50) NULL,
+    PhoneNo NVARCHAR(50) NULL,
+    LicenseNo NVARCHAR(50) NULL,
+    MailingAddress NVARCHAR(500) NULL,
+    MCity NVARCHAR(50) NULL,
+    MState NVARCHAR(50) NULL,
+    MCountry NVARCHAR(50) NULL,
+    MEmail NVARCHAR(50) NULL,
+    ShippingAddress NVARCHAR(500) NULL,
+    SCity NVARCHAR(50) NULL,
+    SState NVARCHAR(50) NULL,
+    SCountry NVARCHAR(50) NULL,
+    SEmail NVARCHAR(50) NULL,
+    ContractNo NVARCHAR(50) NULL,
+    ContractDate DATE NULL,
+    ExportInvoice NVARCHAR(50) NULL,
+    ExportInvoiceDate DATE NULL,
+    VendorOrderNo NVARCHAR(50) NULL,
+    BankDetails NVARCHAR(100) NULL,
+    LcNumber NVARCHAR(50) NULL,
+    CustomDetails NVARCHAR(100) NULL,
+    CONSTRAINT PK_SO_Master_OtherDetails PRIMARY KEY CLUSTERED(SO_Invoice)) ON [PRIMARY];
+    ALTER TABLE AMS.SO_Master_OtherDetails
+    ADD CONSTRAINT FK_SO_Master_OtherDetails_SO_Master FOREIGN KEY(SO_Invoice)REFERENCES AMS.SO_Master(SO_Invoice);
+END;
+IF OBJECT_ID('AMS.SO_Term') IS NULL BEGIN
+    CREATE TABLE AMS.SO_Term ([Id] [INT] IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    SO_Vno NVARCHAR(50) NOT NULL,
+    ST_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SO_Term
+    ON AMS.SO_Term(SO_Vno, Product_Id, ST_Id, SNo, Term_Type)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SO_Term
+    ADD CONSTRAINT FK_SO_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SO_Term
+    ADD CONSTRAINT FK_SO_Term_SO_Master FOREIGN KEY(SO_Vno)REFERENCES AMS.SO_Master(SO_Invoice);
+    ALTER TABLE AMS.SO_Term
+    ADD CONSTRAINT FK_SO_Term_ST_Term FOREIGN KEY(ST_Id)REFERENCES AMS.ST_Term(ST_ID);
+END;
+IF OBJECT_ID('AMS.SC_Master') IS NULL BEGIN
+    CREATE TABLE AMS.SC_Master (SC_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti VARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    Ref_Vno NVARCHAR(50) NULL,
+    Ref_Date DATE NULL,
+    Ref_Miti VARCHAR(10) NULL,
+    Customer_Id BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATE NULL,
+    ChqMiti NVARCHAR(10) NULL,
+    Invoice_Type CHAR(10) NOT NULL,
+    Invoice_Mode CHAR(10) NOT NULL,
+    Payment_Mode CHAR(10) NOT NULL,
+    DueDays INT NULL,
+    DueDate DATE NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_Date DATE NULL,
+    SO_Invoice NVARCHAR(50) NULL,
+    SO_Date DATE NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    CounterId INT NULL,
+    Cur_Id INT NOT NULL,
+    Cur_Rate DECIMAL(18, 8) NOT NULL,
+    B_Amount DECIMAL(18, 8) NOT NULL,
+    T_Amount DECIMAL(18, 8) NOT NULL,
+    N_Amount DECIMAL NOT NULL,
+    LN_Amount DECIMAL NOT NULL,
+    V_Amount DECIMAL NOT NULL,
+    Tbl_Amount DECIMAL NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Return_Amount DECIMAL(18, 6) NOT NULL,
+    Action_Type CHAR(10) NOT NULL,
+    R_Invoice BIT NOT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    No_Print DECIMAL NULL,
+    In_Words NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    Audit_Lock BIT NULL,
+    Enter_By NVARCHAR(50) NOT NULL,
+    Enter_Date DATETIME NOT NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_SC_Invoice PRIMARY KEY CLUSTERED(SC_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SC_Master ON AMS.SC_Master(SC_Invoice)ON [PRIMARY];
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_Counter FOREIGN KEY(CounterId)REFERENCES AMS.Counter(CId);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_GeneralLedger FOREIGN KEY(Customer_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.SC_Master
+    ADD CONSTRAINT FK_SC_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.SC_Details') IS NULL BEGIN
+    CREATE TABLE AMS.SC_Details (SC_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_Sno INT NULL,
+    SO_Invoice NVARCHAR(50) NULL,
+    SO_SNo INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    AltIssue_Qty DECIMAL(18, 6) NOT NULL,
+    Issue_Qty DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NULL,
+    S_Ledger BIGINT NULL,
+    SR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE CLUSTERED INDEX IX_SC_Details
+    ON AMS.SC_Details(SC_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SC_Details
+    ADD CONSTRAINT FK_SC_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.SC_Details
+    ADD CONSTRAINT FK_SC_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SC_Details
+    ADD CONSTRAINT FK_SC_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SC_Details
+    ADD CONSTRAINT FK_SC_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SC_Details
+    ADD CONSTRAINT FK_SC_Details_SC_Master FOREIGN KEY(SC_Invoice)REFERENCES AMS.SC_Master(SC_Invoice);
+END;
+IF OBJECT_ID('AMS.SC_Term') IS NULL BEGIN
+    CREATE TABLE AMS.SC_Term (SC_Vno NVARCHAR(50) NOT NULL,
+    ST_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SC_Term
+    ON AMS.SC_Term(SC_Vno, SNo, ST_Id, Product_Id, Term_Type)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SC_Term
+    ADD CONSTRAINT FK_SC_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SC_Term
+    ADD CONSTRAINT FK_SC_Term_SC_Master FOREIGN KEY(SC_Vno)REFERENCES AMS.SC_Master(SC_Invoice);
+    ALTER TABLE AMS.SC_Term
+    ADD CONSTRAINT FK_SC_Term_ST_Term FOREIGN KEY(ST_Id)REFERENCES AMS.ST_Term(ST_ID);
+END;
+IF OBJECT_ID('AMS.SC_Master_OtherDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[SC_Master_OtherDetails] ([SC_Invoice] [NVARCHAR](50) NOT NULL,
+    [Transport] [NVARCHAR](255) NULL,
+    [VechileNo] [NVARCHAR](50) NULL,
+    [BiltyNo] [NVARCHAR](50) NULL,
+    [Package] [NVARCHAR](100) NULL,
+    [BiltyDate] [DATE] NULL,
+    [BiltyType] [NVARCHAR](50) NULL,
+    [Driver] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [LicenseNo] [NVARCHAR](50) NULL,
+    [MailingAddress] [NVARCHAR](500) NULL,
+    [MCity] [NVARCHAR](50) NULL,
+    [MState] [NVARCHAR](50) NULL,
+    [MCountry] [NVARCHAR](50) NULL,
+    [MEmail] [NVARCHAR](50) NULL,
+    [ShippingAddress] [NVARCHAR](500) NULL,
+    [SCity] [NVARCHAR](50) NULL,
+    [SState] [NVARCHAR](50) NULL,
+    [SCountry] [NVARCHAR](50) NULL,
+    [SEmail] [NVARCHAR](50) NULL,
+    [ContractNo] [NVARCHAR](50) NULL,
+    [ContractDate] [DATE] NULL,
+    [ExportInvoice] [NVARCHAR](50) NULL,
+    [ExportInvoiceDate] [DATE] NULL,
+    [VendorOrderNo] [NVARCHAR](50) NULL,
+    [BankDetails] [NVARCHAR](100) NULL,
+    [LcNumber] [NVARCHAR](50) NULL,
+    [CustomDetails] [NVARCHAR](100) NULL,
+    CONSTRAINT [PK_SC_Master_OtherDetails] PRIMARY KEY CLUSTERED([SC_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SC_Master_OtherDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SC_Master_OtherDetails_SC_Master] FOREIGN KEY([SC_Invoice])REFERENCES [AMS].[SC_Master]([SC_Invoice]);
+    ALTER TABLE [AMS].[SC_Master_OtherDetails] CHECK CONSTRAINT [FK_SC_Master_OtherDetails_SC_Master];
+END;
+IF OBJECT_ID('AMS.SB_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[SB_Master] ([SB_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_Date] [DATE] NOT NULL,
+    [Invoice_Miti] [VARCHAR](10) NOT NULL,
+    [Invoice_Time] [DATETIME] NOT NULL,
+    [PB_Vno] [NVARCHAR](50) NULL,
+    [Vno_Date] [DATETIME] NULL,
+    [Vno_Miti] [VARCHAR](10) NULL,
+    [Customer_Id] [BIGINT] NOT NULL,
+    [PartyLedgerId] [BIGINT] NULL,
+    [Party_Name] [NVARCHAR](100) NULL,
+    [Vat_No] [NVARCHAR](50) NULL,
+    [Contact_Person] [NVARCHAR](50) NULL,
+    [Mobile_No] [NVARCHAR](50) NULL,
+    [Address] [NVARCHAR](90) NULL,
+    [ChqNo] [NVARCHAR](50) NULL,
+    [ChqDate] [DATETIME] NULL,
+    [ChqMiti] [VARCHAR](10) NULL,
+    [Invoice_Type] [CHAR](10) NOT NULL,
+    [Invoice_Mode] [CHAR](10) NOT NULL,
+    [Payment_Mode] [CHAR](10) NOT NULL,
+    [DueDays] [INT] NOT NULL,
+    [DueDate] [DATE] NULL,
+    [Agent_Id] [INT] NULL,
+    [Subledger_Id] [INT] NULL,
+    [SO_Invoice] [NVARCHAR](250) NULL,
+    [SO_Date] [DATETIME] NULL,
+    [SC_Invoice] [NVARCHAR](250) NULL,
+    [SC_Date] [DATETIME] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [CounterId] [INT] NULL,
+    [Cur_Id] [INT] NOT NULL,
+    [Cur_Rate] [DECIMAL](18, 6) NOT NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [LN_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tbl_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tender_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Return_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Action_Type] [NVARCHAR](50) NOT NULL,
+    [In_Words] [NVARCHAR](512) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [R_Invoice] [BIT] NOT NULL,
+    [Cancel_By] [NVARCHAR](50) NULL,
+    [Cancel_Date] [DATETIME] NULL,
+    [Cancel_Remarks] [NVARCHAR](512) NULL,
+    [Is_Printed] [BIT] NOT NULL,
+    [No_Print] [INT] NOT NULL,
+    [Printed_By] [NVARCHAR](50) NULL,
+    [Printed_Date] [DATETIME] NULL,
+    [Audit_Lock] [BIT] NULL,
+    [Enter_By] [NVARCHAR](50) NOT NULL,
+    [Enter_Date] [DATETIME] NOT NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATETIME] NULL,
+    [Auth_By] [NVARCHAR](50) NULL,
+    [Auth_Date] [DATETIME] NULL,
+    [Cleared_By] [NVARCHAR](50) NULL,
+    [Cleared_Date] [DATETIME] NULL,
+    [DoctorId] [INT] NULL,
+    [PatientId] [BIGINT] NULL,
+    [HDepartmentId] [INT] NULL,
+    [MShipId] [INT] NULL,
+    [TableId] [INT] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [IsAPIPosted] [BIT] NULL,
+    [IsRealtime] [BIT] NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_SB] PRIMARY KEY CLUSTERED([SB_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Branch];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_CompanyUnit];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Counter] FOREIGN KEY([CounterId])REFERENCES [AMS].[Counter]([CId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Counter];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Currency] FOREIGN KEY([Cur_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Currency];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Department];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Department_Hospital] FOREIGN KEY([HDepartmentId])REFERENCES [HOS].[Department]([DId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Department_Hospital];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Doctor] FOREIGN KEY([DoctorId])REFERENCES [HOS].[Doctor]([DrId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Doctor];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_FiscalYear];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_GeneralLedger] FOREIGN KEY([Customer_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_GeneralLedger];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_GeneralLedger_PartyLedger] FOREIGN KEY([PartyLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_GeneralLedger_PartyLedger];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_JuniorAgent];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_MemberShipSetup] FOREIGN KEY([MShipId])REFERENCES [AMS].[MemberShipSetup]([MShipId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_MemberShipSetup];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_PatientMaster] FOREIGN KEY([PatientId])REFERENCES [HOS].[PatientMaster]([PaitentId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_PatientMaster];
+    ALTER TABLE [AMS].[SB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[SB_Master] CHECK CONSTRAINT [FK_SB_Master_Subledger];
+END;
+IF OBJECT_ID('AMS.SB_Master_OtherDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[SB_Master_OtherDetails] ([SB_Invoice] [NVARCHAR](50) NOT NULL,
+    [Transport] [NVARCHAR](255) NULL,
+    [VechileNo] [NVARCHAR](50) NULL,
+    [BiltyNo] [NVARCHAR](50) NULL,
+    [Package] [NVARCHAR](100) NULL,
+    [BiltyDate] [DATE] NULL,
+    [BiltyType] [NVARCHAR](50) NULL,
+    [Driver] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [LicenseNo] [NVARCHAR](50) NULL,
+    [MailingAddress] [NVARCHAR](500) NULL,
+    [MCity] [NVARCHAR](50) NULL,
+    [MState] [NVARCHAR](50) NULL,
+    [MCountry] [NVARCHAR](50) NULL,
+    [MEmail] [NVARCHAR](50) NULL,
+    [ShippingAddress] [NVARCHAR](500) NULL,
+    [SCity] [NVARCHAR](50) NULL,
+    [SState] [NVARCHAR](50) NULL,
+    [SCountry] [NVARCHAR](50) NULL,
+    [SEmail] [NVARCHAR](50) NULL,
+    [ContractNo] [NVARCHAR](50) NULL,
+    [ContractDate] [DATE] NULL,
+    [ExportInvoice] [NVARCHAR](50) NULL,
+    [ExportInvoiceDate] [DATE] NULL,
+    [VendorOrderNo] [NVARCHAR](50) NULL,
+    [BankDetails] [NVARCHAR](100) NULL,
+    [LcNumber] [NVARCHAR](50) NULL,
+    [CustomDetails] [NVARCHAR](100) NULL,
+    CONSTRAINT [PK_SB_Master_OtherDetails_1] PRIMARY KEY CLUSTERED([SB_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SB_Master_OtherDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SB_Master_OtherDetails_SB_Master] FOREIGN KEY([SB_Invoice])REFERENCES [AMS].[SB_Master]([SB_Invoice]);
+    ALTER TABLE [AMS].[SB_Master_OtherDetails] CHECK CONSTRAINT [FK_SB_Master_OtherDetails_SB_Master];
+END;
+IF OBJECT_ID('AMS.SB_Details') IS NULL BEGIN
+    CREATE TABLE AMS.SB_Details (SB_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NULL,
+    Stock_Qty DECIMAL(18, 6) NULL,
+    Narration NVARCHAR(500) NULL,
+    SO_Invoice NVARCHAR(50) NULL,
+    SO_Sno NUMERIC NULL,
+    SC_Invoice NVARCHAR(50) NULL,
+    SC_SNo NUMERIC NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NULL,
+    S_Ledger BIGINT NULL,
+    SR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATETIME NULL,
+    Manu_Date DATETIME NULL,
+    MaterialPost CHAR(1) NULL,
+    PDiscountRate DECIMAL(18, 6) NOT NULL,
+    PDiscount DECIMAL(18, 6) NOT NULL,
+    BDiscountRate DECIMAL(18, 6) NOT NULL,
+    BDiscount DECIMAL(18, 6) NOT NULL,
+    ServiceChargeRate DECIMAL(18, 6) NOT NULL,
+    ServiceCharge DECIMAL(18, 6) NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SB_Details_VocherNo_SerialNo_ProductId
+    ON AMS.SB_Details(SB_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_GeneralLedger_ReturnLedger FOREIGN KEY(SR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_GeneralLedger_SalesLedger FOREIGN KEY(S_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SB_Details
+    ADD CONSTRAINT FK_SB_Details_SB_Master FOREIGN KEY(SB_Invoice)REFERENCES AMS.SB_Master(SB_Invoice);
+END;
+IF OBJECT_ID('AMS.SB_ExchangeDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[SB_ExchangeDetails] ([SB_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_SNo] [NUMERIC](18, 0) NOT NULL,
+    [P_Id] [BIGINT] NOT NULL,
+    [Gdn_Id] [INT] NULL,
+    [ExchangeGLD] [BIGINT] NULL,
+    [Alt_Qty] [DECIMAL](18, 6) NOT NULL,
+    [Alt_UnitId] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [Unit_Id] [INT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    CONSTRAINT [IX_SB_ExchangeDetails] UNIQUE NONCLUSTERED([SB_Invoice] ASC, [Invoice_SNo] ASC, [P_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SB_ExchangeDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SB_ExchangeDetails_Godown] FOREIGN KEY([Gdn_Id])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[SB_ExchangeDetails] CHECK CONSTRAINT [FK_SB_ExchangeDetails_Godown];
+    ALTER TABLE [AMS].[SB_ExchangeDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SB_ExchangeDetails_Product] FOREIGN KEY([P_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[SB_ExchangeDetails] CHECK CONSTRAINT [FK_SB_ExchangeDetails_Product];
+    ALTER TABLE [AMS].[SB_ExchangeDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SB_ExchangeDetails_ProductAltUnit] FOREIGN KEY([Alt_UnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[SB_ExchangeDetails] CHECK CONSTRAINT [FK_SB_ExchangeDetails_ProductAltUnit];
+    ALTER TABLE [AMS].[SB_ExchangeDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SB_ExchangeDetails_ProductUnit] FOREIGN KEY([Unit_Id])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[SB_ExchangeDetails] CHECK CONSTRAINT [FK_SB_ExchangeDetails_ProductUnit];
+    ALTER TABLE [AMS].[SB_ExchangeDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SB_ExchangeDetails_SB_Master] FOREIGN KEY([SB_Invoice])REFERENCES [AMS].[SB_Master]([SB_Invoice]);
+    ALTER TABLE [AMS].[SB_ExchangeDetails] CHECK CONSTRAINT [FK_SB_ExchangeDetails_SB_Master];
+END;
+IF OBJECT_ID('AMS.SalesPaymentMode') IS NULL BEGIN
+    CREATE TABLE [AMS].[SalesPaymentMode] ([SB_Invoice] [NVARCHAR](50) NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [SerialNo] [INT] NOT NULL,
+    [Payment_Mode] [CHAR](10) NOT NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[SalesPaymentMode] WITH CHECK
+    ADD CONSTRAINT [FK_SalesPaymentMode_GeneralLedger] FOREIGN KEY([LedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SalesPaymentMode] CHECK CONSTRAINT [FK_SalesPaymentMode_GeneralLedger];
+    ALTER TABLE [AMS].[SalesPaymentMode] WITH CHECK
+    ADD CONSTRAINT [FK_SalesPaymentMode_SB_Master] FOREIGN KEY([SB_Invoice])REFERENCES [AMS].[SB_Master]([SB_Invoice]);
+    ALTER TABLE [AMS].[SalesPaymentMode] CHECK CONSTRAINT [FK_SalesPaymentMode_SB_Master];
+    CREATE UNIQUE CLUSTERED INDEX [IX_SalesPaymentMode]
+    ON [AMS].[SalesPaymentMode]([SB_Invoice] ASC, [SerialNo] ASC, [Payment_Mode] ASC, [Amount] ASC)
+    WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, SORT_IN_TEMPDB=OFF, IGNORE_DUP_KEY=OFF, DROP_EXISTING=OFF, ONLINE=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON);
+END;
+IF OBJECT_ID('AMS.SB_Term') IS NULL BEGIN
+    CREATE TABLE AMS.SB_Term (SB_VNo NVARCHAR(50) NOT NULL,
+    ST_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SB_Term
+    ON AMS.SB_Term(SB_VNo, ST_Id, SNo, Term_Type, Product_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SB_Term
+    ADD CONSTRAINT FK_SB_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SB_Term
+    ADD CONSTRAINT FK_SB_Term_SB_Master FOREIGN KEY(SB_VNo)REFERENCES AMS.SB_Master(SB_Invoice);
+    ALTER TABLE AMS.SB_Term
+    ADD CONSTRAINT FK_SB_Term_ST_Term FOREIGN KEY(ST_Id)REFERENCES AMS.ST_Term(ST_ID);
+END;
+IF OBJECT_ID('AMS.SR_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[SR_Master] ([SR_Invoice] [NVARCHAR](50) NOT NULL,
+    [Invoice_Date] [DATE] NOT NULL,
+    [Invoice_Miti] [VARCHAR](10) NOT NULL,
+    [Invoice_Time] [DATETIME] NOT NULL,
+    [SB_Invoice] [NVARCHAR](50) NULL,
+    [SB_Date] [DATE] NULL,
+    [SB_Miti] [VARCHAR](10) NULL,
+    [Customer_ID] [BIGINT] NOT NULL,
+    [PartyLedgerId] [BIGINT] NULL,
+    [Party_Name] [NVARCHAR](100) NULL,
+    [Vat_No] [NVARCHAR](50) NULL,
+    [Contact_Person] [NVARCHAR](50) NULL,
+    [Mobile_No] [NVARCHAR](50) NULL,
+    [Address] [NVARCHAR](90) NULL,
+    [ChqNo] [NVARCHAR](50) NULL,
+    [ChqDate] [DATE] NULL,
+    [ChqMiti] [VARCHAR](10) NULL,
+    [Invoice_Type] [CHAR](10) NOT NULL,
+    [Invoice_Mode] [CHAR](10) NOT NULL,
+    [Payment_Mode] [CHAR](10) NOT NULL,
+    [DueDays] [INT] NULL,
+    [DueDate] [DATETIME] NULL,
+    [Agent_Id] [INT] NULL,
+    [Subledger_Id] [INT] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [CounterId] [INT] NULL,
+    [Cur_Id] [INT] NOT NULL,
+    [Cur_Rate] [DECIMAL](18, 6) NOT NULL,
+    [B_Amount] [DECIMAL](18, 6) NOT NULL,
+    [T_Amount] [DECIMAL](18, 6) NOT NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [LN_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tbl_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Tender_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Return_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Action_Type] [NVARCHAR](50) NULL,
+    [In_Words] [NVARCHAR](512) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [R_Invoice] [BIT] NOT NULL,
+    [Is_Printed] [BIT] NOT NULL,
+    [Cancel_By] [NVARCHAR](50) NULL,
+    [Cancel_Date] [DATETIME] NULL,
+    [Cancel_Remarks] [NVARCHAR](512) NULL,
+    [No_Print] [INT] NOT NULL,
+    [Printed_By] [NVARCHAR](50) NULL,
+    [Printed_Date] [DATETIME] NULL,
+    [Audit_Lock] [BIT] NULL,
+    [Enter_By] [NVARCHAR](50) NOT NULL,
+    [Enter_Date] [DATETIME] NOT NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATETIME] NULL,
+    [Auth_By] [NVARCHAR](50) NULL,
+    [Auth_Date] [DATETIME] NULL,
+    [Cleared_By] [NVARCHAR](50) NULL,
+    [Cleared_Date] [DATETIME] NULL,
+    [IsAPIPosted] [BIT] NULL,
+    [IsRealtime] [BIT] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_SR] PRIMARY KEY CLUSTERED([SR_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_Branch];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_CompanyUnit];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_Counter] FOREIGN KEY([CounterId])REFERENCES [AMS].[Counter]([CId]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_Counter];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_Currency] FOREIGN KEY([Cur_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_Currency];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_Department];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_FiscalYear];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_GeneralLedger] FOREIGN KEY([Customer_ID])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_GeneralLedger];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_JuniorAgent];
+    ALTER TABLE [AMS].[SR_Master] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[SR_Master] CHECK CONSTRAINT [FK_SR_Master_Subledger];
+END;
+IF OBJECT_ID('AMS.SR_Details') IS NULL BEGIN
+    CREATE TABLE AMS.SR_Details (SR_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo NUMERIC NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(500) NULL,
+    SB_Invoice NVARCHAR(50) NULL,
+    SB_Sno NUMERIC NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NULL,
+    S_Ledger BIGINT NULL,
+    SR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    PDiscountRate DECIMAL(18, 6) NOT NULL,
+    PDiscount DECIMAL(18, 6) NOT NULL,
+    BDiscountRate DECIMAL(18, 6) NOT NULL,
+    BDiscount DECIMAL(18, 6) NOT NULL,
+    ServiceChargeRate DECIMAL(18, 6) NOT NULL,
+    ServiceCharge DECIMAL(18, 6) NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SR_Details
+    ON AMS.SR_Details(SR_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_GeneralLedger FOREIGN KEY(SR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_GeneralLedger_SalesLedger FOREIGN KEY(S_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_ProductAltUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_ProductUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SR_Details
+    ADD CONSTRAINT FK_SR_Details_SR_Master FOREIGN KEY(SR_Invoice)REFERENCES AMS.SR_Master(SR_Invoice);
+END;
+IF OBJECT_ID('AMS.SR_Term') IS NULL BEGIN
+    CREATE TABLE AMS.SR_Term (SR_VNo NVARCHAR(50) NOT NULL,
+    ST_Id INT NOT NULL,
+    SNo INT NOT NULL,
+    Term_Type CHAR(2) NOT NULL,
+    Product_Id BIGINT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Taxable CHAR(1) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SR_Term
+    ON AMS.SR_Term(SR_VNo, SNo, ST_Id, Product_Id, Term_Type)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SR_Term
+    ADD CONSTRAINT FK_SR_Term_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SR_Term
+    ADD CONSTRAINT FK_SR_Term_SR_Master FOREIGN KEY(SR_VNo)REFERENCES AMS.SR_Master(SR_Invoice);
+    ALTER TABLE AMS.SR_Term
+    ADD CONSTRAINT FK_SR_Term_ST_Term FOREIGN KEY(ST_Id)REFERENCES AMS.ST_Term(ST_ID);
+END;
+IF OBJECT_ID('AMS.SR_Master_OtherDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[SR_Master_OtherDetails] ([SR_Invoice] [NVARCHAR](50) NOT NULL,
+    [Transport] [NVARCHAR](255) NULL,
+    [VechileNo] [NVARCHAR](50) NULL,
+    [BiltyNo] [NVARCHAR](50) NULL,
+    [Package] [NVARCHAR](100) NULL,
+    [BiltyDate] [DATE] NULL,
+    [BiltyType] [NVARCHAR](50) NULL,
+    [Driver] [NVARCHAR](50) NULL,
+    [PhoneNo] [NVARCHAR](50) NULL,
+    [LicenseNo] [NVARCHAR](50) NULL,
+    [MailingAddress] [NVARCHAR](500) NULL,
+    [MCity] [NVARCHAR](50) NULL,
+    [MState] [NVARCHAR](50) NULL,
+    [MCountry] [NVARCHAR](50) NULL,
+    [MEmail] [NVARCHAR](50) NULL,
+    [ShippingAddress] [NVARCHAR](500) NULL,
+    [SCity] [NVARCHAR](50) NULL,
+    [SState] [NVARCHAR](50) NULL,
+    [SCountry] [NVARCHAR](50) NULL,
+    [SEmail] [NVARCHAR](50) NULL,
+    [ContractNo] [NVARCHAR](50) NULL,
+    [ContractDate] [DATE] NULL,
+    [ExportInvoice] [NVARCHAR](50) NULL,
+    [ExportInvoiceDate] [DATE] NULL,
+    [VendorOrderNo] [NVARCHAR](50) NULL,
+    [BankDetails] [NVARCHAR](100) NULL,
+    [LcNumber] [NVARCHAR](50) NULL,
+    [CustomDetails] [NVARCHAR](100) NULL,
+    CONSTRAINT [PK_SR_Master_OtherDetails] PRIMARY KEY CLUSTERED([SR_Invoice] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SR_Master_OtherDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SR_Master_OtherDetails_SR_Master] FOREIGN KEY([SR_Invoice])REFERENCES [AMS].[SR_Master]([SR_Invoice]);
+    ALTER TABLE [AMS].[SR_Master_OtherDetails] CHECK CONSTRAINT [FK_SR_Master_OtherDetails_SR_Master];
+END;
+IF OBJECT_ID('AMS.Temp_SB_Master') IS NULL BEGIN
+    CREATE TABLE AMS.Temp_SB_Master (SB_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATETIME NOT NULL,
+    Invoice_Miti NVARCHAR(50) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    PB_Vno NVARCHAR(50) NULL,
+    Vno_Date DATETIME NULL,
+    Vno_Miti VARCHAR(10) NULL,
+    Customer_Id BIGINT NOT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATETIME NULL,
+    Invoice_Type NVARCHAR(50) NOT NULL,
+    Invoice_Mode NVARCHAR(50) NOT NULL,
+    Payment_Mode VARCHAR(50) NOT NULL,
+    DueDays INT NULL,
+    DueDate DATETIME NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    SO_Invoice NVARCHAR(250) NULL,
+    SO_Date DATETIME NULL,
+    SC_Invoice NVARCHAR(250) NULL,
+    SC_Date DATETIME NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    CounterId INT NULL,
+    Cur_Id INT NOT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NULL,
+    Tbl_Amount DECIMAL(18, 6) NULL,
+    Tender_Amount DECIMAL(18, 6) NULL,
+    Return_Amount DECIMAL(18, 6) NULL,
+    Action_Type NVARCHAR(50) NULL,
+    In_Words NVARCHAR(1024) NULL,
+    Remarks NVARCHAR(500) NULL,
+    R_Invoice BIT NULL,
+    Is_Printed BIT NULL,
+    No_Print INT NULL,
+    Printed_By NVARCHAR(50) NULL,
+    Printed_Date DATETIME NULL,
+    Audit_Lock BIT NULL,
+    Enter_By NVARCHAR(50) NOT NULL,
+    Enter_Date DATETIME NOT NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    Cleared_By NVARCHAR(50) NULL,
+    Cleared_Date DATETIME NULL,
+    Cancel_By NVARCHAR(50) NULL,
+    Cancel_Date DATETIME NULL,
+    Cancel_Remarks NVARCHAR(1024) NULL,
+    CUnit_Id INT NULL,
+    CBranch_Id INT NOT NULL,
+    IsAPIPosted BIT NULL,
+    IsRealtime BIT NULL,
+    FiscalYearId INT NOT NULL,
+    MShipId INT NULL,
+    TableId INT NULL,
+    DoctorId INT NULL,
+    PatientId BIGINT NULL,
+    HDepartmentId INT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATETIME NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    CONSTRAINT PK_Temp_SB_Master PRIMARY KEY CLUSTERED(SB_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.Temp_SB_Details') IS NULL BEGIN
+    CREATE TABLE AMS.Temp_SB_Details (SB_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NULL,
+    Stock_Qty DECIMAL(18, 6) NULL,
+    Narration NVARCHAR(500) NULL,
+    SO_Invoice NVARCHAR(50) NULL,
+    SO_Sno NUMERIC NULL,
+    SC_Invoice NVARCHAR(50) NULL,
+    SC_SNo NVARCHAR(50) NULL,
+    Tax_Amount DECIMAL(18, 6) NULL,
+    V_Amount DECIMAL(18, 6) NULL,
+    V_Rate DECIMAL(18, 6) NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NULL,
+    StockFree_Qty DECIMAL(18, 6) NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NULL,
+    T_Product BIT NULL,
+    S_Ledger BIGINT NULL,
+    SR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATETIME NULL,
+    Manu_Date DATETIME NULL,
+    PDiscountRate DECIMAL(18, 6) NULL,
+    PDiscount DECIMAL(18, 6) NULL,
+    BDiscountRate DECIMAL(18, 6) NULL,
+    BDiscount DECIMAL(18, 6) NULL,
+    ServiceChargeRate DECIMAL(18, 6) NULL,
+    ServiceCharge DECIMAL(18, 6) NULL,
+    MaterialPost CHAR(1) NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATETIME NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_Temp_SB_Details
+    ON AMS.Temp_SB_Details(SB_Invoice, Invoice_SNo, P_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.Temp_SB_Details
+    ADD CONSTRAINT FK_Temp_SB_Details_Temp_SB_Master FOREIGN KEY(SB_Invoice)REFERENCES AMS.Temp_SB_Master(SB_Invoice);
+END;
+IF OBJECT_ID('AMS.CB_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[CB_Master] ([VoucherMode] [CHAR](10) NOT NULL,
+    [Voucher_No] [NVARCHAR](50) NOT NULL,
+    [Voucher_Date] [DATE] NOT NULL,
+    [Voucher_Miti] [VARCHAR](10) NOT NULL,
+    [Voucher_Time] [DATETIME] NOT NULL,
+    [Ref_VNo] [NVARCHAR](50) NULL,
+    [Ref_VDate] [DATE] NULL,
+    [VoucherType] [CHAR](10) NOT NULL,
+    [Ledger_Id] [BIGINT] NOT NULL,
+    [CheqNo] [NVARCHAR](50) NULL,
+    [CheqDate] [DATE] NULL,
+    [CheqMiti] [NVARCHAR](10) NULL,
+    [Currency_Id] [INT] NOT NULL,
+    [Currency_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Action_Type] [CHAR](10) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [ReconcileBy] [NVARCHAR](50) NULL,
+    [ReconcileDate] [DATETIME] NULL,
+    [Audit_Lock] [BIT] NOT NULL,
+    [ClearingBy] [NVARCHAR](50) NULL,
+    [ClearingDate] [DATETIME] NULL,
+    [PrintValue] [INT] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelReason] [NVARCHAR](512) NULL,
+    [In_Words] [NVARCHAR](512) NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATETIME] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_CB_Master] PRIMARY KEY CLUSTERED([Voucher_No] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[CB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Master_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[CB_Master] CHECK CONSTRAINT [FK_CB_Master_Branch];
+    ALTER TABLE [AMS].[CB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Master_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[CB_Master] CHECK CONSTRAINT [FK_CB_Master_CompanyUnit];
+    ALTER TABLE [AMS].[CB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Master_Currency] FOREIGN KEY([Currency_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[CB_Master] CHECK CONSTRAINT [FK_CB_Master_Currency];
+    ALTER TABLE [AMS].[CB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[CB_Master] CHECK CONSTRAINT [FK_CB_Master_Department];
+    ALTER TABLE [AMS].[CB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[CB_Master] CHECK CONSTRAINT [FK_CB_Master_FiscalYear];
+    ALTER TABLE [AMS].[CB_Master] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Master_GeneralLedger] FOREIGN KEY([Ledger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[CB_Master] CHECK CONSTRAINT [FK_CB_Master_GeneralLedger];
+END;
+IF OBJECT_ID('AMS.CB_Details') IS NULL BEGIN
+    CREATE TABLE [AMS].[CB_Details] ([Voucher_No] [NVARCHAR](50) NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [CBLedgerId] [BIGINT] NULL,
+    [Ledger_Id] [BIGINT] NOT NULL,
+    [Subledger_Id] [INT] NULL,
+    [Agent_Id] [INT] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [CurrencyId] [INT] NULL,
+    [CurrencyRate] [DECIMAL](18, 6) NOT NULL,
+    [Debit] [DECIMAL](18, 6) NOT NULL,
+    [Credit] [DECIMAL](18, 6) NOT NULL,
+    [LocalDebit] [DECIMAL](18, 6) NOT NULL,
+    [LocalCredit] [DECIMAL](18, 6) NOT NULL,
+    [Tbl_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Narration] [NVARCHAR](512) NULL,
+    [Party_No] [NVARCHAR](50) NULL,
+    [Invoice_Date] [DATE] NULL,
+    [Invoice_Miti] [VARCHAR](10) NULL,
+    [VatLedger_Id] [BIGINT] NULL,
+    [PanNo] [INT] NULL,
+    [Vat_Reg] [BIT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_CB_Master] FOREIGN KEY([Voucher_No])REFERENCES [AMS].[CB_Master]([Voucher_No]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_CB_Master];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_Currency] FOREIGN KEY([CurrencyId])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_Currency];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_Department];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_GeneralLedger] FOREIGN KEY([Ledger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_GeneralLedger];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_GeneralLedger_PartyLedger] FOREIGN KEY([CBLedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_GeneralLedger_PartyLedger];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_GeneralLedger_VatLedger] FOREIGN KEY([VatLedger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_GeneralLedger_VatLedger];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_JuniorAgent];
+    ALTER TABLE [AMS].[CB_Details] WITH CHECK
+    ADD CONSTRAINT [FK_CB_Details_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[CB_Details] CHECK CONSTRAINT [FK_CB_Details_Subledger];
+END;
+IF OBJECT_ID('AMS.CashClosing') IS NULL BEGIN
+    CREATE TABLE [AMS].[CashClosing] ([CC_Id] [INT] IDENTITY(1, 1) NOT NULL,
+    [EnterBy] [VARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [EnterMiti] [VARCHAR](10) NOT NULL,
+    [EnterTime] [DATETIME] NOT NULL,
+    [CB_Balance] [NVARCHAR](50) NOT NULL,
+    [Cash_Sales] [DECIMAL](18, 6) NOT NULL,
+    [Cash_Purchase] [DECIMAL](18, 6) NOT NULL,
+    [TotalCash] [DECIMAL](18, 6) NOT NULL,
+    [ThauQty] [DECIMAL](18, 6) NOT NULL,
+    [ThouVal] [DECIMAL](18, 6) NOT NULL,
+    [FivHunQty] [DECIMAL](18, 6) NOT NULL,
+    [FivHunVal] [DECIMAL](18, 6) NOT NULL,
+    [HunQty] [DECIMAL](18, 6) NOT NULL,
+    [HunVal] [DECIMAL](18, 6) NOT NULL,
+    [FiFtyQty] [DECIMAL](18, 6) NOT NULL,
+    [FiftyVal] [DECIMAL](18, 6) NOT NULL,
+    [TwenteyFiveQty] [DECIMAL](18, 6) NOT NULL,
+    [TwentyFiveVal] [DECIMAL](18, 6) NOT NULL,
+    [TwentyQty] [DECIMAL](18, 6) NOT NULL,
+    [TwentyVal] [DECIMAL](16, 6) NOT NULL,
+    [TenQty] [DECIMAL](18, 6) NOT NULL,
+    [TenVal] [DECIMAL](18, 6) NOT NULL,
+    [FiveQty] [DECIMAL](18, 6) NOT NULL,
+    [FiveVal] [DECIMAL](18, 6) NOT NULL,
+    [TwoQty] [DECIMAL](18, 6) NOT NULL,
+    [TwoVal] [DECIMAL](18, 6) NOT NULL,
+    [OneQty] [DECIMAL](18, 6) NOT NULL,
+    [OneVal] [DECIMAL](18, 6) NOT NULL,
+    [Cash_Diff] [DECIMAL](18, 6) NOT NULL,
+    [Module] [CHAR](10) NOT NULL,
+    [HandOverUser] [NVARCHAR](50) NOT NULL,
+    [Remarks] [VARCHAR](250) NULL,
+    CONSTRAINT [PK_CashClosing] PRIMARY KEY CLUSTERED([CC_Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.JV_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[JV_Master] ([VoucherMode] [CHAR](10) NOT NULL,
+    [Voucher_No] [NVARCHAR](50) NOT NULL,
+    [Voucher_Date] [DATE] NOT NULL,
+    [Voucher_Miti] [NVARCHAR](10) NOT NULL,
+    [Voucher_Time] [DATETIME] NOT NULL,
+    [Ref_VNo] [VARCHAR](50) NULL,
+    [Ref_VDate] [DATE] NULL,
+    [Currency_Id] [INT] NOT NULL,
+    [Currency_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [N_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Action_Type] [CHAR](10) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Audit_Lock] [BIT] NOT NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelReason] [NVARCHAR](512) NULL,
+    [ReconcileBy] [NVARCHAR](50) NULL,
+    [ReconcileDate] [DATETIME] NULL,
+    [ClearingBy] [NVARCHAR](50) NULL,
+    [ClearingDate] [DATETIME] NULL,
+    [PrintValue] [INT] NULL,
+    [CBranch_Id] [INT] NOT NULL,
+    [CUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [PAttachment1] [IMAGE] NULL,
+    [PAttachment2] [IMAGE] NULL,
+    [PAttachment3] [IMAGE] NULL,
+    [PAttachment4] [IMAGE] NULL,
+    [PAttachment5] [IMAGE] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_Voucher_Main] PRIMARY KEY CLUSTERED([Voucher_No] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[JV_Master] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Master_Branch] FOREIGN KEY([CBranch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[JV_Master] CHECK CONSTRAINT [FK_JV_Master_Branch];
+    ALTER TABLE [AMS].[JV_Master] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Master_CompanyUnit] FOREIGN KEY([CUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[JV_Master] CHECK CONSTRAINT [FK_JV_Master_CompanyUnit];
+    ALTER TABLE [AMS].[JV_Master] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Master_Currency] FOREIGN KEY([Currency_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[JV_Master] CHECK CONSTRAINT [FK_JV_Master_Currency];
+    ALTER TABLE [AMS].[JV_Master] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Master_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[JV_Master] CHECK CONSTRAINT [FK_JV_Master_Department];
+    ALTER TABLE [AMS].[JV_Master] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[JV_Master] CHECK CONSTRAINT [FK_JV_Master_FiscalYear];
+END;
+IF OBJECT_ID('AMS.JV_Details') IS NULL BEGIN
+    CREATE TABLE [AMS].[JV_Details] ([Voucher_No] [NVARCHAR](50) NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [CBLedger_Id] [BIGINT] NULL,
+    [Ledger_Id] [BIGINT] NOT NULL,
+    [Subledger_Id] [INT] NULL,
+    [Agent_Id] [INT] NULL,
+    [Cls1] [INT] NULL,
+    [Cls2] [INT] NULL,
+    [Cls3] [INT] NULL,
+    [Cls4] [INT] NULL,
+    [Chq_No] [NVARCHAR](50) NULL,
+    [Chq_Date] [DATETIME] NULL,
+    [CurrencyId] [INT] NULL,
+    [CurrencyRate] [DECIMAL](18, 6) NOT NULL,
+    [Debit] [DECIMAL](18, 6) NOT NULL,
+    [Credit] [DECIMAL](18, 6) NOT NULL,
+    [LocalDebit] [DECIMAL](18, 6) NOT NULL,
+    [LocalCredit] [DECIMAL](18, 6) NOT NULL,
+    [Narration] [VARCHAR](1024) NULL,
+    [Tbl_Amount] [DECIMAL](18, 6) NOT NULL,
+    [V_Amount] [DECIMAL](18, 6) NOT NULL,
+    [Vat_Reg] [BIT] NULL,
+    [Party_No] [NVARCHAR](50) NULL,
+    [Invoice_Date] [DATE] NULL,
+    [Invoice_Miti] [VARCHAR](10) NULL,
+    [VatLedger_Id] [BIGINT] NULL,
+    [PanNo] [NVARCHAR](50) NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [IX_JV_Details] UNIQUE NONCLUSTERED([Voucher_No] ASC, [Ledger_Id] ASC, [SNo] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_Currency] FOREIGN KEY([CurrencyId])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_Currency];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_Department] FOREIGN KEY([Cls1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_Department];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_GeneralLedger] FOREIGN KEY([Ledger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_GeneralLedger];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_GeneralLedger_PartyLedger] FOREIGN KEY([CBLedger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_GeneralLedger_PartyLedger];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_GeneralLedger_VatLedger] FOREIGN KEY([VatLedger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_GeneralLedger_VatLedger];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_JuniorAgent];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_JV_Master] FOREIGN KEY([Voucher_No])REFERENCES [AMS].[JV_Master]([Voucher_No]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_JV_Master];
+    ALTER TABLE [AMS].[JV_Details] WITH CHECK
+    ADD CONSTRAINT [FK_JV_Details_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[JV_Details] CHECK CONSTRAINT [FK_JV_Details_Subledger];
+END;
+IF OBJECT_ID('AMS.Notes_Master') IS NULL BEGIN
+    CREATE TABLE AMS.Notes_Master (VoucherMode CHAR(10) NOT NULL,
+    Voucher_No NVARCHAR(50) NOT NULL,
+    Voucher_Date DATE NOT NULL,
+    Voucher_Miti NVARCHAR(10) NOT NULL,
+    Voucher_Time DATETIME NOT NULL,
+    Ref_VNo NVARCHAR(50) NULL,
+    Ref_VDate DATE NULL,
+    VoucherType CHAR(10) NULL,
+    Ledger_Id BIGINT NOT NULL,
+    CheqNo NVARCHAR(50) NULL,
+    CheqDate DATE NULL,
+    CheqMiti VARCHAR(10) NULL,
+    Subledger_Id INT NULL,
+    Agent_Id INT NULL,
+    Currency_Id INT NOT NULL,
+    Currency_Rate DECIMAL(18, 6) NOT NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Remarks NVARCHAR(512) NULL,
+    Action_Type NVARCHAR(50) NOT NULL,
+    EnterBy NVARCHAR(50) NOT NULL,
+    EnterDate DATETIME NOT NULL,
+    ReconcileBy NVARCHAR(50) NULL,
+    ReconcileDate DATETIME NULL,
+    Audit_Lock BIT NULL,
+    ClearingBy NVARCHAR(50) NULL,
+    ClearingDate DATETIME NULL,
+    PrintValue INT NOT NULL,
+    IsReverse BIT NOT NULL,
+    CancelBy NVARCHAR(50),
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_Notes_Master PRIMARY KEY CLUSTERED(Voucher_No)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_Notes_Master
+    ON AMS.Notes_Master(VoucherMode, Voucher_No)
+    ON [PRIMARY];
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_Currency FOREIGN KEY(Currency_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_GeneralLedger FOREIGN KEY(Ledger_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.Notes_Master
+    ADD CONSTRAINT FK_Notes_Master_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.Notes_Details') IS NULL BEGIN
+    CREATE TABLE AMS.Notes_Details (VoucherMode CHAR(10) NOT NULL,
+    Voucher_No NVARCHAR(50) NOT NULL,
+    SNo INT NOT NULL,
+    Ledger_Id BIGINT NOT NULL,
+    Subledger_Id INT NULL,
+    Agent_Id INT NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    Debit DECIMAL(18, 6) NOT NULL,
+    Credit DECIMAL(18, 6) NOT NULL,
+    LocalDebit DECIMAL(18, 6) NOT NULL,
+    LocalCredit DECIMAL(18, 6) NOT NULL,
+    Narration VARCHAR(1024) NULL,
+    Party_No NVARCHAR(50) NULL,
+    Invoice_Date DATE NULL,
+    Invoice_Miti NVARCHAR(50) NULL,
+    VatLedger_Id BIGINT NULL,
+    PanNo NVARCHAR(50) NULL,
+    Vat_Reg BIT NULL,
+    T_Amount DECIMAL(18, 6) NULL,
+    V_Amount DECIMAL(18, 6) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_Notes_Details
+    ON AMS.Notes_Details(VoucherMode, Voucher_No, SNo, Ledger_Id)
+    ON [PRIMARY];
+    ALTER TABLE AMS.Notes_Details
+    ADD CONSTRAINT FK_Notes_Details_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.Notes_Details
+    ADD CONSTRAINT FK_Notes_Details_GeneralLedger FOREIGN KEY(Ledger_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.Notes_Details
+    ADD CONSTRAINT FK_Notes_Details_GeneralLedger_VatLedger FOREIGN KEY(VatLedger_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.Notes_Details
+    ADD CONSTRAINT FK_Notes_Details_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.Notes_Details
+    ADD CONSTRAINT FK_Notes_Details_Notes_Master FOREIGN KEY(Voucher_No)REFERENCES AMS.Notes_Master(Voucher_No);
+    ALTER TABLE AMS.Notes_Details
+    ADD CONSTRAINT FK_Notes_Details_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.Scheme_Master') IS NULL BEGIN
+    CREATE TABLE [AMS].[Scheme_Master] ([SchemeId] [INT] NOT NULL,
+    [SchemeDate] [DATE] NOT NULL,
+    [SchemeMiti] [VARCHAR](10) NOT NULL,
+    [SchemeTime] [DATETIME] NOT NULL,
+    [SchemeDesc] [NVARCHAR](100) NOT NULL,
+    [ValidFrom] [DATETIME] NULL,
+    [ValidFromMiti] [VARCHAR](10) NOT NULL,
+    [ValidTo] [DATETIME] NULL,
+    [ValidToMiti] [VARCHAR](10) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NULL,
+    [EnterDate] [DATETIME] NULL,
+    [IsActive] [BIT] NOT NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    CONSTRAINT [PK_SchemeId] PRIMARY KEY CLUSTERED([SchemeId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[GeneralLedger] WITH CHECK
+    ADD CONSTRAINT [FK_GeneralLedger_Scheme_Master] FOREIGN KEY([Scheme])REFERENCES [AMS].[Scheme_Master]([SchemeId]);
+    ALTER TABLE [AMS].[GeneralLedger] CHECK CONSTRAINT [FK_GeneralLedger_Scheme_Master];
+END;
+IF OBJECT_ID('AMS.Scheme_Details') IS NULL BEGIN
+    CREATE TABLE [AMS].[Scheme_Details] ([SchemeId] [INT] NOT NULL,
+    [SNo] [INT] NOT NULL,
+    [ProductId] [BIGINT] NOT NULL,
+    [GroupId] [INT] NULL,
+    [SubGroupId] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [DiscountPercent] [DECIMAL](18, 6) NOT NULL,
+    [DiscountValue] [DECIMAL](18, 6) NOT NULL,
+    [MinValue] [DECIMAL](18, 6) NOT NULL,
+    [MaxValue] [DECIMAL](18, 6) NOT NULL,
+    [SalesRate] [DECIMAL](18, 6) NOT NULL,
+    [MrpRate] [DECIMAL](18, 6) NOT NULL,
+    [OfferRate] [DECIMAL](18, 6) NOT NULL,
+    CONSTRAINT [IX_Scheme_Details] UNIQUE NONCLUSTERED([SchemeId] ASC, [SNo] ASC, [ProductId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[Scheme_Details] WITH CHECK
+    ADD CONSTRAINT [FK_Scheme_Details_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[Scheme_Details] CHECK CONSTRAINT [FK_Scheme_Details_Product];
+    ALTER TABLE [AMS].[Scheme_Details] WITH CHECK
+    ADD CONSTRAINT [FK_Scheme_Details_ProductGroup] FOREIGN KEY([GroupId])REFERENCES [AMS].[ProductGroup]([PGrpId]);
+    ALTER TABLE [AMS].[Scheme_Details] CHECK CONSTRAINT [FK_Scheme_Details_ProductGroup];
+    ALTER TABLE [AMS].[Scheme_Details] WITH CHECK
+    ADD CONSTRAINT [FK_Scheme_Details_ProductSubGroup] FOREIGN KEY([SubGroupId])REFERENCES [AMS].[ProductSubGroup]([PSubGrpId]);
+    ALTER TABLE [AMS].[Scheme_Details] CHECK CONSTRAINT [FK_Scheme_Details_ProductSubGroup];
+    ALTER TABLE [AMS].[Scheme_Details] WITH CHECK
+    ADD CONSTRAINT [FK_Scheme_Details_Scheme_Master] FOREIGN KEY([SchemeId])REFERENCES [AMS].[Scheme_Master]([SchemeId]);
+    ALTER TABLE [AMS].[Scheme_Details] CHECK CONSTRAINT [FK_Scheme_Details_Scheme_Master];
+END;
+IF OBJECT_ID('AMS.STA_MASTER') IS NULL BEGIN
+    CREATE TABLE [AMS].[STA_Master] ([StockAdjust_No] [NVARCHAR](50) NOT NULL,
+    [VDate] [DATE] NOT NULL,
+    [VMiti] [VARCHAR](10) NOT NULL,
+    [Vtime] [DATETIME] NOT NULL,
+    [DepartmentId] [INT] NULL,
+    [BarCode] [VARCHAR](10) NULL,
+    [PhyStockNo] [NVARCHAR](50) NULL,
+    [Posting] [CHAR](1) NULL,
+    [Export] [CHAR](1) NULL,
+    [ReconcileBy] [NVARCHAR](50) NULL,
+    [AuditBy] [NVARCHAR](50) NULL,
+    [AuditDate] [DATETIME] NULL,
+    [AuthorizeBy] [NVARCHAR](50) NULL,
+    [AuthorizeDate] [DATETIME] NULL,
+    [AuthorizeRemarks] [NVARCHAR](512) NULL,
+    [PostedBy] [NVARCHAR](50) NULL,
+    [PostedDate] [DATETIME] NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [Status] [NVARCHAR](50) NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [PrintValue] [INT] NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelReason] [NVARCHAR](512) NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_STA_Master] PRIMARY KEY CLUSTERED([StockAdjust_No] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[STA_Master] WITH CHECK
+    ADD CONSTRAINT [FK_STA_Master_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[STA_Master] CHECK CONSTRAINT [FK_STA_Master_Branch];
+    ALTER TABLE [AMS].[STA_Master] WITH CHECK
+    ADD CONSTRAINT [FK_STA_Master_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[STA_Master] CHECK CONSTRAINT [FK_STA_Master_CompanyUnit];
+    ALTER TABLE [AMS].[STA_Master] WITH CHECK
+    ADD CONSTRAINT [FK_STA_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[STA_Master] CHECK CONSTRAINT [FK_STA_Master_FiscalYear];
+END;
+IF OBJECT_ID('AMS.STA_Details') IS NULL BEGIN
+    CREATE TABLE AMS.STA_Details (StockAdjust_No NVARCHAR(50) NOT NULL,
+    Sno INT NOT NULL,
+    ProductId BIGINT NOT NULL,
+    GodownId INT NULL,
+    DepartmentId INT NULL,
+    AdjType CHAR(1) NOT NULL,
+    AltQty DECIMAL(18, 6) NOT NULL,
+    AltUnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    UnitId INT NULL,
+    AltStockQty DECIMAL(18, 6) NOT NULL,
+    StockQty DECIMAL(18, 6) NOT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    NetAmount DECIMAL(18, 6) NOT NULL,
+    AddDesc NVARCHAR(512) NULL,
+    StConvRatio DECIMAL(18, 6) NOT NULL,
+    PhyStkNo NVARCHAR(50) NULL,
+    PhyStkSno INT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_STA_Details
+    ON AMS.STA_Details(StockAdjust_No, Sno, ProductId)
+    ON [PRIMARY];
+    ALTER TABLE AMS.STA_Details
+    ADD CONSTRAINT FK_STA_Details_Department FOREIGN KEY(DepartmentId)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.STA_Details
+    ADD CONSTRAINT FK_STA_Details_Godown FOREIGN KEY(GodownId)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.STA_Details
+    ADD CONSTRAINT FK_STA_Details_Product FOREIGN KEY(ProductId)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.STA_Details
+    ADD CONSTRAINT FK_STA_Details_ProductAltUnit FOREIGN KEY(AltUnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.STA_Details
+    ADD CONSTRAINT FK_STA_Details_ProductUnit FOREIGN KEY(UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.STA_Details
+    ADD CONSTRAINT FK_STA_Details_STA_Master FOREIGN KEY(StockAdjust_No)REFERENCES AMS.STA_Master(StockAdjust_No);
+END;
+IF OBJECT_ID('INV.BOM_Master') IS NULL BEGIN
+    CREATE TABLE INV.BOM_Master (VoucherNo NVARCHAR(50) NOT NULL,
+    VDate DATE NOT NULL,
+    VMiti NVARCHAR(10) NOT NULL,
+    VTime DATETIME NOT NULL,
+    FinishedGoodsId BIGINT NOT NULL,
+    FinishedGoodsQty DECIMAL(18, 6) NOT NULL,
+    DepartmentId INT NULL,
+    CostCenterId INT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    InWords NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    IsAuthorized BIT NOT NULL,
+    AuthorizeBy NVARCHAR(50) NULL,
+    AuthDate DATETIME NULL,
+    IsReconcile BIT NOT NULL,
+    ReconcileBy NVARCHAR(50) NULL,
+    ReconcileDate DATETIME NULL,
+    IsPosted BIT NOT NULL,
+    PostedBy NVARCHAR(50) NULL,
+    PostedDate DATETIME NULL,
+    OrderNo VARCHAR(500) NULL,
+    OrderDate DATE NULL,
+    EnterBy NVARCHAR(50) NOT NULL,
+    EnterDate DATETIME NOT NULL,
+    BranchId INT NOT NULL,
+    CompanyUnitId INT NULL,
+    FiscalYearId INT NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_BOM_Master PRIMARY KEY CLUSTERED(VoucherNo)) ON [PRIMARY];
+    ALTER TABLE INV.BOM_Master
+    ADD CONSTRAINT FK_BOM_Master_Branch FOREIGN KEY(BranchId)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE INV.BOM_Master
+    ADD CONSTRAINT FK_BOM_Master_CompanyUnit FOREIGN KEY(CompanyUnitId)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE INV.BOM_Master
+    ADD CONSTRAINT FK_BOM_Master_CostCenter FOREIGN KEY(CostCenterId)REFERENCES AMS.CostCenter(CCId);
+    ALTER TABLE INV.BOM_Master
+    ADD CONSTRAINT FK_BOM_Master_Department FOREIGN KEY(DepartmentId)REFERENCES AMS.Department(DId);
+    ALTER TABLE INV.BOM_Master
+    ADD CONSTRAINT FK_BOM_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE INV.BOM_Master
+    ADD CONSTRAINT FK_BOM_Master_Product FOREIGN KEY(FinishedGoodsId)REFERENCES AMS.Product(PID);
+END;
+IF OBJECT_ID('INV.BOM_Details') IS NULL BEGIN
+    CREATE TABLE INV.BOM_Details (VoucherNo NVARCHAR(50) NOT NULL,
+    SerialNo INT NOT NULL,
+    ProductId BIGINT NOT NULL,
+    GodownId INT NULL,
+    CostCenterId INT NOT NULL,
+    OrderNo NVARCHAR(50) NULL,
+    OrderSNo INT NULL,
+    AltQty DECIMAL(18, 6) NOT NULL,
+    AltUnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    UnitId INT NOT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(500) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_BOM_Details
+    ON INV.BOM_Details(VoucherNo, SerialNo, ProductId)
+    ON [PRIMARY];
+    ALTER TABLE INV.BOM_Details
+    ADD CONSTRAINT FK_BOM_Details_BOM_Master FOREIGN KEY(VoucherNo)REFERENCES INV.BOM_Master(VoucherNo);
+    ALTER TABLE INV.BOM_Details
+    ADD CONSTRAINT FK_BOM_Details_Godown FOREIGN KEY(GodownId)REFERENCES AMS.Godown(GID);
+    ALTER TABLE INV.BOM_Details
+    ADD CONSTRAINT FK_BOM_Details_Product FOREIGN KEY(ProductId)REFERENCES AMS.Product(PID);
+    ALTER TABLE INV.BOM_Details
+    ADD CONSTRAINT FK_BOM_Details_ProductAltUnit FOREIGN KEY(AltUnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE INV.BOM_Details
+    ADD CONSTRAINT FK_BOM_Details_ProductUnit FOREIGN KEY(UnitId)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('INV.Production_Master') IS NULL BEGIN
+    CREATE TABLE INV.Production_Master (VoucherNo NVARCHAR(50) NOT NULL,
+    VDate DATE NOT NULL,
+    VMiti NVARCHAR(10) NOT NULL,
+    VTime DATETIME NOT NULL,
+    BOMVNo NVARCHAR(50) NULL,
+    BOMDate DATE NULL,
+    FinishedGoodsId BIGINT NOT NULL,
+    FinishedGoodsQty DECIMAL(18, 6) NOT NULL,
+    Costing DECIMAL(18, 6) NOT NULL,
+    Machine NVARCHAR(50) NOT NULL,
+    DepartmentId INT NULL,
+    CostCenterId INT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    InWords NVARCHAR(500) NULL,
+    Remarks NVARCHAR(500) NULL,
+    IsAuthorized BIT NOT NULL,
+    AuthorizeBy NVARCHAR(50) NULL,
+    AuthDate DATETIME NULL,
+    IsCancel BIT NOT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    IsReturn BIT NOT NULL,
+    IsReconcile BIT NOT NULL,
+    ReconcileBy NVARCHAR(50) NULL,
+    ReconcileDate DATETIME NULL,
+    IsPosted BIT NOT NULL,
+    PostedBy NVARCHAR(50) NULL,
+    PostedDate DATETIME NULL,
+    IssueNo NVARCHAR(50) NULL,
+    IssueDate DATE NULL,
+    OrderNo NVARCHAR(50) NULL,
+    OrderDate DATE NULL,
+    EnterBy NVARCHAR(50) NOT NULL,
+    EnterDate DATETIME NOT NULL,
+    BranchId INT NOT NULL,
+    CompanyUnitId INT NULL,
+    FiscalYearId INT NOT NULL,
+    Source CHAR(10) NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_Production_Master PRIMARY KEY CLUSTERED(VoucherNo)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE INV.Production_Master
+    ADD CONSTRAINT FK_Production_Master_Branch FOREIGN KEY(BranchId)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE INV.Production_Master
+    ADD CONSTRAINT FK_Production_Master_CompanyUnit FOREIGN KEY(CompanyUnitId)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE INV.Production_Master
+    ADD CONSTRAINT FK_Production_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE INV.Production_Master
+    ADD CONSTRAINT FK_Production_Master_Product FOREIGN KEY(FinishedGoodsId)REFERENCES AMS.Product(PID);
+END;
+IF OBJECT_ID('INV.Production_Details') IS NULL BEGIN
+    CREATE TABLE INV.Production_Details (VoucherNo NVARCHAR(50) NOT NULL,
+    SerialNo INT NOT NULL,
+    ProductId BIGINT NOT NULL,
+    GodownId INT NULL,
+    CostCenterId INT NOT NULL,
+    BOMNo NVARCHAR(50) NULL,
+    BOMSNo INT NULL,
+    BOMQty DECIMAL(18, 6) NOT NULL,
+    IssueNo NVARCHAR(50) NULL,
+    IssueSNo INT NULL,
+    OrderNo NVARCHAR(50) NULL,
+    OrderSNo INT NULL,
+    AltQty DECIMAL(18, 6) NOT NULL,
+    AltUnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    UnitId INT NOT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(500) NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_Production_Details
+    ON INV.Production_Details(VoucherNo, SerialNo, ProductId)
+    ON [PRIMARY];
+    ALTER TABLE INV.Production_Details
+    ADD CONSTRAINT FK_Production_Details_CostCenter FOREIGN KEY(CostCenterId)REFERENCES AMS.CostCenter(CCId);
+    ALTER TABLE INV.Production_Details
+    ADD CONSTRAINT FK_Production_Details_Godown FOREIGN KEY(GodownId)REFERENCES AMS.Godown(GID);
+    ALTER TABLE INV.Production_Details
+    ADD CONSTRAINT FK_Production_Details_Product FOREIGN KEY(ProductId)REFERENCES AMS.Product(PID);
+    ALTER TABLE INV.Production_Details
+    ADD CONSTRAINT FK_Production_Details_ProductAltUnit FOREIGN KEY(AltUnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE INV.Production_Details
+    ADD CONSTRAINT FK_Production_Details_Production_Master FOREIGN KEY(VoucherNo)REFERENCES INV.Production_Master(VoucherNo);
+    ALTER TABLE INV.Production_Details
+    ADD CONSTRAINT FK_Production_Details_ProductUnit FOREIGN KEY(UnitId)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('AMS.SampleCosting_Master') IS NULL BEGIN
+    CREATE TABLE AMS.SampleCosting_Master (CostingNo NVARCHAR(50) NOT NULL,
+    CostingDate DATE NOT NULL,
+    CostingMiti NVARCHAR(10) NOT NULL,
+    CostingTime DATETIME NOT NULL,
+    CostCenterExpenseVno NVARCHAR(50) NULL,
+    CostCenterExpenseDate DATE NULL,
+    FinalProductId BIGINT NOT NULL,
+    UnitId INT NULL,
+    GodownId INT NULL,
+    CostCenterId INT NULL,
+    DepartmentId INT NULL,
+    TotalQty DECIMAL(18, 6) NOT NULL,
+    CostRatio DECIMAL(18, 6) NOT NULL,
+    NetAmount DECIMAL(18, 6) NOT NULL,
+    Remarks NVARCHAR(512) NULL,
+    ActionType NVARCHAR(50) NOT NULL,
+    EnterBy NVARCHAR(50) NOT NULL,
+    EnterDate DATETIME NOT NULL,
+    BranchId INT NOT NULL,
+    CompanyUnitId INT NULL,
+    FiscalYearId INT NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_SampleCosting_Master PRIMARY KEY CLUSTERED(CostingNo)) ON [PRIMARY];
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_Branch FOREIGN KEY(BranchId)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_CompanyUnit FOREIGN KEY(CompanyUnitId)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_CostCenter FOREIGN KEY(CostCenterId)REFERENCES AMS.CostCenter(CCId);
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_Godown FOREIGN KEY(GodownId)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_Product FOREIGN KEY(FinalProductId)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SampleCosting_Master
+    ADD CONSTRAINT FK_SampleCosting_Master_ProductUnit FOREIGN KEY(UnitId)REFERENCES AMS.ProductUnit(UID);
+END;
+IF OBJECT_ID('AMS.SampleCosting_Details') IS NULL BEGIN
+    CREATE TABLE AMS.SampleCosting_Details (CostingNo NVARCHAR(50) NOT NULL,
+    SerialNo INT NOT NULL,
+    ProductId BIGINT NOT NULL,
+    GodownId INT NULL,
+    CostCenterId INT NULL,
+    AltQty DECIMAL(18, 6) NULL,
+    AltUnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    UnitId INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    CostCenterExpenseVno NVARCHAR(50) NULL,
+    CostCenterExpenseSno INT NULL) ON [PRIMARY];
+    CREATE UNIQUE INDEX IX_SampleCosting_Details
+    ON AMS.SampleCosting_Details(CostingNo, SerialNo, ProductId)
+    ON [PRIMARY];
+    ALTER TABLE AMS.SampleCosting_Details
+    ADD CONSTRAINT FK_SampleCosting_Details_CostCenter FOREIGN KEY(CostCenterId)REFERENCES AMS.CostCenter(CCId);
+    ALTER TABLE AMS.SampleCosting_Details
+    ADD CONSTRAINT FK_SampleCosting_Details_Godown FOREIGN KEY(GodownId)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.SampleCosting_Details
+    ADD CONSTRAINT FK_SampleCosting_Details_Product FOREIGN KEY(ProductId)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.SampleCosting_Details
+    ADD CONSTRAINT FK_SampleCosting_Details_ProductAltUnit FOREIGN KEY(AltUnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SampleCosting_Details
+    ADD CONSTRAINT FK_SampleCosting_Details_ProductUnit FOREIGN KEY(UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.SampleCosting_Details
+    ADD CONSTRAINT FK_SampleCosting_Details_SampleCosting_Master FOREIGN KEY(CostingNo)REFERENCES AMS.SampleCosting_Master(CostingNo);
+END;
+IF OBJECT_ID('AMS.AccountDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[AccountDetails] ([Module] [CHAR](5) NOT NULL,
+    [Branch_ID] [INT] NOT NULL,
+    [CmpUnit_ID] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [Serial_No] [INT] NOT NULL,
+    [Voucher_No] [NVARCHAR](50) NOT NULL,
+    [Voucher_Date] [DATE] NOT NULL,
+    [Voucher_Miti] [VARCHAR](10) NOT NULL,
+    [Voucher_Time] [DATETIME] NOT NULL,
+    [Ledger_ID] [BIGINT] NOT NULL,
+    [CbLedger_ID] [BIGINT] NULL,
+    [Subleder_ID] [INT] NULL,
+    [Agent_ID] [INT] NULL,
+    [Department_ID1] [INT] NULL,
+    [Department_ID2] [INT] NULL,
+    [Department_ID3] [INT] NULL,
+    [Department_ID4] [INT] NULL,
+    [Currency_ID] [INT] NOT NULL,
+    [Currency_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Debit_Amt] [DECIMAL](18, 6) NOT NULL,
+    [Credit_Amt] [DECIMAL](18, 6) NOT NULL,
+    [LocalDebit_Amt] [DECIMAL](18, 6) NOT NULL,
+    [LocalCredit_Amt] [DECIMAL](18, 6) NOT NULL,
+    [DueDate] [DATE] NULL,
+    [DueDays] [INT] NULL,
+    [Narration] [NVARCHAR](512) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [RefNo] [NVARCHAR](50) NULL,
+    [RefDate] [DATE] NULL,
+    [Reconcile_By] [NVARCHAR](50) NULL,
+    [Reconcile_Date] [DATE] NULL,
+    [Authorize_By] [VARCHAR](50) NULL,
+    [Authorize_Date] [DATE] NULL,
+    [Clearing_By] [NVARCHAR](50) NULL,
+    [Clearing_Date] [DATE] NULL,
+    [Posted_By] [VARCHAR](50) NULL,
+    [Posted_Date] [DATE] NULL,
+    [Cheque_No] [NVARCHAR](50) NULL,
+    [Cheque_Date] [DATE] NULL,
+    [Cheque_Miti] [VARCHAR](10) NULL,
+    [PartyName] [NVARCHAR](100) NULL,
+    [PartyLedger_Id] [BIGINT] NULL,
+    [Party_PanNo] [NVARCHAR](50) NULL,
+    [DoctorId] [INT] NULL,
+    [PatientId] [BIGINT] NULL,
+    [HDepartmentId] [INT] NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_Branch] FOREIGN KEY([Branch_ID])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_Branch];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_CompanyUnit] FOREIGN KEY([CmpUnit_ID])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_CompanyUnit];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_Currency] FOREIGN KEY([Currency_ID])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_Currency];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_Department] FOREIGN KEY([Department_ID1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_Department];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_Department_Hospital] FOREIGN KEY([HDepartmentId])REFERENCES [HOS].[Department]([DId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_Department_Hospital];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_Doctor] FOREIGN KEY([DoctorId])REFERENCES [HOS].[Doctor]([DrId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_Doctor];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_FiscalYear];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_GeneralLedger] FOREIGN KEY([Ledger_ID])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_GeneralLedger];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_GeneralLedger_PartyLedger] FOREIGN KEY([CbLedger_ID])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_GeneralLedger_PartyLedger];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_GeneralLedger1] FOREIGN KEY([PartyLedger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_GeneralLedger1];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_JuniorAgent] FOREIGN KEY([Agent_ID])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_JuniorAgent];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_PatientMaster] FOREIGN KEY([PatientId])REFERENCES [HOS].[PatientMaster]([PaitentId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_PatientMaster];
+    ALTER TABLE [AMS].[AccountDetails] WITH CHECK
+    ADD CONSTRAINT [FK_AccountDetails_Subledger] FOREIGN KEY([Subleder_ID])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[AccountDetails] CHECK CONSTRAINT [FK_AccountDetails_Subledger];
+END;
+IF OBJECT_ID('AMS.StockDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[StockDetails] ([Id] [INT] IDENTITY(1, 1) NOT NULL,
+    [Module] [CHAR](5) NOT NULL,
+    [Voucher_No] [NVARCHAR](50) NOT NULL,
+    [Serial_No] [INT] NOT NULL,
+    [PurRefVno] [NVARCHAR](50) NULL,
+    [Voucher_Date] [DATETIME] NOT NULL,
+    [Voucher_Miti] [NVARCHAR](10) NOT NULL,
+    [Voucher_Time] [DATETIME] NOT NULL,
+    [Ledger_Id] [BIGINT] NULL,
+    [Subledger_Id] [INT] NULL,
+    [Agent_Id] [INT] NULL,
+    [Department_Id1] [INT] NULL,
+    [Department_Id2] [INT] NULL,
+    [Department_Id3] [INT] NULL,
+    [Department_Id4] [INT] NULL,
+    [Currency_Id] [INT] NOT NULL,
+    [Currency_Rate] [DECIMAL](18, 6) NOT NULL,
+    [Product_Id] [BIGINT] NOT NULL,
+    [Godown_Id] [INT] NULL,
+    [CostCenter_Id] [INT] NULL,
+    [AltQty] [DECIMAL](18, 6) NOT NULL,
+    [AltUnit_Id] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [Unit_Id] [INT] NULL,
+    [AltStockQty] [DECIMAL](18, 6) NOT NULL,
+    [StockQty] [DECIMAL](18, 6) NOT NULL,
+    [FreeQty] [DECIMAL](18, 6) NOT NULL,
+    [FreeUnit_Id] [INT] NULL,
+    [StockFreeQty] [DECIMAL](18, 6) NOT NULL,
+    [ConvRatio] [DECIMAL](18, 6) NOT NULL,
+    [ExtraFreeQty] [DECIMAL](18, 6) NOT NULL,
+    [ExtraFreeUnit_Id] [INT] NULL,
+    [ExtraStockFreeQty] [DECIMAL](18, 6) NOT NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [BasicAmt] [DECIMAL](18, 6) NOT NULL,
+    [TermAmt] [DECIMAL](18, 6) NOT NULL,
+    [NetAmt] [DECIMAL](18, 6) NOT NULL,
+    [BillTermAmt] [DECIMAL](18, 6) NOT NULL,
+    [TaxRate] [DECIMAL](18, 6) NOT NULL,
+    [TaxableAmt] [DECIMAL](18, 6) NOT NULL,
+    [DocVal] [DECIMAL](18, 6) NOT NULL,
+    [ReturnVal] [DECIMAL](18, 6) NOT NULL,
+    [StockVal] [DECIMAL](18, 6) NOT NULL,
+    [AddStockVal] [DECIMAL](18, 6) NOT NULL,
+    [PartyInv] [NVARCHAR](50) NULL,
+    [EntryType] [CHAR](1) NOT NULL,
+    [AuthBy] [NVARCHAR](50) NULL,
+    [AuthDate] [DATETIME] NULL,
+    [RecoBy] [NVARCHAR](50) NULL,
+    [RecoDate] [DATETIME] NULL,
+    [Counter_Id] [INT] NULL,
+    [RoomNo] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [Adj_Qty] [DECIMAL](18, 6) NULL,
+    [Adj_VoucherNo] [NVARCHAR](50) NULL,
+    [Adj_Module] [CHAR](10) NULL,
+    [SalesRate] [DECIMAL](18, 6) NULL,
+    [Branch_Id] [INT] NOT NULL,
+    [CmpUnit_Id] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Branch] FOREIGN KEY([Branch_Id])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Branch];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_CompanyUnit] FOREIGN KEY([CmpUnit_Id])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_CompanyUnit];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_CostCenter] FOREIGN KEY([CostCenter_Id])REFERENCES [AMS].[CostCenter]([CCId]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_CostCenter];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Counter] FOREIGN KEY([Counter_Id])REFERENCES [AMS].[Counter]([CId]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Counter];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Currency] FOREIGN KEY([Currency_Id])REFERENCES [AMS].[Currency]([CId]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Currency];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Department] FOREIGN KEY([Department_Id1])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Department];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_FiscalYear];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_GeneralLedger] FOREIGN KEY([Ledger_Id])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_GeneralLedger];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Godown] FOREIGN KEY([Godown_Id])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Godown];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_JuniorAgent] FOREIGN KEY([Agent_Id])REFERENCES [AMS].[JuniorAgent]([AgentId]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_JuniorAgent];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Product] FOREIGN KEY([Product_Id])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Product];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_ProductAltUnit] FOREIGN KEY([AltUnit_Id])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_ProductAltUnit];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_ProductUnit] FOREIGN KEY([Unit_Id])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_ProductUnit];
+    ALTER TABLE [AMS].[StockDetails] WITH CHECK
+    ADD CONSTRAINT [FK_StockDetails_Subledger] FOREIGN KEY([Subledger_Id])REFERENCES [AMS].[Subledger]([SLId]);
+    ALTER TABLE [AMS].[StockDetails] CHECK CONSTRAINT [FK_StockDetails_Subledger];
+END;
+IF OBJECT_ID('AMS.StockBatchDetails') IS NULL BEGIN
+    CREATE TABLE AMS.StockBatchDetails (Module VARCHAR(10) NULL,
+    Voucher_No VARCHAR(50) NULL,
+    SNo INT NULL,
+    Product_Id BIGINT NULL,
+    Voucher_Date DATE NOT NULL,
+    Voucher_Miti VARCHAR(10) NULL,
+    Batch_SNo NUMERIC NOT NULL,
+    Batch VARCHAR(25) NULL,
+    AltQty DECIMAL(18, 6) NOT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    AltStockQty DECIMAL(18, 6) NOT NULL,
+    StockQty DECIMAL(18, 6) NULL,
+    FreeQty DECIMAL(18, 6) NULL,
+    FreeStockQty DECIMAL(18, 6) NULL,
+    FreeUnit_Id INT NULL,
+    ConvRatio DECIMAL(18, 6) NOT NULL,
+    Margin DECIMAL(18, 6) NOT NULL,
+    StockVal DECIMAL(18, 6) NOT NULL,
+    ExtraFreeQty DECIMAL(18, 6) NOT NULL,
+    StockExtraFreeQty DECIMAL(18, 6) NOT NULL,
+    ExtraFreeUnit_Id INT NULL,
+    Buy_Rate DECIMAL(18, 6) NOT NULL,
+    Sales_Rate DECIMAL(18, 6) NOT NULL,
+    Trade_Rate DECIMAL(18, 6) NOT NULL,
+    Amount DECIMAL(18, 6) NOT NULL,
+    MRP DECIMAL(18, 6) NOT NULL,
+    MRP_Rate DECIMAL(18, 6) NOT NULL,
+    Min_Qty DECIMAL(18, 6) NOT NULL,
+    Max_Qty DECIMAL(18, 6) NOT NULL,
+    Min_Disc DECIMAL(18, 6) NOT NULL,
+    Max_Disc DECIMAL(18, 6) NOT NULL,
+    Manufacturing_Date DATE NULL,
+    Expiry_Date DATE NULL,
+    Transaction_Type CHAR(1) NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL) ON [PRIMARY];
+    ALTER TABLE AMS.StockBatchDetails
+    ADD CONSTRAINT FK_StockBatchDetails_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.StockBatchDetails
+    ADD CONSTRAINT FK_StockBatchDetails_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.StockBatchDetails
+    ADD CONSTRAINT FK_StockBatchDetails_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.StockBatchDetails
+    ADD CONSTRAINT FK_StockBatchDetails_Product FOREIGN KEY(Product_Id)REFERENCES AMS.Product(PID);
+END;
+IF OBJECT_ID('INV.StockIssue_Master') IS NULL BEGIN
+    CREATE TABLE [INV].[StockIssue_Master] ([VoucherNo] [NVARCHAR](50) NOT NULL,
+    [VoucherDate] [DATE] NOT NULL,
+    [VoucherMiti] [VARCHAR](10) NULL,
+    [VoucherTime] [DATETIME] NULL,
+    [BOM_Vno] [NVARCHAR](50) NULL,
+    [BOM_Date] [DATE] NULL,
+    [BOM_Miti] [VARCHAR](10) NULL,
+    [DepartmentId] [INT] NULL,
+    [CostCenterId] [INT] NULL,
+    [FinishedGoodsId] [BIGINT] NULL,
+    [AltQty] [DECIMAL](18, 6) NULL,
+    [AltUnitId] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NULL,
+    [UnitId] [INT] NULL,
+    [Factor] [DECIMAL](18, 6) NULL,
+    [AdditionalAmount] [DECIMAL](18, 6) NULL,
+    [Remarks] [NVARCHAR](512) NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [AuthorizeBy] [NVARCHAR](50) NULL,
+    [AuthorizeDate] [DATETIME] NULL,
+    [ReconcileBy] [NVARCHAR](50) NULL,
+    [ReconcileDate] [DATETIME] NULL,
+    [IsReverse] [BIT] NOT NULL,
+    [CancelBy] [NVARCHAR](50) NULL,
+    [CancelDate] [DATETIME] NULL,
+    [CancelReason] [NVARCHAR](512) NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL,
+    CONSTRAINT [PK_StockIssue_Master] PRIMARY KEY CLUSTERED([VoucherNo] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_Branch];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_CompanyUnit];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_CostCenter] FOREIGN KEY([CostCenterId])REFERENCES [AMS].[CostCenter]([CCId]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_CostCenter];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_Department] FOREIGN KEY([DepartmentId])REFERENCES [AMS].[Department]([DId]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_Department];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_FiscalYear];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_Product] FOREIGN KEY([FinishedGoodsId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_Product];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_ProductAltUnit] FOREIGN KEY([AltUnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_ProductAltUnit];
+    ALTER TABLE [INV].[StockIssue_Master] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Master_ProductUnit] FOREIGN KEY([UnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [INV].[StockIssue_Master] CHECK CONSTRAINT [FK_StockIssue_Master_ProductUnit];
+END;
+IF OBJECT_ID('INV.StockIssue_Details') IS NULL BEGIN
+    CREATE TABLE [INV].[StockIssue_Details] ([VoucherNo] [NVARCHAR](50) NOT NULL,
+    [SerialNo] [INT] NOT NULL,
+    [ProductId] [BIGINT] NULL,
+    [CostCenterId] [INT] NULL,
+    [GodownId] [INT] NULL,
+    [AltQty] [DECIMAL](18, 6) NOT NULL,
+    [AltUnitId] [INT] NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [UnitId] [INT] NULL,
+    [Rate] [DECIMAL](18, 6) NOT NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL,
+    [ConvFactor] [DECIMAL](18, 6) NULL,
+    [BomQty] [DECIMAL](18, 6) NULL,
+    [Source] [VARCHAR](50) NULL) ON [PRIMARY];
+    ALTER TABLE [INV].[StockIssue_Details] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Details_CostCenter] FOREIGN KEY([CostCenterId])REFERENCES [AMS].[CostCenter]([CCId]);
+    ALTER TABLE [INV].[StockIssue_Details] CHECK CONSTRAINT [FK_StockIssue_Details_CostCenter];
+    ALTER TABLE [INV].[StockIssue_Details] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Details_Godown] FOREIGN KEY([GodownId])REFERENCES [AMS].[Godown]([GID]);
+    ALTER TABLE [INV].[StockIssue_Details] CHECK CONSTRAINT [FK_StockIssue_Details_Godown];
+    ALTER TABLE [INV].[StockIssue_Details] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Details_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [INV].[StockIssue_Details] CHECK CONSTRAINT [FK_StockIssue_Details_Product];
+    ALTER TABLE [INV].[StockIssue_Details] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Details_ProductAltUnit] FOREIGN KEY([AltUnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [INV].[StockIssue_Details] CHECK CONSTRAINT [FK_StockIssue_Details_ProductAltUnit];
+    ALTER TABLE [INV].[StockIssue_Details] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Details_ProductUnit] FOREIGN KEY([UnitId])REFERENCES [AMS].[ProductUnit]([UID]);
+    ALTER TABLE [INV].[StockIssue_Details] CHECK CONSTRAINT [FK_StockIssue_Details_ProductUnit];
+    ALTER TABLE [INV].[StockIssue_Details] WITH CHECK
+    ADD CONSTRAINT [FK_StockIssue_Details_StockIssue_Master] FOREIGN KEY([VoucherNo])REFERENCES [INV].[StockIssue_Master]([VoucherNo]);
+    ALTER TABLE [INV].[StockIssue_Details] CHECK CONSTRAINT [FK_StockIssue_Details_StockIssue_Master];
+    CREATE UNIQUE NONCLUSTERED INDEX [IX_StockIssue_Details]
+    ON [INV].[StockIssue_Details]([VoucherNo] ASC, [ProductId] ASC, [SerialNo] ASC)
+    WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, SORT_IN_TEMPDB=OFF, IGNORE_DUP_KEY=OFF, DROP_EXISTING=OFF, ONLINE=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON);
+END;
+IF OBJECT_ID('AMS.ProductInformation') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductInformation] ([ProductId] [BIGINT] NOT NULL,
+    [Description] [NVARCHAR](512) NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    CONSTRAINT [PK_ProductInformation] PRIMARY KEY CLUSTERED([ProductId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductInformation] WITH CHECK
+    ADD CONSTRAINT [FK_ProductInformation_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[ProductInformation] CHECK CONSTRAINT [FK_ProductInformation_Product];
+END;
+IF OBJECT_ID('AMS.InvoiceSettlement') IS NULL BEGIN
+    CREATE TABLE [AMS].[InvoiceSettlement] ([SB_Invoice] [NVARCHAR](50) NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [PaymentMode] [CHAR](10) NOT NULL,
+    [Amount] [DECIMAL](18, 6) NOT NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[InvoiceSettlement] WITH CHECK
+    ADD CONSTRAINT [FK_InvoiceSettlement_GeneralLedger] FOREIGN KEY([LedgerId])REFERENCES [AMS].[GeneralLedger]([GLID]);
+    ALTER TABLE [AMS].[InvoiceSettlement] CHECK CONSTRAINT [FK_InvoiceSettlement_GeneralLedger];
+    ALTER TABLE [AMS].[InvoiceSettlement] WITH CHECK
+    ADD CONSTRAINT [FK_InvoiceSettlement_SB_Master] FOREIGN KEY([SB_Invoice])REFERENCES [AMS].[SB_Master]([SB_Invoice]);
+    ALTER TABLE [AMS].[InvoiceSettlement] CHECK CONSTRAINT [FK_InvoiceSettlement_SB_Master];
+END;
+IF OBJECT_ID('AMS.OrderCancelMaster') IS NULL BEGIN
+    CREATE TABLE AMS.OrderCancelMaster (SO_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_Date DATE NOT NULL,
+    Invoice_Miti VARCHAR(10) NOT NULL,
+    Invoice_Time DATETIME NOT NULL,
+    Ref_Vno NVARCHAR(50) NULL,
+    Ref_Date DATE NULL,
+    Ref_Miti VARCHAR(10) NULL,
+    Customer_Id BIGINT NOT NULL,
+    PartyLedgerId BIGINT NULL,
+    Party_Name NVARCHAR(100) NULL,
+    Vat_No NVARCHAR(50) NULL,
+    Contact_Person NVARCHAR(50) NULL,
+    Mobile_No NVARCHAR(50) NULL,
+    Address NVARCHAR(90) NULL,
+    ChqNo NVARCHAR(50) NULL,
+    ChqDate DATE NULL,
+    ChqMiti VARCHAR(10) NULL,
+    Invoice_Type CHAR(10) NULL,
+    Invoice_Mode CHAR(10) NULL,
+    Payment_Mode CHAR(10) NULL,
+    DueDays INT NULL,
+    DueDate DATE NULL,
+    Agent_Id INT NULL,
+    Subledger_Id INT NULL,
+    IND_Invoice NVARCHAR(50) NULL,
+    IND_Date DATE NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_Date DATE NULL,
+    Cls1 INT NULL,
+    Cls2 INT NULL,
+    Cls3 INT NULL,
+    Cls4 INT NULL,
+    CounterId INT NULL,
+    TableId INT NULL,
+    CombineTableId NVARCHAR(100) NULL,
+    NoOfPerson INT NULL,
+    Cur_Id INT NOT NULL,
+    Cur_Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    LN_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    Tbl_Amount DECIMAL(18, 6) NOT NULL,
+    Tender_Amount DECIMAL(18, 6) NOT NULL,
+    Return_Amount DECIMAL(18, 6) NOT NULL,
+    Action_Type CHAR(10) NULL,
+    In_Words NVARCHAR(512) NULL,
+    Remarks NVARCHAR(512) NULL,
+    R_Invoice BIT NULL,
+    CancelBy NVARCHAR(50) NULL,
+    CancelDate DATETIME NULL,
+    CancelReason NVARCHAR(512) NULL,
+    Is_Printed BIT NOT NULL,
+    No_Print INT NOT NULL,
+    Printed_By NVARCHAR(50) NULL,
+    Printed_Date DATETIME NULL,
+    Audit_Lock BIT NOT NULL,
+    Enter_By NVARCHAR(50) NOT NULL,
+    Enter_Date DATETIME NOT NULL,
+    Reconcile_By NVARCHAR(50) NULL,
+    Reconcile_Date DATETIME NULL,
+    Auth_By NVARCHAR(50) NULL,
+    Auth_Date DATETIME NULL,
+    CBranch_Id INT NOT NULL,
+    CUnit_Id INT NULL,
+    FiscalYearId INT NOT NULL,
+    PAttachment1 IMAGE NULL,
+    PAttachment2 IMAGE NULL,
+    PAttachment3 IMAGE NULL,
+    PAttachment4 IMAGE NULL,
+    PAttachment5 IMAGE NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL,
+    CONSTRAINT PK_OrderCancelNo PRIMARY KEY CLUSTERED(SO_Invoice)) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_Branch FOREIGN KEY(CBranch_Id)REFERENCES AMS.Branch(Branch_ID);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_CompanyUnit FOREIGN KEY(CUnit_Id)REFERENCES AMS.CompanyUnit(CmpUnit_ID);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_Counter FOREIGN KEY(CounterId)REFERENCES AMS.Counter(CId);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_Currency FOREIGN KEY(Cur_Id)REFERENCES AMS.Currency(CId);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_Department FOREIGN KEY(Cls1)REFERENCES AMS.Department(DId);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_FiscalYear FOREIGN KEY(FiscalYearId)REFERENCES AMS.FiscalYear(FY_Id);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_GeneralLedger FOREIGN KEY(Customer_Id)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_GeneralLedger_PartyLedger FOREIGN KEY(PartyLedgerId)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_JuniorAgent FOREIGN KEY(Agent_Id)REFERENCES AMS.JuniorAgent(AgentId);
+    ALTER TABLE AMS.OrderCancelMaster
+    ADD CONSTRAINT FK_OrderCancelMaster_Subledger FOREIGN KEY(Subledger_Id)REFERENCES AMS.Subledger(SLId);
+END;
+IF OBJECT_ID('AMS.OrderCancelDetails') IS NULL BEGIN
+    CREATE TABLE AMS.OrderCancelDetails (SO_Invoice NVARCHAR(50) NOT NULL,
+    Invoice_SNo INT NOT NULL,
+    P_Id BIGINT NOT NULL,
+    Gdn_Id INT NULL,
+    Alt_Qty DECIMAL(18, 6) NOT NULL,
+    Alt_UnitId INT NULL,
+    Qty DECIMAL(18, 6) NOT NULL,
+    Unit_Id INT NULL,
+    Rate DECIMAL(18, 6) NOT NULL,
+    B_Amount DECIMAL(18, 6) NOT NULL,
+    T_Amount DECIMAL(18, 6) NOT NULL,
+    N_Amount DECIMAL(18, 6) NOT NULL,
+    AltStock_Qty DECIMAL(18, 6) NOT NULL,
+    Stock_Qty DECIMAL(18, 6) NOT NULL,
+    Narration NVARCHAR(512) NULL,
+    IND_Invoice NVARCHAR(50) NULL,
+    IND_Sno INT NULL,
+    QOT_Invoice NVARCHAR(50) NULL,
+    QOT_SNo INT NULL,
+    Tax_Amount DECIMAL(18, 6) NOT NULL,
+    V_Amount DECIMAL(18, 6) NOT NULL,
+    V_Rate DECIMAL(18, 6) NOT NULL,
+    Issue_Qty DECIMAL(18, 6) NOT NULL,
+    Free_Unit_Id INT NULL,
+    Free_Qty DECIMAL(18, 6) NOT NULL,
+    StockFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraFree_Unit_Id INT NULL,
+    ExtraFree_Qty DECIMAL(18, 6) NOT NULL,
+    ExtraStockFree_Qty DECIMAL(18, 6) NOT NULL,
+    T_Product BIT NULL,
+    S_Ledger BIGINT NULL,
+    SR_Ledger BIGINT NULL,
+    SZ1 NVARCHAR(50) NULL,
+    SZ2 NVARCHAR(50) NULL,
+    SZ3 NVARCHAR(50) NULL,
+    SZ4 NVARCHAR(50) NULL,
+    SZ5 NVARCHAR(50) NULL,
+    SZ6 NVARCHAR(50) NULL,
+    SZ7 NVARCHAR(50) NULL,
+    SZ8 NVARCHAR(50) NULL,
+    SZ9 NVARCHAR(50) NULL,
+    SZ10 NVARCHAR(50) NULL,
+    Serial_No NVARCHAR(50) NULL,
+    Batch_No NVARCHAR(50) NULL,
+    Exp_Date DATE NULL,
+    Manu_Date DATE NULL,
+    Notes NVARCHAR(512) NULL,
+    PrintedItem BIT NULL,
+    PrintKOT BIT NULL,
+    OrderTime DATETIME NULL,
+    Print_Time DATETIME NULL,
+    Is_Canceled BIT NULL,
+    CancelNotes NVARCHAR(512) NULL,
+    PDiscountRate DECIMAL(18, 6) NOT NULL,
+    PDiscount DECIMAL(18, 6) NOT NULL,
+    BDiscountRate DECIMAL(18, 6) NOT NULL,
+    BDiscount DECIMAL(18, 6) NOT NULL,
+    ServiceChargeRate DECIMAL(18, 6) NOT NULL,
+    ServiceCharge DECIMAL(18, 6) NOT NULL,
+    SyncBaseId UNIQUEIDENTIFIER NULL,
+    SyncGlobalId UNIQUEIDENTIFIER NULL,
+    SyncOriginId UNIQUEIDENTIFIER NULL,
+    SyncCreatedOn DATE NULL,
+    SyncLastPatchedOn DATETIME NULL,
+    SyncRowVersion SMALLINT NOT NULL) ON [PRIMARY];
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_GeneralLedger FOREIGN KEY(S_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_GeneralLedger1 FOREIGN KEY(SR_Ledger)REFERENCES AMS.GeneralLedger(GLID);
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_Godown FOREIGN KEY(Gdn_Id)REFERENCES AMS.Godown(GID);
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_Product FOREIGN KEY(P_Id)REFERENCES AMS.Product(PID);
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_ProductAltUnit FOREIGN KEY(Unit_Id)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_ProductUnit FOREIGN KEY(Alt_UnitId)REFERENCES AMS.ProductUnit(UID);
+    ALTER TABLE AMS.OrderCancelDetails
+    ADD CONSTRAINT FK_OrderCancelDetails_OrderCancelMaster FOREIGN KEY(SO_Invoice)REFERENCES AMS.OrderCancelMaster(SO_Invoice);
+END;
+IF OBJECT_ID('AMS.GiftVoucherList') IS NULL BEGIN
+    CREATE TABLE [AMS].[GiftVoucherList] ([VoucherId] [INT] IDENTITY(1, 1) NOT NULL,
+    [CardNo] [BIGINT] NOT NULL,
+    [ExpireDate] [DATE] NOT NULL,
+    [Description] [NVARCHAR](255) NOT NULL,
+    [VoucherType] CHAR(1) NOT NULL,
+    [IssueAmount] [DECIMAL](18, 6) NOT NULL,
+    [IsUsed] [BIT] NOT NULL,
+    [BalanceAmount] [DECIMAL](18, 6) NOT NULL,
+    [BillAmount] [DECIMAL](18, 6) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [Status] [BIT] NOT NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATETIME] NULL,
+    [SyncRowVersion] [TINYINT] NOT NULL,
+    CONSTRAINT [PK_GiftVoucherList] PRIMARY KEY CLUSTERED([VoucherId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[GiftVoucherList] WITH CHECK
+    ADD CONSTRAINT [FK_GiftVoucherList_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[GiftVoucherList] CHECK CONSTRAINT [FK_GiftVoucherList_Branch];
+    ALTER TABLE [AMS].[GiftVoucherList] WITH CHECK
+    ADD CONSTRAINT [FK_GiftVoucherList_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[GiftVoucherList] CHECK CONSTRAINT [FK_GiftVoucherList_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.ProductAddInfo') IS NULL BEGIN
+    CREATE TABLE [AMS].[ProductAddInfo] ([Module] [CHAR](4) NOT NULL,
+    [VoucherNo] [NVARCHAR](50) NOT NULL,
+    [VoucherType] [CHAR](1) NOT NULL,
+    [ProductId] [BIGINT] NOT NULL,
+    [Sno] [INT] NOT NULL,
+    [SizeNo] [NVARCHAR](100) NULL,
+    [SerialNo] [NVARCHAR](100) NULL,
+    [BatchNo] [NVARCHAR](100) NULL,
+    [ChasisNo] [NVARCHAR](100) NULL,
+    [EngineNo] [NVARCHAR](100) NULL,
+    [VHModel] [NVARCHAR](100) NULL,
+    [VHColor] [NVARCHAR](100) NULL,
+    [MFDate] [DATE] NULL,
+    [ExpDate] [DATE] NULL,
+    [Mrp] [DECIMAL](18, 6) NULL,
+    [Rate] [DECIMAL](18, 6) NULL,
+    [AltQty] [DECIMAL](18, 6) NULL,
+    [Qty] [DECIMAL](18, 6) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [EnterBy] [NVARCHAR](50) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    [SyncBaseId] [UNIQUEIDENTIFIER] NULL,
+    [SyncGlobalId] [UNIQUEIDENTIFIER] NULL,
+    [SyncOriginId] [UNIQUEIDENTIFIER] NULL,
+    [SyncCreatedOn] [DATE] NULL,
+    [SyncLastPatchedOn] [DATE] NULL,
+    [SyncRowVersion] [SMALLINT] NOT NULL) ON [PRIMARY];
+    ALTER TABLE [AMS].[ProductAddInfo] WITH CHECK
+    ADD CONSTRAINT [FK_ProductBatchInfo_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[ProductAddInfo] CHECK CONSTRAINT [FK_ProductBatchInfo_Branch];
+    ALTER TABLE [AMS].[ProductAddInfo] WITH CHECK
+    ADD CONSTRAINT [FK_ProductBatchInfo_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[ProductAddInfo] CHECK CONSTRAINT [FK_ProductBatchInfo_CompanyUnit];
+    ALTER TABLE [AMS].[ProductAddInfo] WITH CHECK
+    ADD CONSTRAINT [FK_ProductBatchInfo_Product] FOREIGN KEY([ProductId])REFERENCES [AMS].[Product]([PID]);
+    ALTER TABLE [AMS].[ProductAddInfo] CHECK CONSTRAINT [FK_ProductBatchInfo_Product];
+END;
+IF OBJECT_ID('AMS.ModuleDescription') IS NULL BEGIN
+    CREATE TABLE [AMS].[ModuleDescription] ([Module] [CHAR](4) NOT NULL, [ModuleType] [NVARCHAR](255) NOT NULL) ON [PRIMARY];
+    CREATE UNIQUE NONCLUSTERED INDEX [IX_ModuleDescription]
+    ON [AMS].[ModuleDescription]([Module] ASC, [ModuleType] ASC)
+    WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, SORT_IN_TEMPDB=OFF, IGNORE_DUP_KEY=OFF, DROP_EXISTING=OFF, ONLINE=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON)
+    ON [PRIMARY];
+END;
+IF OBJECT_ID('AMS.NightAuditLog') IS NULL BEGIN
+    CREATE TABLE [AMS].[NightAuditLog] ([LogId] [INT] IDENTITY(1, 1) NOT NULL,
+    [AuditDate] [DATE] NULL,
+    [IsAudited] [BIT] NULL,
+    [AuditUser] [NVARCHAR](50) NULL,
+    [AuditedDate] [DATETIME] NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    CONSTRAINT [PK_NightAuditLog] PRIMARY KEY CLUSTERED([LogId] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[NightAuditLog] WITH CHECK
+    ADD CONSTRAINT [FK_NightAuditLog_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[NightAuditLog] CHECK CONSTRAINT [FK_NightAuditLog_Branch];
+    ALTER TABLE [AMS].[NightAuditLog] WITH CHECK
+    ADD CONSTRAINT [FK_NightAuditLog_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+    ALTER TABLE [AMS].[NightAuditLog] CHECK CONSTRAINT [FK_NightAuditLog_CompanyUnit];
+END;
+IF OBJECT_ID('AMS.SyncLogs') IS NULL BEGIN
+    CREATE TABLE [AMS].[SyncLogs] ([Id] [BIGINT] IDENTITY(1, 1) NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    [CompanyUnitId] [INT] NULL,
+    [TableName] [NVARCHAR](100) NOT NULL,
+    [JsonData] [NVARCHAR](MAX) NOT NULL,
+    [Action] [NVARCHAR](100) NOT NULL,
+    [EnterBy] [NVARCHAR](100) NOT NULL,
+    [EnterDate] [DATETIME] NOT NULL,
+    CONSTRAINT [PK_SyncLogs] PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+    ALTER TABLE [AMS].[SyncLogs] WITH CHECK
+    ADD CONSTRAINT [FK_SyncLogs_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+    ALTER TABLE [AMS].[SyncLogs] WITH CHECK
+    ADD CONSTRAINT [FK_SyncLogs_CompanyUnit] FOREIGN KEY([CompanyUnitId])REFERENCES [AMS].[CompanyUnit]([CmpUnit_ID]);
+END;
+IF OBJECT_ID('AMS.SyncLogDetails') IS NULL BEGIN
+    CREATE TABLE [AMS].[SyncLogDetails] ([Id] [BIGINT] IDENTITY(1, 1) NOT NULL,
+    [SyncLogId] [BIGINT] NOT NULL,
+    [BranchId] [INT] NOT NULL,
+    CONSTRAINT [PK_SyncLogDetails] PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+    ALTER TABLE [AMS].[SyncLogDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SyncLogDetails_Log] FOREIGN KEY([SyncLogId])REFERENCES [AMS].[SyncLogs]([Id]);
+    ALTER TABLE [AMS].[SyncLogDetails] WITH CHECK
+    ADD CONSTRAINT [FK_SyncLogDetails_Branch] FOREIGN KEY([BranchId])REFERENCES [AMS].[Branch]([Branch_ID]);
+END;
+IF OBJECT_ID('CRM.AmcLedger') IS NULL BEGIN
+    CREATE TABLE [CRM].[AmcLedger] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [LedgerId] [BIGINT] NOT NULL,
+    [CustomerId] [INT] NOT NULL,
+    [AmcType] [INT] NOT NULL,
+    [AmcAmount] [DECIMAL](18, 6) NULL,
+    [ExpiryDate] [DATETIME] NULL,
+    [CreatedDate] [DATETIME] NOT NULL,
+    [CreatedBy] [NVARCHAR](55) NOT NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('CRM.SalesTask') IS NULL BEGIN
+    CREATE TABLE [CRM].[SalesTask] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [Customer] [NVARCHAR](255) NOT NULL,
+    [Title] [NVARCHAR](255) NOT NULL,
+    [Description] [NVARCHAR](MAX) NOT NULL,
+    [AssignedTo] [INT] NULL,
+    [TaskStatusId] [UNIQUEIDENTIFIER] NOT NULL,
+    [TaskTypeId] [UNIQUEIDENTIFIER] NOT NULL,
+    [CreatedDate] [DATETIME] NOT NULL,
+    [CreatedBy] [NVARCHAR](55) NOT NULL,
+    [DueDate] [DATETIME] NULL,
+    [Reminder] [DATETIME] NULL,
+    [NatureOfBusiness] [NVARCHAR](50) NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('CRM.SalesTaskLog') IS NULL BEGIN
+    CREATE TABLE [CRM].[SalesTaskLog] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [TaskId] [UNIQUEIDENTIFIER] NOT NULL,
+    [CreatedBy] [NVARCHAR](50) NOT NULL,
+    [CreatedDate] [DATETIME] NOT NULL,
+    [Remarks] [NVARCHAR](MAX) NOT NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('CRM.SupportTask') IS NULL BEGIN
+    CREATE TABLE [CRM].[SupportTask] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [CustomerId] [BIGINT] NOT NULL,
+    [Title] [NVARCHAR](255) NOT NULL,
+    [Description] [NVARCHAR](MAX) NOT NULL,
+    [AssignedTo] [INT] NULL,
+    [TaskStatusId] [UNIQUEIDENTIFIER] NOT NULL,
+    [TaskTypeId] [UNIQUEIDENTIFIER] NOT NULL,
+    [CreatedDate] [DATETIME] NULL,
+    [CreatedBy] [NVARCHAR](55) NOT NULL,
+    [DueDate] [DATETIME] NULL,
+    [Reminder] [DATETIME] NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('CRM.SupportTaskLog') IS NULL BEGIN
+    CREATE TABLE [CRM].[SupportTaskLog] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [SupportTaskId] [UNIQUEIDENTIFIER] NOT NULL,
+    [CreatedBy] [NVARCHAR](255) NOT NULL,
+    [CreatedDate] [DATETIME] NOT NULL,
+    [Remarks] [NVARCHAR](MAX) NOT NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;
+IF OBJECT_ID('CRM.TaskStatus') IS NULL BEGIN
+    CREATE TABLE [CRM].[TaskStatus] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [Status] [NVARCHAR](255) NOT NULL,
+    [IsActive] [BIT] NOT NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('CRM.TaskType') IS NULL BEGIN
+    CREATE TABLE [CRM].[TaskType] ([Id] [UNIQUEIDENTIFIER] NOT NULL,
+    [Type] [NVARCHAR](255) NOT NULL,
+    [IsActive] [BIT] NOT NULL,
+    PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+END;
+IF OBJECT_ID('HR.IncomeTaxSetting') IS NULL BEGIN
+    CREATE TABLE [HR].[IncomeTaxSetting] ([SerialNo] [INT] NOT NULL,
+    [FiscalYearId] [INT] NOT NULL,
+    [IncomeTaxTitle] [NVARCHAR](100) NOT NULL,
+    [SingleTaxAmount] [DECIMAL](18, 6) NOT NULL,
+    [MarriedTaxAmount] [DECIMAL](18, 6) NOT NULL,
+    [TaxRate] [DECIMAL](18, 6) NOT NULL) ON [PRIMARY];
+    ALTER TABLE [HR].[IncomeTaxSetting] WITH CHECK
+    ADD CONSTRAINT [FK_IncomeTaxSetting_FiscalYear] FOREIGN KEY([FiscalYearId])REFERENCES [AMS].[FiscalYear]([FY_Id]);
+    ALTER TABLE [HR].[IncomeTaxSetting] CHECK CONSTRAINT [FK_IncomeTaxSetting_FiscalYear];
+    CREATE UNIQUE CLUSTERED INDEX [IX_IncomeTaxSetting_FiscalYearWiise]
+    ON [HR].[IncomeTaxSetting]([SerialNo] ASC, [FiscalYearId] ASC)
+    WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, SORT_IN_TEMPDB=OFF, IGNORE_DUP_KEY=OFF, DROP_EXISTING=OFF, ONLINE=OFF, ALLOW_ROW_LOCKS=ON, ALLOW_PAGE_LOCKS=ON);
+END;
+IF OBJECT_ID('AMS.TableRepairLog') IS NULL BEGIN
+    CREATE TABLE [AMS].[TableRepairLog] ([Id] [INT] IDENTITY(1, 1) NOT NULL,
+    [TableId] [INT] NOT NULL,
+    [CreatedDate] [DATETIME] NULL,
+    [CreatedBy] [NVARCHAR](50) NULL,
+    [CountOfRepairement] [INT] NOT NULL,
+    CONSTRAINT [PK_TableRepairLog] PRIMARY KEY CLUSTERED([Id] ASC)WITH(PAD_INDEX=OFF, STATISTICS_NORECOMPUTE=OFF, IGNORE_DUP_KEY=OFF, ALLOW_ROW_LOCKS= ON, ALLOW_PAGE_LOCKS=ON)ON [PRIMARY])ON [PRIMARY];
+--ALTER TABLE [AMS].[TableRepairLog]  WITH CHECK ADD  CONSTRAINT [FK_TableRepairLog_TableMaster] FOREIGN KEY([TableId])
+--REFERENCES [AMS].[TableMaster] ([TableId])
+--ALTER TABLE [AMS].[TableRepairLog] CHECK CONSTRAINT [FK_TableRepairLog_TableMaster]
+END;

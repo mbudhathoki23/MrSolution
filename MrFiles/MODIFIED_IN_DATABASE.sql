@@ -1,0 +1,7 @@
+ALTER TABLE [AMS].[Area] DROP CONSTRAINT [FK_Area_CompanyUnit]
+ALTER TABLE [AMS].[Area]  WITH CHECK ADD  CONSTRAINT [FK_Area_CompanyUnit] FOREIGN KEY([Company_ID])
+REFERENCES [AMS].[CompanyUnit] ([CmpUnit_Id])
+ALTER TABLE [AMS].[Area] CHECK CONSTRAINT [FK_Area_CompanyUnit]
+
+
+

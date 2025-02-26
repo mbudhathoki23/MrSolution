@@ -1,0 +1,76 @@
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'CTRL')
+BEGIN
+	DECLARE @CTRL NVARCHAR(MAX)
+	SET @CTRL = 'CREATE SCHEMA CTRL AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @CTRL
+END;
+
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'AMS')
+BEGIN
+	DECLARE @AMS NVARCHAR(MAX)
+	SET @AMS = 'CREATE SCHEMA AMS AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @AMS
+END;
+
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'AUD')
+BEGIN
+	DECLARE @AUD NVARCHAR(MAX)
+	SET @AUD = 'CREATE SCHEMA AUD AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @AUD
+END;
+
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'HOS')
+BEGIN
+	DECLARE @HOS NVARCHAR(MAX)
+	SET @HOS = 'CREATE SCHEMA HOS AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @HOS
+END;
+
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'HR')
+BEGIN
+	DECLARE @HR NVARCHAR(MAX)
+	SET @HR = 'CREATE SCHEMA HR AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @HR
+END;
+
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'INV')
+BEGIN
+	DECLARE @INV NVARCHAR(MAX)
+	SET @INV = 'CREATE SCHEMA INV AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @INV
+END;
+
+IF NOT EXISTS (SELECT
+			s.name
+		FROM sys.schemas s
+		WHERE s.name = 'TVIEW')
+BEGIN
+	DECLARE @TVIEW NVARCHAR(MAX)
+	SET @TVIEW = 'CREATE SCHEMA TVIEW AUTHORIZATION dbo;'
+	--PRINT @SQL
+	EXEC sys.sp_executesql @TVIEW
+END;

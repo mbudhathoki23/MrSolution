@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MrSolution.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SQLServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MrSolution</Value>
+    </Setting>
+    <Setting Name="ServerUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SA</Value>
+    </Setting>
+    <Setting Name="ServerPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">321</Value>
+    </Setting>
+    <Setting Name="RunMode" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MultiUser" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="OnlineServerPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">321</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A3B947DB-5296-480C-AB09-82A2BFCC4847}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MrControl</RootNamespace>
+    <AssemblyName>MrControl</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Micon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Azure.Identity, Version=1.4.1.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+      <HintPath>..\packages\Azure.Identity.1.4.1\lib\netstandard2.0\Azure.Identity.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.DataAccess.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Drawing.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v24.2.Core, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v24.2.Core, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DocumentFormat.OpenXml, Version=2.13.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.13.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="FFmpeg.AutoGen, Version=4.4.0.0, Culture=neutral, PublicKeyToken=9b7632533a381715, processorArchitecture=MSIL">
+      <HintPath>..\packages\FFmpeg.AutoGen.4.4.0\lib\net472\FFmpeg.AutoGen.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.5.0.2\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.5.0.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ControlsEx\Class\CellOwnerDrawEventHandler.cs" />
+    <Compile Include="ControlsEx\Class\ClsControl.cs" />
+    <Compile Include="ControlsEx\Class\ClsMasterForm.cs" />
+    <Compile Include="ControlsEx\Class\ColumnInfo.cs" />
+    <Compile Include="ControlsEx\Class\CustomCheckEdit.cs" />
+    <Compile Include="ControlsEx\Class\CustomControlFactory.cs" />
+    <Compile Include="ControlsEx\Class\CustomLabelControl.cs" />
+    <Compile Include="ControlsEx\Class\CustomSimpleButton.cs" />
+    <Compile Include="ControlsEx\Class\CustomTextEdit.cs" />
+    <Compile Include="ControlsEx\Class\ICustomControl.cs" />
+    <Compile Include="ControlsEx\Control\EntryGridViewEx.cs" />
+    <Compile Include="ControlsEx\Control\MrDataGridView.cs" />
+    <Compile Include="ControlsEx\Control\XtraLayoutPanelViewBase.cs" />
+    <Compile Include="ControlsEx\Control\ClsSeparator.cs" />
+    <Compile Include="ControlsEx\Control\ClsSeparatorH.cs" />
+    <Compile Include="ControlsEx\Control\GroupBoxConstants.cs" />
+    <Compile Include="ControlsEx\Control\DataGridViewEx.cs" />
+    <Compile Include="ControlsEx\Class\DGVCellDrawingEventArgs.cs" />
+    <Compile Include="ControlsEx\Class\DGVPrinter.cs" />
+    <Compile Include="ControlsEx\Class\LogManager.cs" />
+    <Compile Include="ControlsEx\Class\Extensions.cs" />
+    <Compile Include="ControlsEx\Class\LogWriter.cs" />
+    <Compile Include="ControlsEx\Control\MrComboBox.cs" />
+    <Compile Include="ControlsEx\Control\MrGroup.cs" />
+    <Compile Include="ControlsEx\Control\MrMaskedTextBox.cs" />
+    <Compile Include="ControlsEx\Control\MrNumericTextBox.cs" />
+    <Compile Include="ControlsEx\Control\MrPanel.cs" />
+    <Compile Include="ControlsEx\Control\MrTextBox.cs" />
+    <Compile Include="ControlsEx\Control\RoundPanel.cs" />
+    <Compile Include="ControlsEx\Control\TextBoxType.cs" />
+    <Compile Include="ControlsEx\Control\TreeViewEx.cs" />
+    <Compile Include="ControlsEx\GridControl\CustomGridControl.cs" />
+    <Compile Include="ControlsEx\GridControl\CustomGridLookUpEdit.cs" />
+    <Compile Include="ControlsEx\GridControl\CustomGridPainter.cs" />
+    <Compile Include="ControlsEx\GridControl\CustomGridView.cs" />
+    <Compile Include="ControlsEx\GridControl\GridInfoRegistrator.cs" />
+    <Compile Include="ControlsEx\GridControl\MrGridComboBox.cs" />
+    <Compile Include="ControlsEx\GridControl\MrGridNormalTextBox.cs" />
+    <Compile Include="ControlsEx\GridControl\MrGridNumericTextBox.cs" />
+    <Compile Include="ControlsEx\GridControl\MrGridMaskedTextBox.cs" />
+    <Compile Include="ControlsEx\GridControl\MrGridTextBox.cs" />
+    <Compile Include="ControlsEx\GridControl\RepositoryItemCustomGridLookUpEdit.cs" />
+    <Compile Include="ControlsEx\NotifyPanel\NotifyPanel.cs" />
+    <Compile Include="ControlsEx\NotifyPanel\NotifyType.cs" />
+    <Compile Include="ControlsEx\NotifyPanel\UiNotifier.cs" />
+    <Compile Include="Dialogs\FrmDeleteConfirm.cs" />
+    <Compile Include="Dialogs\FrmDeleteConfirm.Designer.cs">
+      <DependentUpon>FrmDeleteConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Printing\DevPrint\XtraReport1.cs" />
+    <Compile Include="Printing\DevPrint\XtraReport1.Designer.cs">
+      <DependentUpon>XtraReport1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SplashScreen\PleaseWait.cs" />
+    <Compile Include="SplashScreen\PleaseWait.Designer.cs">
+      <DependentUpon>PleaseWait.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SplashScreen\WinSplashScreen.cs" />
+    <Compile Include="SplashScreen\WinSplashScreen.Designer.cs">
+      <DependentUpon>WinSplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinControl\MrForm.cs" />
+    <Compile Include="WinControl\MrForm.Designer.cs">
+      <DependentUpon>MrForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XtraReport2.cs" />
+    <Compile Include="XtraReport2.Designer.cs">
+      <DependentUpon>XtraReport2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XtraUserControl1.cs" />
+    <Compile Include="XtraUserControl1.Designer.cs">
+      <DependentUpon>XtraUserControl1.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ControlsEx\Control\MrGroup.resx">
+      <DependentUpon>MrGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FrmDeleteConfirm.resx">
+      <DependentUpon>FrmDeleteConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Printing\DevPrint\XtraReport1.resx">
+      <DependentUpon>XtraReport1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplashScreen\PleaseWait.resx">
+      <DependentUpon>PleaseWait.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SplashScreen\WinSplashScreen.resx">
+      <DependentUpon>WinSplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinControl\MrForm.resx">
+      <DependentUpon>MrForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraReport2.resx">
+      <DependentUpon>XtraReport2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="XtraUserControl1.resx">
+      <DependentUpon>XtraUserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Printing\Barcode\" />
+    <Folder Include="Setting\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Micon.ico" />
+    <None Include="Resources\SpPleaseWait.gif" />
+    <None Include="Resources\SiyZo.ico" />
+    <None Include="Resources\MrLogo.ico" />
+    <None Include="Resources\Image1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\MrDAL.csproj">
+      <Project>{E7069FCA-1D59-4FA6-8CBC-FEDC25A6F99F}</Project>
+      <Name>MrDAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

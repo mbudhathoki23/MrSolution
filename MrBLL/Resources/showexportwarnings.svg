@@ -1,0 +1,10 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<svg x="0px" y="0px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 32 32" xml:space="preserve" id="Layer_1">
+  <g id="ShowExportWarnings">
+    <g opacity="0.5" class="st0">
+      <rect x="10" y="10" width="12" height="12" rx="0" ry="0" fill="#D11C1C" opacity="0.5" class="Red" />
+    </g>
+    <path d="M23,24c0.5,0,1-0.5,1-1V10V8h-2H9C8.5,8,8,8.5,8,9v13v2h2H23z M10,10h12v12H10V10z" fill="#D11C1C" class="Red" />
+    <path d="M8,22v2H3c-0.5,0-1-0.5-1-1V3c0-0.5,0.5-1,1-1h20c0.5,0,1,0.5,1,1v5h-2V4H4v18H8z M29,8h-5v2h4v18H10v-4H8v5   c0,0.5,0.5,1,1,1h20c0.5,0,1-0.5,1-1V9C30,8.5,29.5,8,29,8z" fill="#727272" class="Black" />
+  </g>
+</svg>

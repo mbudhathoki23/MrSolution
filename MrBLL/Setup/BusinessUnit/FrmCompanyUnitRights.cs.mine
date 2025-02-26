@@ -1,0 +1,100 @@
+﻿using MrDAL.Control.WinControl;
+using MrDAL.Core.Extensions;
+using MrDAL.Global.Common;
+using MrDAL.Master.Interface;
+using MrDAL.Master;
+using System;
+using System.Data;
+using MrDAL.Utility.Server;
+using System.Windows.Forms;
+
+namespace MrBLL.Setup.BusinessUnit
+{
+    public partial class FrmCompanyUnitRights : MrForm
+    {
+        public FrmCompanyUnitRights()
+        {
+            InitializeComponent();
+        }
+
+        private void FrmCompanyUnitRights_Load(object sender, EventArgs e)
+        {
+            ObjGlobal.DgvBackColor(dgv_Product);
+            BindUsers();
+            var userId = cmb_User.SelectedIndex != -1 ? cmb_User.SelectedValue.GetInt() : 0;
+            BindCompany(userId);
+        }
+        // METHOD FOR THIS FORM
+        public void BindUsers()
+        {
+            var dt1 = _master.GetMasterUser();
+            if (dt1.Rows.Count <= 0)
+            {
+                return;
+            }
+            cmb_User.DataSource = dt1;
+            cmb_User.DisplayMember = "User_Name";
+            cmb_User.ValueMember = "User_Id";
+            cmb_User.SelectedIndex = 0;
+        }
+       
+    public void BindCompany(int loginUserId)
+    {
+        dgv_Product.DataSource = null;
+        string query = @$"
+            SELECT CASE WHEN ISNULL(br.BranchId,0) = 0 THEN 0 ELSE 1 END CmpChk,b.Branch_ID Branch_Id,b.Branch_Name Branch_Name FROM AMS.Branch b
+	            LEFT OUTER JOIN 
+				(
+					SELECT DISTINCT br.BranchId FROM AMS.BranchRights br WHERE br.UserId = {loginUserId}
+				) AS br ON b.Branch_ID = br.BranchId; ";
+        var dtCompanyBind = GetConnection.SelectDataTableQuery(query);
+        dgv_Product.Rows.Clear();
+        if (dtCompanyBind.Rows.Count > 0)
+        {
+            var iRows = 0;
+            dgv_Product.Rows.Clear();
+            dgv_Product.Rows.Add(dtCompanyBind.RowsCount());
+            foreach (DataRow ro in dtCompanyBind.Rows)
+            {
+                dgv_Product.Rows[iRows].Cells["IsCheck"].Value = ro["CmpChk"].GetInt() == 1;
+                dgv_Product.Rows[iRows].Cells["GTxtBranchId"].Value = ro["Branch_Id"].ToString();
+                dgv_Product.Rows[iRows].Cells["GTxtBranch"].Value = ro["Branch_Name"].ToString();
+                iRows++;
+            }
+            dgv_Product.ClearSelection();
+        }
+        ObjGlobal.DgvBackColor(dgv_Product);
+    }
+
+
+
+    // OBJECT
+    private IMasterSetup _master = new ClsMasterSetup();
+
+        private void cb_SelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_SelectAll.Checked)
+            {
+                foreach (DataGridViewRow viewRow in dgv_Product.Rows)
+                {
+                    viewRow.Cells[0].Value = true;
+                }
+            }
+            else
+            {
+                foreach (DataGridViewRow viewRow in dgv_Product.Rows)
+                {
+                    viewRow.Cells[0].Value = false;
+                }
+            }
+        }
+
+        private void cmb_User_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (ActiveControl != null)
+            {
+                BindCompany(cmb_User.SelectedValue.GetInt());
+            }
+        }
+    }
+}

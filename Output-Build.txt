@@ -1,1 +1,5 @@
-﻿1>------ Build started: Project: AMS, Configuration: Debug Any CPU ------
+﻿Clean started...
+1>------ Clean started: Project: MrBLL, Configuration: Debug Any CPU ------
+2>------ Clean started: Project: MrControl, Configuration: Debug Any CPU ------
+3>------ Clean started: Project: MrDAL, Configuration: Debug Any CPU ------
+========== Clean: 3 succeeded, 0 failed, 0 skipped ==========

@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4A57AFC0-DC37-49F7-B27E-65ACC1986846}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DatabaseModule</RootNamespace>
+    <AssemblyName>DatabaseModule</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>AccountIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v24.2, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v24.2.Core, Version=24.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CloudSync\AccountLedgerDataSync.cs" />
+    <Compile Include="CloudSync\BaseSyncData.cs" />
+    <Compile Include="CloudSync\DataSyncPushModel.cs" />
+    <Compile Include="CloudSync\DbSyncRepoInjectData.cs" />
+    <Compile Include="CloudSync\IrdServer\BillViewModel.cs" />
+    <Compile Include="CloudSync\IrdServer\IrdSyncSalesBilling.cs" />
+    <Compile Include="CloudSync\IrdServer\IrdSyncSalesReturnBill.cs" />
+    <Compile Include="CloudSync\IrdServer\ReturnBillViewModel.cs" />
+    <Compile Include="CloudSync\IrdServer\SqlQuerySyncViewModel.cs" />
+    <Compile Include="CloudSync\PurchaseInvoiceDataSync.cs" />
+    <Compile Include="CloudSync\PurchaseReturnDataSync.cs" />
+    <Compile Include="CloudSync\SalesInvoiceDataSync.cs" />
+    <Compile Include="CloudSync\SalesReturnData.cs" />
+    <Compile Include="CloudSync\StockDetail.cs" />
+    <Compile Include="CloudSync\SyncApiConfig.cs" />
+    <Compile Include="CloudSync\SyncApiErrorLog.cs" />
+    <Compile Include="CustomEnum\OrderType.cs" />
+    <Compile Include="DataEntry\OpeningMaster\ImportProductOpening.cs" />
+    <Compile Include="Master\ProductSetup\ImportProduct.cs" />
+    <Compile Include="Setup\CompanyMaster\Branch.cs" />
+    <Compile Include="Setup\CompanyMaster\CompanyInfo.cs" />
+    <Compile Include="Setup\CompanyMaster\CompanyUnit.cs" />
+    <Compile Include="Setup\CompanyMaster\FiscalYear.cs" />
+    <Compile Include="CustomEnum\EntryModule.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\DayClosing\CashClosing.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\CashBankVoucher\CB_Details.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\CashBankVoucher\CB_Master.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\JournalVoucher\JV_Details.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\JournalVoucher\JV_Master.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\NotesMaster\Notes_Master.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\PostDateCheque\PostDateCheque.cs" />
+    <Compile Include="DataEntry\OpeningMaster\LedgerOpening.cs" />
+    <Compile Include="DataEntry\OpeningMaster\ProductOpening.cs" />
+    <Compile Include="DataEntry\ProductionSystem\BillOfMaterials\BOM_Details.cs" />
+    <Compile Include="DataEntry\ProductionSystem\BillOfMaterials\BOM_Master.cs" />
+    <Compile Include="DataEntry\ProductionSystem\FinishedGoodReceived\FGR_Details.cs" />
+    <Compile Include="DataEntry\ProductionSystem\FinishedGoodReceived\FGR_Master.cs" />
+    <Compile Include="DataEntry\ProductionSystem\Production\Production_Details.cs" />
+    <Compile Include="DataEntry\ProductionSystem\Production\Production_Master.cs" />
+    <Compile Include="DataEntry\ProductionSystem\RawMaterialsIssue\StockIssue_Details.cs" />
+    <Compile Include="DataEntry\ProductionSystem\RawMaterialsIssue\StockIssue_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\InvoiceSettlement.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SalesInvoicePaymentMode.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SalesInvoicePaymentModel.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SalesPaymentMode.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SB_ExchangeDetails.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SB_Master_OtherDetails.cs" />
+    <Compile Include="DataEntry\StockTransaction\GodownTransfer\GT_DETAILS.cs" />
+    <Compile Include="DataEntry\StockTransaction\GodownTransfer\GT_MASTER.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseAdditional\PAB_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseAdditional\PAB_Master.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseIndent\PIN_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseIndent\PIN_Master.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseReturn\PR_Term.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseInvoice\PB_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseInvoice\PB_Master.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseInvoice\PB_OtherMaster.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseInvoice\PB_Term.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallanReturn\PCR_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallanReturn\PCR_Master.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallanReturn\PCR_Term.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallan\PC_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallan\PC_Master.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallan\PC_Term.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseOrder\PO_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseOrder\PO_Master.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseOrder\PO_Term.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseReturn\PR_Details.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseReturn\PR_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesOrder\SO_Term.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesQuotation\SQ_Details.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesQuotation\SQ_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesQuotation\SQ_Term.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesChallan\SC_Details.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesChallan\SC_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesChallan\SC_Master_OtherDetails.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesChallan\SC_Term.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesOrder\SO_Details.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesOrder\SO_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesOrder\SO_Master_OtherDetails.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SB_Details.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SB_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\SB_Term.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesReturn\SR_Details.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesReturn\SR_Master.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesReturn\SR_Master_OtherDetails.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesReturn\SR_Term.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\Temp_SB_Details.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoice\Temp_SB_Master.cs" />
+    <Compile Include="DataEntry\StockTransaction\ProductScheme\Scheme_Details.cs" />
+    <Compile Include="DataEntry\StockTransaction\ProductScheme\Scheme_Master.cs" />
+    <Compile Include="DataEntry\StockTransaction\StockAdjustment\STA_Details.cs" />
+    <Compile Include="DataEntry\StockTransaction\StockAdjustment\STA_Master.cs" />
+    <Compile Include="Domains\BarcodePrint\BarCodeLabelProperty.cs" />
+    <Compile Include="Domains\BarcodePrint\BarCodeParamModel.cs" />
+    <Compile Include="Domains\BarcodePrint\BarCodePrintConfigModel.cs" />
+    <Compile Include="Domains\BarcodePrint\PrintTextType.cs" />
+    <Compile Include="Domains\BarcodePrint\ProductBarCodePrintModel.cs" />
+    <Compile Include="Domains\BarcodePrint\ProductBarCodeInfoModel.cs" />
+    <Compile Include="Master\LedgerSetup\AccountGroup.cs" />
+    <Compile Include="Master\LedgerSetup\AccountSubGroup.cs" />
+    <Compile Include="Master\LedgerSetup\Area.cs" />
+    <Compile Include="Master\ProductSetup\BarcodeList.cs" />
+    <Compile Include="Master\ProductSetup\BookDetails.cs" />
+    <Compile Include="Print\Product\BarcodePrint.cs" />
+    <Compile Include="Print\SalesInvoice\PrintingSalesInvoiceMaster.cs" />
+    <Compile Include="Print\SalesInvoice\SalesInvoiceDetails.cs" />
+    <Compile Include="Print\SalesInvoice\SalesInvoiceMaster.cs" />
+    <Compile Include="Setup\CompanyMaster\CompanyRights.cs" />
+    <Compile Include="Setup\CompanyMaster\GlobalCompany.cs" />
+    <Compile Include="Setup\SecurityRights\BranchRights.cs" />
+    <Compile Include="Master\InventorySetup\CostCenter.cs" />
+    <Compile Include="Master\InventorySetup\Counter.cs" />
+    <Compile Include="Master\LedgerSetup\Currency.cs" />
+    <Compile Include="Master\FinanceSetup\Department.cs" />
+    <Compile Include="Setup\DocumentNumberings\DocumentNumbering.cs" />
+    <Compile Include="Master\InventorySetup\FloorSetup.cs" />
+    <Compile Include="Master\LedgerSetup\GeneralLedger.cs" />
+    <Compile Include="Master\FinanceSetup\GiftVoucherList.cs" />
+    <Compile Include="Master\ProductSetup\Godown.cs" />
+    <Compile Include="Master\LedgerSetup\JuniorAgent.cs" />
+    <Compile Include="Master\LedgerSetup\MainArea.cs" />
+    <Compile Include="Master\FinanceSetup\MemberShipSetup.cs" />
+    <Compile Include="Master\FinanceSetup\MemberType.cs" />
+    <Compile Include="Master\FinanceSetup\NR_Master.cs" />
+    <Compile Include="Master\ProductSetup\Product.cs" />
+    <Compile Include="Master\ProductSetup\ProductAddInfo.cs" />
+    <Compile Include="Master\ProductSetup\ProductGroup.cs" />
+    <Compile Include="Master\ProductSetup\ProductSubGroup.cs" />
+    <Compile Include="Master\ProductSetup\ProductUnit.cs" />
+    <Compile Include="Setup\SystemSetting\IncomeTaxSetting.cs" />
+    <Compile Include="Setup\TermSetup\PT_Term.cs" />
+    <Compile Include="Master\LedgerSetup\MainAgent.cs" />
+    <Compile Include="Master\InventorySetup\RACK.cs" />
+    <Compile Include="Domains\SmsConfig\SMS_CONFIG.cs" />
+    <Compile Include="Setup\TermSetup\ST_Term.cs" />
+    <Compile Include="Master\LedgerSetup\SubLedger.cs" />
+    <Compile Include="Setup\LogSetting\SyncLogDetails.cs" />
+    <Compile Include="Setup\LogSetting\SyncTable.cs" />
+    <Compile Include="Master\InventorySetup\TableMaster.cs" />
+    <Compile Include="Master\InventorySetup\TableNo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CloudSync\AppLog.cs" />
+    <Compile Include="Setup\LogSetting\BR_LOG.cs" />
+    <Compile Include="Setup\SoftwareRegistration\LicenseInfo.cs" />
+    <Compile Include="Setup\LogSetting\LOGIN_LOG.cs" />
+    <Compile Include="CloudSync\SyncLogDetailModel.cs" />
+    <Compile Include="CloudSync\SyncLogModel.cs" />
+    <Compile Include="CloudSync\ProductDataSync.cs" />
+    <Compile Include="Domains\NightAudit\NightAuditLog.cs" />
+    <Compile Include="Setup\SoftwareRegistration\SoftwareRegistration.cs" />
+    <Compile Include="Setup\UserSetup\UserAccessControl.cs" />
+    <Compile Include="Setup\UserSetup\UserInfo.cs" />
+    <Compile Include="Setup\UserSetup\User_Role.cs" />
+    <Compile Include="Setup\PrintSetting\DocumentDesignPrint.cs" />
+    <Compile Include="Setup\SystemSetting\FinanceSetting.cs" />
+    <Compile Include="Setup\LogSetting\ImportLog.cs" />
+    <Compile Include="Setup\SystemSetting\InventorySetting.cs" />
+    <Compile Include="Setup\IrdConfig\IRDAPISetting.cs" />
+    <Compile Include="Setup\SystemSetting\PaymentSetting.cs" />
+    <Compile Include="Setup\SystemSetting\PurchaseSetting.cs" />
+    <Compile Include="Setup\SystemSetting\SalesSetting.cs" />
+    <Compile Include="Setup\SystemSetting\SystemSetting.cs" />
+    <Compile Include="Setup\SecurityRights\TagList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AccountIcon.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

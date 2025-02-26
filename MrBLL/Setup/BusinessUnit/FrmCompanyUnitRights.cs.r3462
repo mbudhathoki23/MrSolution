@@ -1,0 +1,20 @@
+﻿using MrDAL.Control.WinControl;
+using System;
+using MrDAL.Global.Common;
+
+namespace MrBLL.Setup.BusinessUnit
+{
+    public partial class FrmCompanyUnitRights : MrForm
+    {
+        public FrmCompanyUnitRights()
+        {
+            InitializeComponent();
+        }
+
+        private void FrmCompanyUnitRights_Load(object sender, EventArgs e)
+        {
+        }
+
+  
+    }
+}

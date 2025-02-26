@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DE6846AC-E786-440F-B7F1-4338F7DB44C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PrintControl</RootNamespace>
+    <AssemblyName>PrintControl</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="Microsoft.SqlServer.Types, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.160.1000.6\lib\net462\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PrintClass\CustomClass\CellOwnerDrawEventHandler.cs" />
+    <Compile Include="PrintClass\CustomClass\DGVCellDrawingEventArgs.cs" />
+    <Compile Include="PrintClass\CustomClass\Extensions.cs" />
+    <Compile Include="PrintClass\CustomClass\ICustomControl.cs" />
+    <Compile Include="PrintDesign\PartyConfirmation\BalanceConfirmation.cs">
+      <DependentUpon>BalanceConfirmation.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\PartyConfirmation\BalanceConfirmationEnglish.cs">
+      <DependentUpon>BalanceConfirmationEnglish.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\FireAndIceSalesInvoiceA5.cs">
+      <DependentUpon>FireAndIceSalesInvoiceA5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\HimalPrabhatHardwareSalesInvoiceA4.cs">
+      <DependentUpon>HimalPrabhatHardwareSalesInvoiceA4.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\Home Supplies - Sales Order Design.cs">
+      <DependentUpon>Home Supplies - Sales Order Design.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\HimalayanSalesInvoiceProductWiseA4.cs">
+      <DependentUpon>HimalayanSalesInvoiceProductWiseA4.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\InternetServiceBillingA4.cs">
+      <DependentUpon>InternetServiceBillingA4.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\InternetServiceBillingA4Half.cs">
+      <DependentUpon>InternetServiceBillingA4Half.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\NationalA5 - Hospital.cs">
+      <DependentUpon>NationalA5 - Hospital.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\Prabin_Sales_Invoice_A5.cs">
+      <DependentUpon>Prabin_Sales_Invoice_A5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\Ramchandra_Sales_Invoice_A5.cs">
+      <DependentUpon>Ramchandra_Sales_Invoice_A5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\HimalayanSalesInvoiceA5.cs">
+      <DependentUpon>HimalayanSalesInvoiceA5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\SalesInvoiceA4.cs">
+      <DependentUpon>SalesInvoiceA4.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\SalesInvoiceA4half.cs">
+      <DependentUpon>SalesInvoiceA4half.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\SalesInvoiceA5.cs">
+      <DependentUpon>SalesInvoiceA5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\SasaConstructionSalesInvoiceA4.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SasaConstructionSalesInvoiceA4.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\SindhuligadhiSalesInvoiceA5.cs">
+      <DependentUpon>SindhuligadhiSalesInvoiceA5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Return\MandRSolutionSalesReturnInvoice.cs">
+      <DependentUpon>MandRSolutionSalesReturnInvoice.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Return\SasaConstructionSalesReturnInvoiceA4.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SasaConstructionSalesReturnInvoiceA4.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="PrintFunction\CellOwnerDrawEventHandler.cs" />
+    <Compile Include="PrintFunction\DataGridViewPrinter.cs" />
+    <Compile Include="PrintFunction\DGVCellDrawingEventArgs.cs" />
+    <Compile Include="PrintFunction\DGVPrinter.cs" />
+    <Compile Include="PrintFunction\Extensions.cs" />
+    <Compile Include="PrintFunction\LogManager.cs" />
+    <Compile Include="PrintFunction\LogWriter.cs" />
+    <Compile Include="PrintMethod\ClsPrintFunction.cs" />
+    <Compile Include="PrintClass\CrystalView\ClsDocumentPrinting.cs" />
+    <Compile Include="PrintDesign\Product\BarcodePrint2.cs">
+      <DependentUpon>BarcodePrint.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Purchase Order\PurchaseOrderFireAndIceDesign1.cs">
+      <DependentUpon>PurchaseOrderFireAndIceDesign.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Purchase Return\PurchaseReturnBestBuyShoppingCenterDesign1.cs">
+      <DependentUpon>PurchaseReturnBestBuyShoppingCenterDesign.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Purchase Return\PurchaseReturnDesign1.cs">
+      <DependentUpon>PurchaseReturnDesign.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\AlisanGazalSalesInvoiceA5.cs">
+      <DependentUpon>AlisanGazalSalesInvoiceA5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <Compile Include="PrintDesign\Sales Invoice\HariomWholesaleMartSalesInvoice.cs">
+      <DependentUpon>HariomWholesaleMartSalesInvoice.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\HomeSuppliesSalesInvoiceDesign2.cs">
+      <DependentUpon>HomeSuppliesSalesInvoiceDesign.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\NationalA5HospitalDesign1.cs">
+      <DependentUpon>NationalA5HospitalDesign.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Invoice\RestroSalesInvoiceA52.cs">
+      <DependentUpon>RestroSalesInvoiceA5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Order\HomeSuppliesSalesOrderDesign1.cs">
+      <DependentUpon>HomeSuppliesSalesOrderDesign.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintDesign\Sales Return\Hariom_Sales_Return_A52.cs">
+      <DependentUpon>Hariom_Sales_Return_A5.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="PrintClass\DirectPrint\ClsPrintDocument.cs" />
+    <Compile Include="PrintClass\DirectPrint\DataGridViewPrinter.cs" />
+    <Compile Include="PrintClass\DirectPrint\Docinfo.cs" />
+    <Compile Include="PrintClass\DirectPrint\PrintDirect.cs" />
+    <Compile Include="PrintClass\DirectPrint\PrintSalesBill.cs" />
+    <Compile Include="PrintClass\DirectPrint\RawPrinterHelper.cs" />
+    <Compile Include="PrintClass\DirectPrint\StringExtensions.cs" />
+    <Compile Include="PrintClass\DirectPrint\TscPrintFunction.cs" />
+    <Compile Include="PrintClass\Domains\ClsPrintControl.cs" />
+    <Compile Include="PrintClass\SalesInvoice\PrintingSalesInvoice.cs" />
+    <Compile Include="PrintClass\SalesInvoice\SbDetails.cs" />
+    <Compile Include="PrintClass\SalesInvoice\SbExchangeDetails.cs" />
+    <Compile Include="PrintClass\SalesInvoice\SbMaster.cs" />
+    <Compile Include="PrintClass\SalesInvoice\SbMasterOtherDetails.cs" />
+    <Compile Include="PrintClass\SalesInvoice\SbTerm.cs" />
+    <Compile Include="PrintClass\SalesInvoice\SbTermProduct.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RawPrintFunction\RawPrinter.cs" />
+    <Compile Include="RawPrintFunction\RawPrinter.Win32.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PrintDesign\PartyConfirmation\BalanceConfirmation.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceConfirmation.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintDesign\PartyConfirmation\BalanceConfirmationEnglish.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceConfirmationEnglish.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintDesign\Product\BarcodePrint.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BarcodePrint2.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintDesign\Purchase Order\PurchaseOrderFireAndIceDesign.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseOrderFireAndIceDesign1.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintDesign\Purchase Return\PurchaseReturnBestBuyShoppingCenterDesign.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseReturnBestBuyShoppingCenterDesign1.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintDesign\Purchase Return\PurchaseReturnDesign.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseReturnDesign1.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\AlisanGazalSalesInvoiceA5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AlisanGazalSalesInvoiceA5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\FireAndIceSalesInvoiceA5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>FireAndIceSalesInvoiceA5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\HariomWholesaleMartSalesInvoice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HariomWholesaleMartSalesInvoice.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\HimalPrabhatHardwareSalesInvoiceA4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HimalPrabhatHardwareSalesInvoiceA4.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\Home Supplies - Sales Order Design.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Home Supplies - Sales Order Design.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\HomeSuppliesSalesInvoiceDesign.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HomeSuppliesSalesInvoiceDesign2.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\HimalayanSalesInvoiceProductWiseA4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HimalayanSalesInvoiceProductWiseA4.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\InternetServiceBillingA4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InternetServiceBillingA4.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\InternetServiceBillingA4Half.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>InternetServiceBillingA4Half.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\NationalA5 - Hospital.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>NationalA5 - Hospital.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\NationalA5HospitalDesign.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>NationalA5HospitalDesign1.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\Prabin_Sales_Invoice_A5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Prabin_Sales_Invoice_A5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\Ramchandra_Sales_Invoice_A5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Ramchandra_Sales_Invoice_A5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\RestroSalesInvoiceA5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>RestroSalesInvoiceA52.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\HimalayanSalesInvoiceA5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HimalayanSalesInvoiceA5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\SalesInvoiceA4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SalesInvoiceA4.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\SalesInvoiceA4half.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SalesInvoiceA4half.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\SalesInvoiceA5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SalesInvoiceA5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\SindhuligadhiSalesInvoiceA5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SindhuligadhiSalesInvoiceA5.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Invoice\SasaConstructionSalesInvoiceA4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SasaConstructionSalesInvoiceA4.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <EmbeddedResource Include="PrintDesign\Sales Order\HomeSuppliesSalesOrderDesign.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>HomeSuppliesSalesOrderDesign1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrintDesign\Sales Return\Hariom_Sales_Return_A5.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Hariom_Sales_Return_A52.cs</LastGenOutput>
+    </EmbeddedResource>
+    <AdditionalFiles Include="PrintDesign\Sales Return\MandRSolutionSalesReturnInvoice.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MandRSolutionSalesReturnInvoice.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="PrintDesign\Sales Return\SasaConstructionSalesReturnInvoiceA4.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SasaConstructionSalesReturnInvoiceA4.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PrintClass\DevReports\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DataAccessLayers.csproj">
+      <Project>{E7069FCA-1D59-4FA6-8CBC-FEDC25A6F99F}</Project>
+      <Name>DataAccessLayers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props'))" />
+  </Target>
+</Project>

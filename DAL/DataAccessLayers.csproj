@@ -1,0 +1,1043 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E7069FCA-1D59-4FA6-8CBC-FEDC25A6F99F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MrDAL</RootNamespace>
+    <AssemblyName>MrDAL</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>AccountIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '64x|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\64x\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '64x|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\64x\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '64x|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\64x\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '64x|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\64x\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Control\ControlsEx\ClsMasterForm.cs" />
+    <Compile Include="Control\ControlsEx\ColumnInfo.cs" />
+    <Compile Include="Control\ControlsEx\Control\ClsSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\ClsSeparatorH.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\DataGridViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\EntryGridViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\GroupBoxConstants.cs" />
+    <Compile Include="Control\ControlsEx\Control\MrComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\MrDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\MrGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\MrMaskedTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\MrNumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\MrPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\MrTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\RoundPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\TextBoxType.cs" />
+    <Compile Include="Control\ControlsEx\Control\TreeViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\Control\XtraLayoutPanelViewBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\CustomCheckEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\CustomControlFactory.cs" />
+    <Compile Include="Control\ControlsEx\CustomLabelControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\CustomSimpleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\CustomTextEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\DGVCellDrawingEventArgs.cs" />
+    <Compile Include="Control\ControlsEx\GridControl\CustomGridControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\CustomGridLookUpEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\CustomGridPainter.cs" />
+    <Compile Include="Control\ControlsEx\GridControl\CustomGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\GridInfoRegistrator.cs" />
+    <Compile Include="Control\ControlsEx\GridControl\MrGridComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\MrGridMaskedTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\MrGridNormalTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\MrGridNumericTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\MrGridTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\GridControl\RepositoryItemCustomGridLookUpEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\ICustomControl.cs" />
+    <Compile Include="Control\ControlsEx\LogManager.cs" />
+    <Compile Include="Control\ControlsEx\LogWriter.cs" />
+    <Compile Include="Control\ControlsEx\MenuStripCustom\ClsColor.cs" />
+    <Compile Include="Control\ControlsEx\MenuStripCustom\Vs2008ContextMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\MenuStripCustom\VS2008MenuRenderer.cs" />
+    <Compile Include="Control\ControlsEx\MenuStripCustom\VS2008MenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\MenuStripCustom\VS2008ToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\MenuStripCustom\VS2008ToolStripContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\MenuStripCustom\VS2008ToolStripRenderer.cs" />
+    <Compile Include="Control\ControlsEx\NotifyPanel\NotifyPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ControlsEx\NotifyPanel\NotifyType.cs" />
+    <Compile Include="Control\ControlsEx\NotifyPanel\UiNotifier.cs" />
+    <Compile Include="Control\Dialogs\FrmDeleteConfirm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\Dialogs\FrmDeleteConfirm.Designer.cs">
+      <DependentUpon>FrmDeleteConfirm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\SplashScreen\PleaseWait.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\SplashScreen\PleaseWait.Designer.cs">
+      <DependentUpon>PleaseWait.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\SplashScreen\WinSplashScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\SplashScreen\WinSplashScreen.Designer.cs">
+      <DependentUpon>WinSplashScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\WinControl\MrForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\WinControl\MrForm.Designer.cs">
+      <DependentUpon>MrForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Abstractions\DbSyncRepositoryBase.cs" />
+    <Compile Include="Core\Abstractions\IDataSyncRepository.cs" />
+    <Compile Include="Core\Extensions\BooleanExt.cs" />
+    <Compile Include="Core\Extensions\ByteExt.cs" />
+    <Compile Include="Core\Extensions\ComboBoxExt.cs" />
+    <Compile Include="Core\Extensions\ControlExt.cs" />
+    <Compile Include="Core\Extensions\DapperExt.cs" />
+    <Compile Include="Core\Extensions\DataGridViewExt.cs" />
+    <Compile Include="Core\Extensions\DataTableExt.cs" />
+    <Compile Include="Core\Extensions\DataTimeExt.cs" />
+    <Compile Include="Core\Extensions\DataTypeExt.cs" />
+    <Compile Include="Core\Extensions\DecimalExt.cs" />
+    <Compile Include="Core\Extensions\DevDataGridView.cs" />
+    <Compile Include="Core\Extensions\GuidExt.cs" />
+    <Compile Include="Core\Extensions\IntExt.cs" />
+    <Compile Include="Core\Extensions\LinqExt.cs" />
+    <Compile Include="Core\Extensions\LongExt.cs" />
+    <Compile Include="Core\Extensions\ObjectExt.cs" />
+    <Compile Include="Core\Extensions\ReflectionExt.cs" />
+    <Compile Include="Core\Extensions\ShortExt.cs" />
+    <Compile Include="Core\Extensions\StringExt.cs" />
+    <Compile Include="Core\Extensions\TrDataGridView.cs" />
+    <Compile Include="Core\Logging\Common.cs" />
+    <Compile Include="Core\Logging\LogEngineE.cs" />
+    <Compile Include="Core\Logging\ILogEngine.cs" />
+    <Compile Include="Core\Logging\LogEngineFactory.cs" />
+    <Compile Include="Core\Logging\NLogWrapper.cs" />
+    <Compile Include="Core\Logging\SqliteLogTypeE.cs" />
+    <Compile Include="Core\Logging\SqliteWrapper.cs" />
+    <Compile Include="Core\Utils\AppLoggerFactory.cs" />
+    <Compile Include="Core\Utils\AppNLogger.cs" />
+    <Compile Include="Core\Utils\Debouncer.cs" />
+    <Compile Include="Core\Utils\EncryptOrDecrypt.cs" />
+    <Compile Include="Core\Utils\ErrorDefinition.cs" />
+    <Compile Include="Core\Utils\ErrorHandler.cs" />
+    <Compile Include="Core\Utils\ErrorType.cs" />
+    <Compile Include="Core\Utils\FingerPrint.cs" />
+    <Compile Include="Core\Utils\IAppLogger.cs" />
+    <Compile Include="Core\Utils\JsonUtils.cs" />
+    <Compile Include="Core\Utils\LoggerEngine.cs" />
+    <Compile Include="Core\Utils\NetUtils.cs" />
+    <Compile Include="Core\Utils\QueryUtils.cs" />
+    <Compile Include="Core\Utils\SqlUtils.cs" />
+    <Compile Include="Core\Utils\XmlUtils.cs" />
+    <Compile Include="DataEntry\Interface\ProductionSystem\FinishedGoodReceived\IFinishedGoodReceivedRepository.cs" />
+    <Compile Include="DataEntry\Interface\ProductionSystem\Production\IProductionRepository.cs" />
+    <Compile Include="DataEntry\Interface\ProductionSystem\RawMaterialsIssue\IRawMaterialsIssueRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseAdditionalRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseOrderRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseChallanRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseChallanReturnRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseIndentRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseInvoiceRepository.cs" />
+    <Compile Include="DataEntry\Interface\PurchaseMaster\IPurchaseReturnRepository.cs" />
+    <Compile Include="DataEntry\Interface\SalesChallan\ISalesChallanRepository.cs" />
+    <Compile Include="DataEntry\Interface\SalesMaster\ISalesInvoiceRepository.cs" />
+    <Compile Include="DataEntry\Interface\SalesOrder\ISalesOrderRepository.cs" />
+    <Compile Include="DataEntry\Interface\SalesQuotation\ISalesQuotationRepository.cs" />
+    <Compile Include="DataEntry\Interface\SalesReturn\ISalesReturnRepository.cs" />
+    <Compile Include="DataEntry\ProductionSystem\BillOfMaterials\BillOfMaterialsRepository.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\CashBankVoucher\CashBankVoucherRepository.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\JournalVoucher\JournalVoucherRepository.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\NotesMaster\NotesMasterRepository.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\PostDateCheque\PostDateChequeRepository.cs" />
+    <Compile Include="DataEntry\Interface\ProductionSystem\BillOfMaterials\IBillOfMaterialsRepository.cs" />
+    <Compile Include="DataEntry\Interface\FinanceTransaction\CashBankVoucher\ICashBankVoucherRepository.cs" />
+    <Compile Include="DataEntry\Interface\FinanceTransaction\JournalVoucher\IJournalVoucherRepository.cs" />
+    <Compile Include="DataEntry\Interface\FinanceTransaction\NotesMaster\INotesMasterRepository.cs" />
+    <Compile Include="DataEntry\Interface\FinanceTransaction\PostDateCheque\IPostDateChequeRepository.cs" />
+    <Compile Include="DataEntry\Interface\OpeningMaster\ILedgerOpeningRepository.cs" />
+    <Compile Include="DataEntry\Interface\OpeningMaster\IProductOpeningRepository.cs" />
+    <Compile Include="DataEntry\OpeningMaster\LedgerOpeningRepository.cs" />
+    <Compile Include="DataEntry\OpeningMaster\ProductOpeningRepository.cs" />
+    <Compile Include="DataEntry\ProductionSystem\FinishedGoodReceived\FinishedGoodReceivedRepository.cs" />
+    <Compile Include="DataEntry\ProductionSystem\Production\ProductionRepository.cs" />
+    <Compile Include="DataEntry\ProductionSystem\RawMaterialsIssue\RawMaterialsIssueRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseAdditionalRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseOrderRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallanRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseChallanReturnRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseIndentRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseInvoiceRepository.cs" />
+    <Compile Include="DataEntry\PurchaseMaster\PurchaseReturnInvoiceRepository.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesChallanRepository.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesInvoiceRepository.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesOrderRepository.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesQuotationRepository.cs" />
+    <Compile Include="DataEntry\SalesMaster\SalesReturnRepository.cs" />
+    <Compile Include="Data\EntityHelper.cs" />
+    <Compile Include="Data\SqlCore.cs" />
+    <Compile Include="Data\SqlHelperParameterCache.cs" />
+    <Compile Include="Data\SqlUtil.cs" />
+    <Compile Include="Data\SqlWrapper.cs" />
+    <Compile Include="Domains\Billing\SalesInvoiceService.cs" />
+    <Compile Include="Domains\CRM\Common\GetCrmMasterList.cs" />
+    <Compile Include="Domains\CRM\Master\CrmMaster.cs" />
+    <Compile Include="Domains\CRM\Master\ICrmMaster.cs" />
+    <Compile Include="Domains\CRM\Master\Model\ClientCollection.cs" />
+    <Compile Include="Domains\CRM\Master\Model\ClientSource.cs" />
+    <Compile Include="Domains\CRM\Master\ObjCommon.cs" />
+    <Compile Include="Domains\Hospital\ViewModule\VmBedMaster.cs" />
+    <Compile Include="Domains\Hospital\ViewModule\VmBedType.cs" />
+    <Compile Include="Domains\Hospital\ViewModule\VmDoctor.cs" />
+    <Compile Include="Domains\Hospital\ViewModule\VmDoctorType.cs" />
+    <Compile Include="Domains\Hospital\ViewModule\VmPatient.cs" />
+    <Compile Include="Domains\Interface\ITableMasterRepository.cs" />
+    <Compile Include="Domains\MrPayroll\ClsDataCreate.cs" />
+    <Compile Include="Domains\MrSchoolTime\ViewModule\ObjSchMaster.cs" />
+    <Compile Include="Domains\POS\Master\CounterRepository.cs" />
+    <Compile Include="Domains\Reports\AppLogReportModel.cs" />
+    <Compile Include="Domains\Reports\AppLogReportService.cs" />
+    <Compile Include="Domains\Reports\SalesRegisterSummaryProductLedgerWise.cs" />
+    <Compile Include="Domains\Restro\Master\TableMasterRepository.cs" />
+    <Compile Include="Domains\Shared\AppLogger\AppLoggerService.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogActionType.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogGroup.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogRefType.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogType.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogTypeCollection.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogContext.cs" />
+    <Compile Include="Domains\Shared\AppLogger\Models\AppLogTypeModel.cs" />
+    <Compile Include="Domains\Shared\DataSync\Abstractions\DbSyncRepositoryBase.cs" />
+    <Compile Include="Domains\Shared\DataSync\Abstractions\IDataSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Common\DataSyncHelper.cs" />
+    <Compile Include="Domains\Shared\DataSync\Common\DataSyncManager.cs" />
+    <Compile Include="Domains\Shared\DataSync\Common\NetworkConnectionHandler.cs" />
+    <Compile Include="Domains\Shared\DataSync\Common\SyncRepoType.cs" />
+    <Compile Include="Domains\Shared\DataSync\Factories\DataSyncProviderFactory.cs" />
+    <Compile Include="Domains\Shared\DataSync\Handlers\CompressHandler.cs" />
+    <Compile Include="Domains\Shared\DataSync\Handlers\SyncApiClient.cs" />
+    <Compile Include="Domains\Interface\ICounterRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\CashBankVoucherSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\CompanyUnitSyncRepository.cs" />
+    <Compile Include="Domains\POS\Master\FloorRepository.cs" />
+    <Compile Include="Domains\Interface\IFloorRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\DocumentNumberingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\FinanceSettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\FiscalYearSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\IncomeTaxSettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\InventorySettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\JournalVoucherSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\LicenseRegistrationSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PaymentSettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PostDateChequeSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\LicenseInfoSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseBillingTermSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseSettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesBillingTermSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesOrderSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesSettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\StockAdjustmentSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesReturnSyncNewRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesSyncNewRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesChallanSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseReturnSyncNewRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseInvoiceSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseChallanReturnSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseChallanSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseOrderSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductAddInfoSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductOpeningSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\LedgerOpeningSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductSchemeSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductUnitSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductSubGroupSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductGroupSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\NrMasterSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\RackSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\GodownSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\CostCenterSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\StockDetailSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SystemSettingSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\TableMasterSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\FloorSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\CounterSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\GiftVoucherListSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\MemberShipSetupSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\MemberTypeSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\JuniorAgentSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\AreaSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\MainAreaSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SeniorAgentSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\CurrencySyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\DepartmentSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\BranchSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SubLedgerSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\GeneralLedgerSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\AccountSubGroupSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\AccountGroupSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\AccountLedgerSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\ProductsSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseChallanRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseReturnSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\PurchaseSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesReturnSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SalesSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\LoginLogSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SoftwareRegistrationSyncRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SyncLogDetailRepository.cs" />
+    <Compile Include="Domains\Shared\DataSync\Repositories\SyncLogRepository.cs" />
+    <Compile Include="Domains\Shared\SmsApi\Handlers\SmsHttpClient.cs" />
+    <Compile Include="Domains\Shared\SmsApi\Models\SmsReportType.cs" />
+    <Compile Include="Domains\Shared\SmsApi\Models\SmsApiConfigModel.cs" />
+    <Compile Include="Domains\Shared\SmsApi\Models\SmsBalanceModel.cs" />
+    <Compile Include="Domains\Shared\SmsApi\Models\SmsReportModel.cs" />
+    <Compile Include="Domains\Shared\SmsApi\SmsApiService.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UacRoleType.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UacAccessFeature.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UacAction.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UacEntryModel.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UacFeatureGroup.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UacModule.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UserInfoModel.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UserPermissionModel.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UserRoleModel.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UserRolePermissionConfigModel.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\Models\UserRolePermissionModel.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\UacFeatureBox.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\UacManager.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\UacService.cs" />
+    <Compile Include="Domains\Shared\UserAccessControl\StaticModels.cs" />
+    <Compile Include="DataEntry\FinanceTransaction\DayClosing\CashClosingRepository.cs" />
+    <Compile Include="DataEntry\CommonSetup\PartyInfoRepository.cs" />
+    <Compile Include="DataEntry\CommonSetup\ProductBatchListRepository.cs" />
+    <Compile Include="DataEntry\CommonSetup\TermCalculationRepository.cs" />
+    <Compile Include="DataEntry\CommonSetup\UserDefinedFieldRepository.cs" />
+    <Compile Include="DataEntry\Design\FinanceDesign.cs" />
+    <Compile Include="DataEntry\Interface\FinanceTransaction\DayClosing\ICashClosingRepository.cs" />
+    <Compile Include="DataEntry\Interface\Common\IPartyInfoRepository.cs" />
+    <Compile Include="DataEntry\Interface\Common\IProductBatchListRepository.cs" />
+    <Compile Include="DataEntry\Interface\Common\ITermCalculationRepository.cs" />
+    <Compile Include="DataEntry\Interface\Common\IUserDefinedFieldRepository.cs" />
+    <Compile Include="DataEntry\TransactionClass\ClsPurchaseEntry.cs" />
+    <Compile Include="DataEntry\Design\GetStockDesign.cs" />
+    <Compile Include="DataEntry\Interface\IFinanceDesign.cs" />
+    <Compile Include="DataEntry\Interface\IFinanceEntry.cs" />
+    <Compile Include="DataEntry\Interface\IPurchaseDesign.cs" />
+    <Compile Include="DataEntry\Interface\IPurchaseEntry.cs" />
+    <Compile Include="DataEntry\Interface\ISalesDesign.cs" />
+    <Compile Include="DataEntry\Interface\ISalesEntry.cs" />
+    <Compile Include="DataEntry\Interface\IStockEntry.cs" />
+    <Compile Include="DataEntry\Interface\IStockEntryDesign.cs" />
+    <Compile Include="DataEntry\Design\PurchaseEntryDesign.cs" />
+    <Compile Include="DataEntry\Design\SalesEntryDesign.cs" />
+    <Compile Include="GlobalUsings.cs" />
+    <Compile Include="Global\Common\FileDownloader.cs" />
+    <Compile Include="Global\Common\ClsCopyVoucher.cs" />
+    <Compile Include="Global\Common\ClsDateMiti.cs" />
+    <Compile Include="Global\Common\ClsMoneyConversion.cs" />
+    <Compile Include="Global\Common\OfficeOpenXML.cs" />
+    <Compile Include="Global\Common\RawQuery\ClsDocumentPrinting.cs" />
+    <Compile Include="Global\Common\RawQuery\GetSalesInvoiceQuery.cs" />
+    <Compile Include="Global\Common\RawQuery\Interface\ISalesInvoiceQuery.cs" />
+    <Compile Include="Global\WinForm\FrmAutoPopList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Global\WinForm\FrmAutoPopList.designer.cs">
+      <DependentUpon>FrmAutoPopList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Global\Common\ObjGlobal.cs" />
+    <Compile Include="Global\Control\ClsEntryControl.cs" />
+    <Compile Include="Global\Control\ClsKeyPreview.cs" />
+    <Compile Include="Master\FinanceSetup\GiftVoucherRepository.cs" />
+    <Compile Include="Master\FinanceSetup\MemberTypeRepository.cs" />
+    <Compile Include="Master\Interface\FinanceSetup\IGiftVoucherRepository.cs" />
+    <Compile Include="Master\Interface\FinanceSetup\IMemberTypeRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IAccountGroupRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IAccountSubGroupRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IAreaRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IClassRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\ICurrencyRepository.cs" />
+    <Compile Include="Master\Interface\FinanceSetup\IDepartmentRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IGeneralLedgerRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IJuniorAgentRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IMainAgentRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\IMainAreaRepository.cs" />
+    <Compile Include="Master\Interface\FinanceSetup\INarrationRemarksRepository.cs" />
+    <Compile Include="Master\Interface\LedgerSetup\ISubLedgerRepository.cs" />
+    <Compile Include="Master\Interface\FinanceSetup\IMembershipSetupRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IBarcodeListRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IColastarRepository.cs" />
+    <Compile Include="Master\Interface\InventorySetup\ICostCenterRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IGodownRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IProductGroupRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IProductRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IProductSchemeRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IProductSubGroupRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IProductUnitRepository.cs" />
+    <Compile Include="Master\Interface\InventorySetup\IRackRepository.cs" />
+    <Compile Include="Master\Interface\ProductSetup\IWareHouseRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\ICopyMasterRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\IDocumentNumberingRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\IDocumentReNumberingRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\IProductUpdateRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\IPurchaseBillingTermRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\ISalesBillingTermRepository.cs" />
+    <Compile Include="Master\Interface\SystemSetup\ISparePartsImportRepository.cs" />
+    <Compile Include="Master\LedgerSetup\AreaRepository.cs" />
+    <Compile Include="Master\LedgerSetup\ClassRepository.cs" />
+    <Compile Include="Master\FinanceSetup\DepartmentRepository.cs" />
+    <Compile Include="Master\LedgerSetup\GeneralLedgerRepository.cs" />
+    <Compile Include="Master\LedgerSetup\JuniorAgentRepository.cs" />
+    <Compile Include="Master\LedgerSetup\MainAgentRepository.cs" />
+    <Compile Include="Master\LedgerSetup\MainAreaRepository.cs" />
+    <Compile Include="Master\FinanceSetup\NarrationRemarksRepository.cs" />
+    <Compile Include="Master\LedgerSetup\SubLedgerRepository.cs" />
+    <Compile Include="Master\FinanceSetup\MembershipSetupRepository.cs" />
+    <Compile Include="Master\ProductSetup\BarcodeListRepository.cs" />
+    <Compile Include="Master\ProductSetup\ColastarRepository.cs" />
+    <Compile Include="Master\InventorySetup\CostCenterRepository.cs" />
+    <Compile Include="Master\ProductSetup\GodownRepository.cs" />
+    <Compile Include="Master\ProductSetup\ProductGroupRepository.cs" />
+    <Compile Include="Master\LedgerSetup\AccountGroupRepository.cs" />
+    <Compile Include="Master\LedgerSetup\CurrencyRepository.cs" />
+    <Compile Include="Master\LedgerSetup\AccountSubGroupRepository.cs" />
+    <Compile Include="Master\ProductSetup\ProductRepository.cs" />
+    <Compile Include="Master\ProductSetup\ProductSchemeRepository.cs" />
+    <Compile Include="Master\ProductSetup\ProductSubGroupRepository.cs" />
+    <Compile Include="Master\ProductSetup\ProductUnitRepository.cs" />
+    <Compile Include="Master\InventorySetup\RackRepository.cs" />
+    <Compile Include="Master\ProductSetup\WareHouseRepository.cs" />
+    <Compile Include="Master\SystemSetup\CopyMasterRepository.cs" />
+    <Compile Include="Master\SystemSetup\DocumentNumberingRepository.cs" />
+    <Compile Include="Master\SystemSetup\DocumentReNumberingRepository.cs" />
+    <Compile Include="Master\SystemSetup\ProductUpdateRepository.cs" />
+    <Compile Include="Master\SystemSetup\PurchaseBillingTermRepository.cs" />
+    <Compile Include="Master\SystemSetup\SalesBillingTermRepository.cs" />
+    <Compile Include="Master\SystemSetup\SparePartsImportRepository.cs" />
+    <Compile Include="Models\Common\CellOwnerDrawEventHandler.cs" />
+    <Compile Include="Models\Common\DGVCellDrawingEventArgs.cs" />
+    <Compile Include="Models\Common\Extensions.cs" />
+    <Compile Include="Models\Common\IntLongValueModel.cs" />
+    <Compile Include="Models\Common\LogManager.cs" />
+    <Compile Include="Models\Common\LogWriter.cs" />
+    <Compile Include="Models\Common\PrinterFunction.cs" />
+    <Compile Include="Models\Common\SyncRowsAffectedCount.cs" />
+    <Compile Include="Models\Custom\ImportProductOpeningEModel.cs" />
+    <Compile Include="Models\Custom\ImportSparePartsEModel.cs" />
+    <Compile Include="Models\Custom\UserAccessFormControl.cs" />
+    <Compile Include="Models\Custom\AbbrInvoiceForPrintModel.cs" />
+    <Compile Include="Models\Custom\InvoiceCustomerModel.cs" />
+    <Compile Include="Models\Custom\MembershipPriceTag.cs" />
+    <Compile Include="Models\Custom\SalesGeneralLedgerModel.cs" />
+    <Compile Include="Models\Custom\SalesInvoiceActionTag.cs" />
+    <Compile Include="Models\Custom\SalesInvoiceItemModel.cs" />
+    <Compile Include="Models\Custom\SalesInvoiceProductModel.cs" />
+    <Compile Include="Models\Custom\SalesInvoiceViewModel.cs" />
+    <Compile Include="Models\Custom\SalesMembershipModel.cs" />
+    <Compile Include="Models\Custom\SalesPartyLedgerModel.cs" />
+    <Compile Include="Models\Custom\TempInvoiceViewModel.cs" />
+    <Compile Include="Reports\Common\ApiErrorLog.cs" />
+    <Compile Include="Reports\CrystalReports\Interface\IQueryReport.cs" />
+    <Compile Include="Reports\CrystalReports\Module\PartyLedgerConfirmation.cs" />
+    <Compile Include="Reports\CrystalReports\Module\PartyLedgerDetailsReports.cs" />
+    <Compile Include="Reports\CrystalReports\RawQuery\GetQueryReport.cs" />
+    <Compile Include="Reports\Finance\LedgerDetailsReport\GeneralLedgerDetailsReport.cs" />
+    <Compile Include="Reports\Finance\LedgerOpeningReport\LedgerOpeningReport.cs" />
+    <Compile Include="Reports\Finance\LedgerOpeningReport\OpeningTrialBalance.cs" />
+    <Compile Include="Reports\Interface\IApiErrorLog.cs" />
+    <Compile Include="Reports\ViewModule\Object\Finance\VmPartyLedgerReport.cs" />
+    <Compile Include="Reports\ViewModule\Object\Inventory\ProfitabilityReportProductWise.cs" />
+    <Compile Include="Reports\ViewModule\Object\Inventory\StockLedgerReport.cs" />
+    <Compile Include="Reports\ViewModule\Object\Inventory\StockLedgerSummaryReport.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\FinalSalesAnalysisReportProductWise.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\SalesAnalysisReportProductWise.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\SalesInvoiceRegister\VmSalesRegisterProductDetails.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\SalesInvoiceRegister\VmSalesTermRegister.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\SalesReturnAnalysisReportProductWise.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\SalesVatRegisterDetailsDateWise.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\VatLedgerIrdTransactionAbove.cs" />
+    <Compile Include="Reports\ViewModule\Object\Register\SalesInvoiceRegister\VmSalesRegisterDetails.cs" />
+    <Compile Include="Reports\ViewModule\VmFinanceReports.cs" />
+    <Compile Include="Setup\BackupRestore\AppUpdater.cs" />
+    <Compile Include="Setup\BackupRestore\BackupRestoreRepository.cs" />
+    <Compile Include="Setup\CompanySetup\BranchSetupRepository.cs" />
+    <Compile Include="Setup\CompanySetup\CompanySetupRepository.cs" />
+    <Compile Include="Setup\CompanySetup\CompanyUnitSetupRepository.cs" />
+    <Compile Include="Setup\CompanySetup\FiscalYearRepository.cs" />
+    <Compile Include="Setup\Interface\IBackupRestoreRepository.cs" />
+    <Compile Include="Setup\Interface\IBranchSetupRepository.cs" />
+    <Compile Include="Setup\Interface\ICompanySetup.cs" />
+    <Compile Include="Setup\Interface\ICompanyUnitSetupRepository.cs" />
+    <Compile Include="Setup\Interface\IFiscalYear.cs" />
+    <Compile Include="Setup\Interface\ISyncTableRepository.cs" />
+    <Compile Include="Setup\Interface\IUserAccessControl.cs" />
+    <Compile Include="Setup\Interface\IUserSetupRepository.cs" />
+    <Compile Include="Setup\LogSetting\SyncTableRepository.cs" />
+    <Compile Include="Setup\UserSetup\UserAccessControlRepository.cs" />
+    <Compile Include="Setup\UserSetup\UserSetupRepository.cs" />
+    <Compile Include="SystemSetting\FinanceSettingRepository.cs" />
+    <Compile Include="SystemSetting\Interface\IFinanceSettingRepository.cs" />
+    <Compile Include="SystemSetting\Interface\IInventorySettingRepository.cs" />
+    <Compile Include="SystemSetting\Interface\IPaymentSettingRepository.cs" />
+    <Compile Include="SystemSetting\Interface\IPurchaseSettingRepository.cs" />
+    <Compile Include="SystemSetting\Interface\ISalesSettingRepository.cs" />
+    <Compile Include="SystemSetting\Interface\ISystemSettingRepository.cs" />
+    <Compile Include="SystemSetting\InventorySettingRepository.cs" />
+    <Compile Include="SystemSetting\OnlineConfigurationRepository.cs" />
+    <Compile Include="SystemSetting\PaymentSettingRepository.cs" />
+    <Compile Include="SystemSetting\PayrollSetting\IncomeTaxSettingRepository.cs" />
+    <Compile Include="SystemSetting\PurchaseSettingRepository.cs" />
+    <Compile Include="SystemSetting\SalesSettingRepository.cs" />
+    <Compile Include="SystemSetting\SystemInterface\IIncomeTaxSettingRepository.cs" />
+    <Compile Include="SystemSetting\SystemInterface\IOnlineConfigurationRepository.cs" />
+    <Compile Include="SystemSetting\SystemSettingRepository.cs" />
+    <Compile Include="Utility\Analytics\Models\SqliteClientLogModel.cs" />
+    <Compile Include="Utility\Config\ClsCloudSync.cs" />
+    <Compile Include="Utility\Config\ClsSetup.cs" />
+    <Compile Include="Utility\Config\GridMenuSearch.cs" />
+    <Compile Include="Utility\dbMaster\ClsAttachDeAttach.cs" />
+    <Compile Include="Utility\dbMaster\DatabaseTableManagement.cs" />
+    <Compile Include="Utility\GridControl\ClsExportReports.cs" />
+    <Compile Include="Utility\Interface\ISetup.cs" />
+    <Compile Include="Utility\Interface\ISoftwareLicenseRepository.cs" />
+    <Compile Include="Utility\Licensing\LicBranch.cs" />
+    <Compile Include="Utility\Licensing\LicClient.cs" />
+    <Compile Include="Utility\Licensing\LicDetail.cs" />
+    <Compile Include="Utility\Licensing\LicEdition.cs" />
+    <Compile Include="Utility\Licensing\SoftwareLicenseRepository.cs" />
+    <Compile Include="Utility\Server\SqlHelperParameterCache.cs" />
+    <Compile Include="Utility\Analytics\AnalyticsService.cs" />
+    <Compile Include="Utility\Analytics\Models\ClientImgPushModel.cs" />
+    <Compile Include="Utility\Analytics\Models\ClientIssueReportModel.cs" />
+    <Compile Include="Utility\Analytics\Models\ClientIssueReportPushModel.cs" />
+    <Compile Include="Utility\Analytics\Models\ClientLogBase.cs" />
+    <Compile Include="Utility\Analytics\Models\ClientLogPushModel.cs" />
+    <Compile Include="Utility\Analytics\Models\SqliteClientLogImageModel.cs" />
+    <Compile Include="Utility\Analytics\SqlLiteClientLogService.cs" />
+    <Compile Include="Utility\PickList\ClsPickList.cs" />
+    <Compile Include="Global\Dialogs\DialogEx.cs" />
+    <Compile Include="Global\Dialogs\ErrorDialog.cs" />
+    <Compile Include="Global\Dialogs\IDialog.cs" />
+    <Compile Include="Global\Control\EntryControlViewModel.cs" />
+    <Compile Include="Global\Control\CustomMessageBox.cs" />
+    <Compile Include="DataEntry\TransactionClass\ClsFinanceEntry.cs" />
+    <Compile Include="DataEntry\TransactionClass\ClsSalesEntry.cs" />
+    <Compile Include="DataEntry\TransactionClass\ClsProduction.cs" />
+    <Compile Include="DataEntry\TransactionClass\ClsStockEntry.cs" />
+    <Compile Include="Global\Control\PublicVariables.cs" />
+    <Compile Include="Global\Restore\DbExecStatus.cs" />
+    <Compile Include="Global\Restore\DbFileInfo.cs" />
+    <Compile Include="Global\Restore\RestoreParams.cs" />
+    <Compile Include="Global\Restore\SqlServerInfo.cs" />
+    <Compile Include="ImportExport\Abstractions\DataExport.cs" />
+    <Compile Include="ImportExport\Abstractions\DbToDbDataSync.cs" />
+    <Compile Include="ImportExport\Abstractions\ExcelImportExport.cs" />
+    <Compile Include="ImportExport\Abstractions\IDataImportExport.cs" />
+    <Compile Include="ImportExport\Abstractions\IDataImportExportProvider.cs" />
+    <Compile Include="ImportExport\Abstractions\IDataSync.cs" />
+    <Compile Include="ImportExport\Abstractions\ImportExportOption.cs" />
+    <Compile Include="ImportExport\Implementations\ExcelDataImportExport.cs" />
+    <Compile Include="Lib\Dapper.Contrib\ComputedAttribute.cs" />
+    <Compile Include="Lib\Dapper.Contrib\ExplicitKeyAttribute.cs" />
+    <Compile Include="Lib\Dapper.Contrib\FbAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\ISqlAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\KeyAttribute.cs" />
+    <Compile Include="Lib\Dapper.Contrib\MySqlAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\PostgresAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\SqlCeServerAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\SQLiteAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\SqlMapperExtensions.cs" />
+    <Compile Include="Lib\Dapper.Contrib\SqlMapperExtensionsAsync.cs" />
+    <Compile Include="Lib\Dapper.Contrib\SqlServerAdapter.cs" />
+    <Compile Include="Lib\Dapper.Contrib\TableAttribute.cs" />
+    <Compile Include="Lib\Dapper.Contrib\WriteAttribute.cs" />
+    <Compile Include="Master\ClsIrdApiSync.cs" />
+    <Compile Include="Master\ClsListofMaster.cs" />
+    <Compile Include="Master\Interface\IHMaster.cs" />
+    <Compile Include="Master\Interface\IHotelMaster.cs" />
+    <Compile Include="Master\Interface\IListOfFinanceMaster.cs" />
+    <Compile Include="Master\Interface\IMasterSetup.cs" />
+    <Compile Include="Master\Interface\ISchoolSetup.cs" />
+    <Compile Include="Master\Interface\IVMaster.cs" />
+    <Compile Include="Master\ClsMasterSetup.cs" />
+    <Compile Include="Models\Common\EntityMetaData.cs" />
+    <Compile Include="Models\Common\InfoResult.cs" />
+    <Compile Include="Models\Common\IntValueModel.cs" />
+    <Compile Include="Models\Common\ListResult.cs" />
+    <Compile Include="Models\Common\NonQueryResult.cs" />
+    <Compile Include="Models\Common\ResultType.cs" />
+    <Compile Include="Models\Common\ValueModel.cs" />
+    <Compile Include="Models\Custom\BatchNumberModel.cs" />
+    <Compile Include="Models\Custom\ImportProductEModel.cs" />
+    <Compile Include="Data\AppBaseEntity.cs" />
+    <Compile Include="Models\Custom\ProductSubGroupEModel.cs" />
+    <Compile Include="Models\Custom\SalesInvoiceEModel.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DyanamicReport\DynamicReport.cs" />
+    <Compile Include="Reports\ViewModule\VmDynamicReportTemplate.cs" />
+    <Compile Include="Reports\Design\FinanceReportDesign.cs" />
+    <Compile Include="Reports\Interface\IFinanceDesign.cs" />
+    <Compile Include="Reports\Interface\IDynamicReport.cs" />
+    <Compile Include="Reports\Interface\IFinanceReport.cs" />
+    <Compile Include="Reports\Interface\IRegisterDesign.cs" />
+    <Compile Include="Reports\Interface\IRegisterReport.cs" />
+    <Compile Include="Reports\Interface\IStockReportDesign.cs" />
+    <Compile Include="Reports\Design\RegisterReportDesign.cs" />
+    <Compile Include="Reports\ViewModule\VmStockReports.cs" />
+    <Compile Include="Reports\ViewModule\VmRegisterReports.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Utility\Config\ClsRecalculate.cs" />
+    <Compile Include="Utility\Config\ClsUtilityTools.cs" />
+    <Compile Include="Utility\dbMaster\AlterDatabaseTable.cs" />
+    <Compile Include="Utility\dbMaster\CreateViewTable.cs" />
+    <Compile Include="Utility\Config\ClsEntryForm.cs" />
+    <Compile Include="Master\ClsHMaster.cs" />
+    <Compile Include="Master\ClsSchMaster.cs" />
+    <Compile Include="Reports\Finance\ClsFinanceReport.cs" />
+    <Compile Include="Reports\Register\ClsRegisterReport.cs" />
+    <Compile Include="Reports\Stock\ClsStockReport.cs" />
+    <Compile Include="Reports\Interface\IStockReport.cs" />
+    <Compile Include="Reports\Design\StockReportDesign.cs" />
+    <Compile Include="Utility\Config\ClsCommon.cs" />
+    <Compile Include="Utility\dbMaster\CreateDatabaseTable.cs" />
+    <Compile Include="Utility\Config\ClsImport.cs" />
+    <Compile Include="Utility\Interface\IPickList.cs" />
+    <Compile Include="Utility\Licensing\OutletNature.cs" />
+    <Compile Include="Utility\Licensing\LicenseHandler.cs" />
+    <Compile Include="Utility\Server\SqlExtensions.cs" />
+    <Compile Include="Utility\Server\GetConnection.cs" />
+    <Compile Include="Utility\Config\ClsDeleteStaleMaster.cs" />
+    <Compile Include="Utility\PickList\ClsTagList.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\GridControl\Header.cs" />
+    <Compile Include="Utility\GridControl\IStackedHeaderGenerator.cs" />
+    <Compile Include="Utility\GridControl\StackedHeaderDecorator.cs" />
+    <Compile Include="Utility\GridControl\StackedHeaderGenerator.cs" />
+    <Compile Include="Utility\Interface\IOnlineSync.cs" />
+    <Compile Include="Utility\Interface\IRecalculate.cs" />
+    <Compile Include="Utility\Interface\ITagList.cs" />
+    <Compile Include="Utility\Interface\IUtility.cs" />
+    <Compile Include="Utility\Config\SMSConfig.cs" />
+    <Compile Include="Utility\WinForm\FrmPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utility\WinForm\FrmPreview.designer.cs">
+      <DependentUpon>FrmPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Domains\VehicleManagement\ClsVMaster.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AccountIcon.ico" />
+    <Content Include="Micon.ico" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\CreateDatabaseTableQuery.sql" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\DefaultDateMiti.sql" />
+    <None Include="Resources\DefaultDesign.sql" />
+    <None Include="Resources\DefaultValueInDatabase.sql" />
+    <None Include="Resources\LauncherSqlite.sql" />
+    <None Include="Resources\CreateViewTableQuery.sql" />
+    <None Include="Resources\AlterViewTableQuery.sql" />
+    <None Include="Resources\CreateMasterTableQuery.sql" />
+    <None Include="Resources\AuditLogTableQuery.sql" />
+    <None Include="Resources\AlterDatabaseTableQuery.sql" />
+    <None Include="Resources\CrmCreateTable.sql" />
+    <None Include="Resources\AlterColumnType.sql" />
+    <None Include="Resources\CreateSchemaInDatabase.sql" />
+    <None Include="Resources\AddModuleDescription.sql" />
+    <Content Include="Resources\MrSo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domains\Hospital\Interface\" />
+    <Folder Include="Domains\ICT\" />
+    <Folder Include="Domains\PrintingVoucher\Module\" />
+    <Folder Include="Domains\PrintingVoucher\RawQuery\" />
+    <Folder Include="Domains\Shared\DataSync\Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Control\ControlsEx\Control\MrGroup.resx">
+      <DependentUpon>MrGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ControlsEx\Control\XtraLayoutPanelViewBase.resx">
+      <DependentUpon>XtraLayoutPanelViewBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\Dialogs\FrmDeleteConfirm.resx">
+      <DependentUpon>FrmDeleteConfirm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\SplashScreen\PleaseWait.resx">
+      <DependentUpon>PleaseWait.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\SplashScreen\WinSplashScreen.resx">
+      <DependentUpon>WinSplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\WinControl\MrForm.resx">
+      <DependentUpon>MrForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Global\WinForm\FrmAutoPopList.resx">
+      <DependentUpon>FrmAutoPopList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utility\WinForm\FrmPreview.resx">
+      <DependentUpon>FrmPreview.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>C:\Users\mbudh\.nuget\packages\dapper\2.1.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.DataAccess.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v24.2.Core, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v24.2.Core, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v24.2, Version=24.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DotNetZip">
+      <HintPath>..\packages\DotNetZip.1.16.0\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MoreLinq">
+      <HintPath>..\packages\MoreLinq\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\System.Data.SQLite.x64.1.0.113.0\lib\net451\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autoupdater.NET.Official">
+      <Version>1.9.2</Version>
+    </PackageReference>
+    <PackageReference Include="ClosedXML">
+      <Version>0.104.1</Version>
+    </PackageReference>
+    <PackageReference Include="Dapper">
+      <Version>2.1.35</Version>
+    </PackageReference>
+    <PackageReference Include="DocumentFormat.OpenXml">
+      <Version>3.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="NLog">
+      <Version>5.3.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.Packaging">
+      <Version>8.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.RegularExpressions">
+      <Version>4.3.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseModule\DatabaseModule.csproj">
+      <Project>{4A57AFC0-DC37-49F7-B27E-65ACC1986846}</Project>
+      <Name>DatabaseModule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.3.3.3\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\Fody.6.5.5\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.5.5\build\Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Fody.6.5.5\build\Fody.targets" Condition="Exists('..\packages\Fody.6.5.5\build\Fody.targets')" />
+</Project>

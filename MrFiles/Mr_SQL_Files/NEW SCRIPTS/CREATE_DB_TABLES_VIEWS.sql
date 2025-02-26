@@ -1,0 +1,42 @@
+IF OBJECT_ID('[AMS].[Company_Profiles]') IS NULL BEGIN EXECUTE('CREATE VIEW [AMS].[Company_Profiles] as Select Database_Name [DATABASE_ID],Company_Name as [COMPANY DESC],Company_Logo [lOGO],CReg_Date [REGISTRATION DATE], Address [COMPANY ADDRESS],Country [COUNTRY],State [STATE],City [CITY],PhoneNo [OFFICE NUMBER], Fax [FAX NO],Pan_No [TPAN/VAT] from AMS.CompanyInfo')END
+IF OBJECT_ID('[AMS].[ViewSales_Header]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSales_Header] as SELECT '' SB_Invoice') END;
+IF OBJECT_ID('[AMS].[ViewSales_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSales_Details] as SELECT '' SB_Invoice') END;
+IF OBJECT_ID('[AMS].[ViewSalesBillWiseHorizontal_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSalesBillWiseHorizontal_Term] as SELECT '' SB_VNO') END;
+IF OBJECT_ID('[AMS].[ViewSalesProductWiseHorizontal_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSalesProductWiseHorizontal_Term] as SELECT '' SB_VNO') END;
+IF OBJECT_ID('[AMS].[ViewSalesProductWiseHorizontalWithRate_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesProductWiseHorizontalWithRate_Term]  as SELECT '' SB_VNO') END;
+IF OBJECT_ID('[AMS].[ViewSalesBillWiseHorizontalWithRate_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesBillWiseHorizontalWithRate_Term] as SELECT '' SB_VNO') END;
+IF OBJECT_ID('[AMS].[ViewSalesInvoice_OtherDetails]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesInvoice_OtherDetails] as  SELECT * FROM AMS.SB_Master_OtherDetails') END;
+IF OBJECT_ID('[AMS].[VIEWSALES_ORDER_MASTER]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[VIEWSALES_ORDER_MASTER] AS SELECT '' SO_INVOICE') END;
+IF OBJECT_ID('[AMS].[VIEWSALES_ORDER_DETAILS]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[VIEWSALES_ORDER_DETAILS] AS  SELECT '' SO_INVOICE') END;
+IF OBJECT_ID('[AMS].[ViewSalesOrder_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesOrder_Details] AS SELECT '' [INVOICE NO]') END;
+IF OBJECT_ID('[AMS].[ViewSalesChallan_Header]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesChallan_Header] as SELECT '' [CHALLAN_NO]') END;
+IF OBJECT_ID('[AMS].[ViewSalesChallan_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesChallan_Details] as   SELECT '' [CHALLAN_NO]') END;
+IF OBJECT_ID('[AMS].[ViewSalesChallan_OtherDetails]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesChallan_OtherDetails] as  SELECT ''  SC_INVOICE') END;
+IF OBJECT_ID('[AMS].[ViewSalesReturn_Header]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesReturn_Header] as Select '' [INVOICE NUMBER] ') END;
+IF OBJECT_ID('[AMS].[ViewSalesReturn_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewSalesReturn_Details] as Select '' as [INVOICE NO]') END;
+IF OBJECT_ID('[AMS].[ViewSalesReturnProductWiseHorizontalWithRate_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSalesReturnProductWiseHorizontalWithRate_Term] as SELECT '' SR_VNO') END;
+IF OBJECT_ID('[AMS].[ViewSalesReturnBillWiseHorizontalWithRate_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSalesReturnBillWiseHorizontalWithRate_Term] as SELECT '' SR_VNO') END;
+IF OBJECT_ID('[AMS].[ViewSalesReturnBillWiseHorizontal_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSalesReturnBillWiseHorizontal_Term] as SELECT '' SR_VNo ') END;
+IF OBJECT_ID('[AMS].[ViewSalesReturnProductWiseHorizontal_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewSalesReturnProductWiseHorizontal_Term] as SELECT '' SR_VNo ') END;
+IF OBJECT_ID('[AMS].[VIEWSALESRETURN_DETAIL]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[VIEWSALESRETURN_DETAIL] AS SELECT '' SR_INVOICE') END;
+IF OBJECT_ID('[AMS].[SALES_QUOTATION_MASTER]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[SALES_QUOTATION_MASTER] AS SELECT '' QUOT_NO') END;
+IF OBJECT_ID('[AMS].[SALES_QUOTATION_DETAILS]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[SALES_QUOTATION_DETAILS] AS SELECT '' QUOT_NO') END;
+IF OBJECT_ID('[AMS].[SALES_QUOTATION_TERM_RATE]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[SALES_QUOTATION_TERM_RATE] AS SELECT '' QUOT_NO') END;
+IF OBJECT_ID('[AMS].[ViewJournalVoucherAc]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewJournalVoucherAc] as SELECT 0 AS ROW_NO') END;
+IF OBJECT_ID('[AMS].[ViewGeneralLedger]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewGeneralLedger] AS SELECT 0 [LEDGERID]') END;
+IF OBJECT_ID('[AMS].[ViewLedgerOpening]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewLedgerOpening] AS SELECT '' [VOUCHER NO]') END;
+IF OBJECT_ID('[AMS].[ViewProduct_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewProduct_Details] AS SELECT 0 [LEDGERID]') END;
+IF OBJECT_ID('[AMS].[ViewProductOpening]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewProductOpening] AS SELECT '' [VOUCHER_NO]') END;
+IF OBJECT_ID('[AMS].[ViewPurchase_Header]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewPurchase_Header] AS SELECT '' [INVOICE NO]') END;
+IF OBJECT_ID('[AMS].[ViewPurchase_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewPurchase_Details] AS SELECT '' [INVOICE NO]') END;
+IF OBJECT_ID('[AMS].[ViewPurchaseBillWise_Term]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewPurchaseBillWise_Term] AS SELECT '' [INVOICE NO]') END;
+IF OBJECT_ID('[dbo].[ViewBarcode]') IS NULL BEGIN EXECUTE ('CREATE VIEW [dbo].[ViewBarcode] as Select  '' PB_Invoice;') END;
+IF OBJECT_ID('[AMS].[ViewPurchaseReturn_Header]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewPurchaseReturn_Header] AS SELECT '' [INVOICE NO]') END;
+IF OBJECT_ID('[AMS].[ViewPurchaseReturn_Details]') IS NULL BEGIN EXECUTE ('CREATE VIEW  [AMS].[ViewPurchaseReturn_Details] AS SELECT '' [INVOICE NO]') END;
+IF OBJECT_ID('[AMS].[MaterializedView]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[MaterializedView] as Select '' Fiscal_Year') END;
+IF OBJECT_ID('[AMS].[ViewCASHBANK_HEADER]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewCASHBANK_HEADER] AS SELECT[VoucherMode] V_MODE,[Voucher_No] V_NUMBER,[Voucher_Date] V_VOUCHERDATE,[Voucher_Miti] V_MITI,[Voucher_Time] V_TIME,[Ref_VNo] V_REFNO,[Ref_VDate] V_DATE,[VoucherType] V_TYPE,[Ledger_Id] V_LEDGERID,GLName AS V_LEDGER,[CheqNo] V_CHEQUENO,[CheqDate] V_CHEQUEDATE,[CheqMiti] V_CHEQUEMITI,[Currency_Id] V_CURRENCYID,CName V_CURRNECYDESC, Ccode V_CURRENCYCODE,[Currency_Rate] V_CURRENCYRATE, [Cls1] V_DEPARTMENTID,DName V_DEPARTMENTDESC, DCode V_DEPARTMENTCODE,[Cls2] V_DEPARTMENT2,[Cls3] V_DEPARTMENT3,[Cls4] V_DEPARTMENT4,[Remarks] V_REMARKS,[Action_Type] V_ACTIONTYPE,CM.[EnterBy] V_ENTRYUSER,CM.[EnterDate] V_ENTERDATE,[ReconcileBy] V_RECONCILEBY,[ReconcileDate] V_RECONCILEDATE,[Audit_Lock] V_AUDITLOCK,[ClearingBy],[ClearingDate] V_CLEARINGDATE,[PrintValue] V_PRINT,[CBranch_Id] V_BRANCHID,Branch_Name V_BRANCHDESC, Branch_Code V_BRANCHCODE ,[CUnit_Id] V_COMPANYUNITID,CmpUnit_Name V_COMPANYUNITDESC, CmpUnit_Code V_COMPANYUNITCODE FROM[AMS].[CB_Master] AS CM LEFT OUTER JOIN AMS.GeneralLedger AS GL ON GL.GLID = CM.Ledger_Id LEFT OUTER JOIN AMS.Department AS D ON D.DId = CM.Cls1 LEFT OUTER JOIN AMS.Branch AS B ON B.Branch_Id = CM.CBranch_Id LEFT OUTER JOIN AMS.Currency AS C ON C.CId = CM.Currency_Id LEFT OUTER JOIN AMS.CompanyUnit CU ON CU.CmpUnit_Id = CM.CUnit_Id') END;
+IF OBJECT_ID('[AMS].[ViewCASHBANK_DETAILS]') IS NULL BEGIN EXECUTE ('CREATE VIEW [AMS].[ViewCASHBANK_DETAILS]  AS SELECT[Voucher_No] V_VOUCHERNO,[SNo] V_SNO,[Ledger_Id] V_LEDGERID,GLName V_LEDGERDESC,[Subledger_Id] V_SUBLEDGERIF,SLName V_SUBLEDGERDESC,[Agent_Id] V_AGENTID,AgentName V_AGENTDESC,[Cls1] V_DEPARTMENTID,DName V_DEPARTMENTDESC, DCode V_DEPARTMENTCODE,[Cls2] V_DEPARTMENT2,[Cls3] V_DEPARTMENT3,[Cls4] V_DEPARTMENT4,[Debit] V_DEBIT,[Credit] V_CREDIT,[LocalDebit] V_LOCALDEBIT,[LocalCredit] V_LOCALCREDIT,[Narration] V_NARRATION,[Tbl_Amount] V_TAXABLEAMOUNT,[V_Amount] V_VATAMOUNT,[Party_No] V_PARTYNO,[Invoice_Date] V_PARTYINVOICEDATE,[Invoice_Miti] V_INVOICEMITI,[VatLedger_Id] V_LEDGERDID,CD.[PanNo] V_PANNO,[Vat_Reg] V_VATREGISTRATION FROM[AMS].[CB_Details] AS CD LEFT OUTER JOIN AMS.GeneralLedger AS GL ON GL.GLID = CD.Ledger_Id LEFT OUTER JOIN AMS.Subledger AS SL ON SL.SLId = CD.Subledger_Id LEFT OUTER JOIN AMS.JuniorAgent AS JA ON JA.AgentId = CD.Agent_Id LEFT OUTER JOIN AMS.Department AS D ON D.DId = CD.Cls1') END;
+
+IF OBJECT_ID('[dbo].[ViewBarcode]') IS NULL BEGIN EXECUTE('Drop view [dbo].[ViewBarcode]') END;
+
+IF OBJECT_ID('[dbo].[ViewBarcode]') IS NULL BEGIN EXECUTE('Create view[dbo].[ViewBarcode] as Select PB_Invoice, PB_Details.P_Id, Qty, Product.PName,PShortName,PRODUCT.PSalesRate from ams.PB_Details left join ams.product on product.PId= PB_Details.P_Id') END;

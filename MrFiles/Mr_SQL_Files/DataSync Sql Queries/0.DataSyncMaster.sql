@@ -1,0 +1,9 @@
+
+
+SELECT * FROM AMS.DataServerInfo
+
+SELECT * FROM AMS.GlobalCompany  
+
+ALTER TABLE AMS.GlobalCompany ADD DataSyncOriginId UNIQUEIDENTIFIER NULL
+ALTER TABLE AMS.GlobalCompany ADD DataSyncApiBaseUrl NVARCHAR(100) NULL
+
