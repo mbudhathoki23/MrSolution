@@ -1,5 +1,4 @@
-﻿using DevExpress.XtraEditors;
-using MrBLL.Utility.Common.Class;
+﻿using MrBLL.Utility.Common.Class;
 using MrDAL.Control.WinControl;
 using MrDAL.Core.Extensions;
 using MrDAL.Global.Common;
@@ -8,9 +7,7 @@ using MrDAL.Master;
 using MrDAL.Master.Interface;
 using MrDAL.Setup.Interface;
 using MrDAL.Setup.UserSetup;
-using MrDAL.Utility.Server;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Windows.Forms;
@@ -20,7 +17,7 @@ namespace MrBLL.Setup.UserSetup;
 public partial class FrmUserSetup : MrForm
 {
     // USER SETUP
-    #region -------------- FrmUserSetup --------------
+    #region -------------- USER SETUP --------------
     public FrmUserSetup()
     {
         InitializeComponent();
@@ -208,7 +205,7 @@ public partial class FrmUserSetup : MrForm
 
 
     // METHOD FOR THIS FORM
-    #region --------------- Method ---------------
+    #region --------------- METHOD ---------------
     private bool IsValidForm()
     {
         if (_actionTag.IsBlankOrEmpty())
@@ -343,7 +340,8 @@ public partial class FrmUserSetup : MrForm
     private void BindUserRole()
     {
         const string query = "Select Role_Id,Role from Master.AMS.User_Role";
-        CmbUserRole.DataSource = GetConnection.ExecuteNonQueryOnMaster(query);
+        var dt = query.GetQueryDataTable();
+        CmbUserRole.DataSource = dt;
         CmbUserRole.DisplayMember = "Role";
         CmbUserRole.ValueMember = "Role_Id";
     }
@@ -352,11 +350,10 @@ public partial class FrmUserSetup : MrForm
 
 
     // OBJECT FOR THIS FORM
-    #region -------------- Global Variable --------------
+    #region -------------- GLOBAL VARIABLE --------------
     private int _userId;
     private readonly IMasterSetup _setup;
     private string _actionTag = string.Empty;
     private IUserSetupRepository _userSetup;
-
     #endregion -------------- Global Variable --------------
 }

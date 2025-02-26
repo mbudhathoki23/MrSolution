@@ -102,11 +102,15 @@ public static class DataTableExt
 
 
     //RETURN VALUE IN DATA TABLE AND DATA SET
-    public static DataTable GetQueryDataTable(this string query)
+    public static DataTable GetQueryDataTable(this string query, bool isMaster = false)
     {
         try
         {
-            var table = SqlExtensions.ExecuteDataSet(query).Tables[0];
+            var table = isMaster switch
+            {
+                true => SqlExtensions.ExecuteDataSetSqlMaster(query),
+                _=> SqlExtensions.ExecuteDataSetSql(query)
+            };
             return table;
         }
         catch (Exception ex)
