@@ -9,11 +9,6 @@ namespace MrDAL.Utility.PickList;
 
 public class ClsTagList : ITagList
 {
-    public ClsTagList()
-    {
-        TagList = new TagList();
-    }
-
     #region --------------- General ledger ---------------
 
     public DataTable GetAccountGroupList()
@@ -208,7 +203,7 @@ public class ClsTagList : ITagList
 
     #region --------------- OBJECT ---------------
 
-    public TagList TagList { get; set; }
+    public TagList TagList { get; set; } = new();
     public static string PlValue1 { get; set; } = string.Empty;
     public static string PlValue2 { get; set; } = string.Empty;
     public static string PlValue3 { get; set; } = string.Empty;

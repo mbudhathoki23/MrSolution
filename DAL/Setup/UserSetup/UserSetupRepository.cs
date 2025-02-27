@@ -132,11 +132,11 @@ public class UserSetupRepository : IUserSetupRepository
     }
     public DataTable GetUserInformationUsingId(int userId)
     {
-        var sql = $$"""
+        var sql = $"""
 
                      SELECT u.*, g.GLName FROM AMS.UserInfo u 
                          LEFT OUTER JOIN {ObjGlobal.InitialCatalog}.AMS.GeneralLedger g ON g.GLID=u.Ledger_Id
-                     WHERE User_Id= '{{userId}}'; 
+                     WHERE User_Id= '{userId}'; 
                     """;
         var result = SqlExtensions.ExecuteDataSetOnMaster(sql).Tables[0];
         return result;

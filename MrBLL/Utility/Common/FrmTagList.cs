@@ -409,14 +409,14 @@ public sealed partial class FrmTagList : MrForm
                     {
                         SGrid.Columns[i].ReadOnly = false;
                         SGrid.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                        SGrid.Columns[i].HeaderCell.Style.Font = new Font("Arial", 8, FontStyle.Bold);
                     }
                     else
                     {
                         SGrid.Columns[i].ReadOnly = true;
                         SGrid.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                        SGrid.Columns[i].HeaderCell.Style.Font = new Font("Arial", 8, FontStyle.Bold);
                     }
+
+                    SGrid.Columns[i].HeaderCell.Style.Font = new Font("Arial", 8, FontStyle.Bold);
                 }
                 else
                 {

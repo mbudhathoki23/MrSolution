@@ -1,18 +1,16 @@
-﻿using MrBLL.Utility.Common.Class;
+﻿using DatabaseModule.Setup.CompanyMaster;
+using MrBLL.Utility.Common.Class;
 using MrDAL.Control.ControlsEx.GridControl;
 using MrDAL.Control.WinControl;
 using MrDAL.Core.Extensions;
 using MrDAL.Global.Common;
 using MrDAL.Global.Control;
-using MrDAL.Master;
-using MrDAL.Master.Interface;
 using MrDAL.Setup.CompanySetup;
 using MrDAL.Setup.Interface;
 using System;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using DatabaseModule.Setup.CompanyMaster;
 
 namespace MrBLL.Setup.CompanySetup;
 
@@ -22,21 +20,21 @@ public partial class FrmCompanyRights : MrForm
     {
         InitializeComponent();
         _companySetup = new CompanySetupRepository();
-
-        BindCompany();
-        GetGridColumns();
-        AdjustControlsInDataGrid();
-        EnableControl(false);
-        ClearCompanyDetails();
-        ObjGlobal.DGridColorCombo(SGrid);
+        GenerateGridColumns();
+        IndexingControlInGrid();
+        EnableControl();
+        ClearControl();
+        
     }
+    
     private void CompanyRights_Load(object sender, EventArgs e)
     {
         TxtUserInfo.Focus();
     }
+    
     private void BtnSave_Click(object sender, EventArgs e)
     {
-        if (!IsFormValid())
+        if (!IsControlValid())
         {
             return;
         }
@@ -45,7 +43,7 @@ public partial class FrmCompanyRights : MrForm
         if (result != 0)
         {
             CustomMessageBox.Information("COMPANY RIGHTS INFORMATION IS SAVE SUCCESSFULLY");
-            ClearCompanyDetails();
+            ClearControl();
             TxtUserInfo.Focus();
             return;
         }
@@ -56,10 +54,12 @@ public partial class FrmCompanyRights : MrForm
             return;
         }
     }
+    
     private void BtnUser_Click(object sender, EventArgs e)
     {
         OpenLoginUserList();
     }
+    
     private void TxtUserInfo_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyCode is Keys.F1)
@@ -75,13 +75,14 @@ public partial class FrmCompanyRights : MrForm
             ClsKeyPreview.KeyEvent(e, "DELETE", TxtCompanyName, OpenCompanyList);
         }
     }
+   
     private void FrmCompanyRights_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (e.KeyChar is (char)Keys.Escape)
         {
             if (TxtCompanyName.Enabled)
             {
-                ClearCompanyDetails();
+                ClearControl();
                 EnableControl(false);
                 SGrid.Focus();
             }
@@ -110,18 +111,14 @@ public partial class FrmCompanyRights : MrForm
             {
                 SGrid.Rows.RemoveAt(SGrid.CurrentRow.Index);
             }
-            if (SGrid.RowCount is 0)
-            {
-                SGrid.Rows.Add();
-            }
             GetSerialNo();
         }
 
         if (e.KeyCode is Keys.Enter && !TxtCompanyName.Enabled)
         {
             e.SuppressKeyPress = true;
-            AdjustControlsInDataGrid();
-            if (SGrid.Rows[_rowIndex].Cells["GTxtCompanyName"].Value.IsValueExits())
+            IndexingControlInGrid();
+            if (SGrid.Rows[_rowIndex].Cells[nameof(CompanyName)].Value.IsValueExits())
             {
                 TextFromGrid();
                 TxtCompanyName.Focus();
@@ -132,10 +129,12 @@ public partial class FrmCompanyRights : MrForm
             TxtCompanyName.Focus();
         }
     }
+    
     private void DGrid_EnterKeyPressed(object sender, EventArgs e)
     {
         DGrid_KeyDown(sender, new KeyEventArgs(Keys.Enter));
     }
+    
     private void DGrid_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
     {
         if (CustomMessageBox.DeleteRow() is DialogResult.No)
@@ -144,6 +143,7 @@ public partial class FrmCompanyRights : MrForm
         }
         _isRowDelete = true;
     }
+    
     private void DGrid_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
     {
         if (!_isRowDelete)
@@ -156,14 +156,20 @@ public partial class FrmCompanyRights : MrForm
         }
         GetSerialNo();
     }
+    
     private void OnDGridOnCellEnter(object _, DataGridViewCellEventArgs e)
     {
         _columnIndex = e.ColumnIndex;
     }
+    
     private void OnDGridOnGotFocus(object sender, EventArgs e)
     {
-        SGrid.Rows[_rowIndex].Cells[0].Selected = true;
+        if (SGrid != null && SGrid.RowCount > 0)
+        {
+            SGrid.Rows[_rowIndex].Cells[CompanyName.Index].Selected = true;
+        }
     }
+    
     private void OnDGridOnRowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
     {
         if (SGrid.CurrentCell != null)
@@ -171,6 +177,7 @@ public partial class FrmCompanyRights : MrForm
             _rowIndex = SGrid.CurrentCell.RowIndex.GetInt();
         }
     }
+    
     private void OnDGridOnRowEnter(object _, DataGridViewCellEventArgs e)
     {
         if (TxtCompanyName.Enabled)
@@ -178,13 +185,13 @@ public partial class FrmCompanyRights : MrForm
             return;
         }
         _rowIndex = e.RowIndex;
-        AdjustControlsInDataGrid();
+        IndexingControlInGrid();
     }
 
 
 
     // METHOD FOR THIS FORM
-    private void EnableControl(bool isEnable)
+    private void EnableControl(bool isEnable = false)
     {
         TxtSno.Enabled = false;
         TxtSno.Visible = isEnable;
@@ -195,26 +202,28 @@ public partial class FrmCompanyRights : MrForm
         TxtCompanyName.Enabled = isEnable;
         TxtCompanyName.Visible = isEnable;
     }
-    public void BindCompany()
+    
+    public void BindCompanyList()
     {
         try
         {
-            var dt = _companySetup.GetCompanyRightList(_userId);
-            if (dt.Rows.Count <= 0)
+            var list = _companySetup.GetCompanyRightList(_userId);
+            if (list.Rows.Count <= 0)
             {
-                SGrid.Rows.Add();
                 return;
             }
 
             SGrid.Rows.Clear();
-            SGrid.Rows.Add(dt.Rows.Count + 1);
-            foreach (DataRow row in dt.Rows)
+            SGrid.Rows.Add(list.Rows.Count + 1);
+            foreach (DataRow row in list.Rows)
             {
-                SGrid.Rows[dt.Rows.IndexOf(row)].Cells[0].Value = row["CompanyId"];
-                SGrid.Rows[dt.Rows.IndexOf(row)].Cells[1].Value = dt.Rows.IndexOf(row) + 1;
-                SGrid.Rows[dt.Rows.IndexOf(row)].Cells[2].Value = row["FileName"];
-                SGrid.Rows[dt.Rows.IndexOf(row)].Cells[2].Value = row["CompanyName"];
+                SGrid.Rows[list.Rows.IndexOf(row)].Cells[CompanyId.Index].Value = row[nameof(CompanyId)];
+                SGrid.Rows[list.Rows.IndexOf(row)].Cells[SNo.Index].Value = list.Rows.IndexOf(row) + 1;
+                SGrid.Rows[list.Rows.IndexOf(row)].Cells[FileName.Index].Value = row[nameof(FileName)];
+                SGrid.Rows[list.Rows.IndexOf(row)].Cells[CompanyName.Index].Value = row[nameof(CompanyName)];
             }
+            ObjGlobal.DGridColorCombo(SGrid);
+
         }
         catch (Exception ex)
         {
@@ -222,32 +231,31 @@ public partial class FrmCompanyRights : MrForm
             //MessageBox.Show(ex.Message, ObjGlobal.Caption);
         }
     }
-    private void AdjustControlsInDataGrid()
+    
+    private void IndexingControlInGrid()
     {
         if (SGrid.CurrentRow == null)
         {
             return;
         }
         var currentRow = _rowIndex;
-        var columnIndex = SGrid.Columns["GTxtSNo"].Index;
+        var columnIndex = SGrid.Columns[nameof(SNo)]!.Index;
         TxtSno.Size = SGrid.GetCellDisplayRectangle(columnIndex, currentRow, true).Size;
         TxtSno.Location = SGrid.GetCellDisplayRectangle(columnIndex, currentRow, true).Location;
         TxtSno.TabIndex = columnIndex;
 
-        columnIndex = SGrid.Columns["GTxtFileName"].Index;
+        columnIndex = SGrid.Columns[nameof(FileName)]!.Index;
         TxtFileName.Size = SGrid.GetCellDisplayRectangle(columnIndex, currentRow, true).Size;
         TxtFileName.Location = SGrid.GetCellDisplayRectangle(columnIndex, currentRow, true).Location;
         TxtFileName.TabIndex = columnIndex;
 
-        columnIndex = SGrid.Columns["GTxtCompanyName"].Index;
+        columnIndex = SGrid.Columns[nameof(CompanyName)]!.Index;
         TxtCompanyName.Size = SGrid.GetCellDisplayRectangle(columnIndex, currentRow, true).Size;
         TxtCompanyName.Location = SGrid.GetCellDisplayRectangle(columnIndex, currentRow, true).Location;
         TxtCompanyName.TabIndex = columnIndex;
-
     }
-    private void GetGridColumns()
-    {
-
+    
+    private void GenerateGridColumns() {
         SGrid.RowEnter += OnDGridOnRowEnter;
         SGrid.RowsAdded += OnDGridOnRowsAdded;
         SGrid.GotFocus += OnDGridOnGotFocus;
@@ -269,7 +277,7 @@ public partial class FrmCompanyRights : MrForm
         {
             ReadOnly = true
         };
-        TxtCompanyName.KeyDown += (sender, e) =>
+        TxtCompanyName.KeyDown += (_, e) =>
         {
             if (e.Shift && e.KeyCode == Keys.Tab)
             {
@@ -292,33 +300,62 @@ public partial class FrmCompanyRights : MrForm
         };
         TxtCompanyName.Validating += (sender, e) =>
         {
-            if (!TxtCompanyName.Enabled || ActiveControl == TxtFileName)
+            if (!TxtCompanyName.Enabled || ActiveControl.Name == nameof(TxtCompanyName))
             {
                 return;
             }
 
-
-            if (!AddTextToGrid(_isRowUpdate))
+            if (TxtCompanyName.IsBlankOrEmpty())
             {
-                return;
+                if (SGrid.Rows[0].Cells[0].Value.GetInt() == 0)
+                {
+                    CustomMessageBox.Warning("PLEASE SELECT COMPANY FOR RIGHTS..!!");
+                    e.Cancel = true;
+                    SGrid.Focus();
+                    return;
+                }
+
+                EnableControl();
+                BtnSave.Focus();
             }
-            TxtCompanyName.Focus();
+            else
+            {
+                if (SGrid.Rows.Cast<DataGridViewRow>().Any(r =>
+                    {
+                        var value = r.Cells[0].Value;
+                        return value != null && value.Equals(_companyId) && r.Index != _rowIndex;
+                    }))
+                {
+                    CustomMessageBox.Information("COMPANY ALREADY EXITS..!!");
+                    e.Cancel = true;
+                    return;
+                }
+
+                if (!AddTextToGrid(_isRowUpdate))
+                {
+                    return;
+                }
+
+                TxtCompanyName.Focus();
+            }
         };
 
     }
+    
     private void OpenCompanyList()
     {
         var (description, id) = GetMasterList.GetCompanyList("NEW");
         if (id > 0)
         {
             var dt = _companySetup.GetCompanyInfo(id);
-            CompanyId = id;
+            _companyId = id;
             TxtCompanyName.Text = description;
             TxtFileName.Text = dt.Rows[0]["FileName"].GetString();
         }
 
         TxtCompanyName.Focus();
     }
+    
     private void OpenLoginUserList()
     {
         var (description, id) = GetMasterList.GetUserInfoList("NEW");
@@ -326,18 +363,25 @@ public partial class FrmCompanyRights : MrForm
         {
             _userId = id;
             TxtUserInfo.Text = description;
+            if (SGrid.RowCount > 0)
+            {
+                SGrid.Rows.Clear();
+                SGrid.Rows.Add();
+            }
+            BindCompanyList();
         }
 
         TxtUserInfo.Focus();
     }
+    
     private void GetSerialNo()
     {
         for (var i = 0; i < SGrid.RowCount; i++)
         {
-            var sno = SGrid.Rows[i].Cells["GTxtSNo"].Value.GetInt();
-            TxtSno.Text = (sno + 1).GetIntString();
+            TxtSno.Text = (i + 1).ToString();
         }
     }
+    
     private void TextFromGrid()
     {
         if (SGrid.CurrentRow == null)
@@ -345,22 +389,22 @@ public partial class FrmCompanyRights : MrForm
             return;
         }
 
-        TxtSno.Text = SGrid.Rows[_rowIndex].Cells["GTxtSNo"].Value.GetIntString();
-        TxtFileName.Text = SGrid.Rows[_rowIndex].Cells["GTxtFileName"].Value.GetString();
-        TxtCompanyName.Text = SGrid.Rows[_rowIndex].Cells["GTxtCompanyName"].Value.GetString();
+        var row = SGrid.Rows[_rowIndex];
+        TxtSno.Text = row.Cells[nameof(SNo)].Value.GetIntString();
+        TxtFileName.Text = row.Cells[nameof(FileName)].Value.GetString();
+        TxtCompanyName.Text = row.Cells[nameof(CompanyName)].Value.GetString();
         _isRowUpdate = true;
     }
+    
     private bool AddTextToGrid(bool isUpdate)
     {
-        if (TxtCompanyName.Text.IsBlankOrEmpty())
+        if (TxtCompanyName.IsBlankOrEmpty())
         {
-            TxtCompanyName.WarningMessage("COMPANY NAME IS BLANK....");
+            TxtCompanyName.WarningMessage("COMPANY NAME IS BLANK ....");
             return false;
         }
 
-
-        var item = SGrid.Rows.Cast<DataGridViewRow>()
-            .FirstOrDefault(r => r.Cells["GTxtCompanyName"].Value.GetString() == TxtCompanyName.Text);
+        var item = SGrid.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.Cells[nameof(CompanyName)].Value.GetString() == TxtCompanyName.Text);
         var index = item?.Index ?? 0;
 
         if (index == 0)
@@ -369,25 +413,25 @@ public partial class FrmCompanyRights : MrForm
             if (!isUpdate)
             {
                 SGrid.Rows.Add();
-                SGrid.Rows[iRows].Cells["GTxtSNo"].Value = TxtSno.Text;
+                SGrid.Rows[iRows].Cells[nameof(SNo)].Value = TxtSno.Text;
             }
 
-            SGrid.Rows[iRows].Cells["GTxtCompanyId"].Value = CompanyId;
-            SGrid.Rows[iRows].Cells["GTxtFileName"].Value = TxtFileName.Text;
-            SGrid.Rows[iRows].Cells["GTxtCompanyName"].Value = TxtCompanyName.Text;
+            SGrid.Rows[iRows].Cells[nameof(CompanyId)].Value = _companyId;
+            SGrid.Rows[iRows].Cells[nameof(FileName)].Value = TxtFileName.Text;
+            SGrid.Rows[iRows].Cells[nameof(CompanyName)].Value = TxtCompanyName.Text;
 
             _rowIndex = SGrid.RowCount - 1 > iRows ? iRows + 1 : SGrid.RowCount - 1;
             SGrid.CurrentCell = SGrid.Rows[_rowIndex].Cells[_columnIndex];
+            ObjGlobal.DGridColorCombo(SGrid);
             if (_isRowUpdate)
             {
-                EnableControl(false);
-                ClearCompanyDetails();
+                EnableControl();
+                ClearCompanyControl();
                 SGrid.Focus();
                 return false;
             }
-
-            AdjustControlsInDataGrid();
-            ClearCompanyDetails();
+            ClearCompanyControl();
+            IndexingControlInGrid();
             TxtCompanyName.AcceptsTab = false;
             GetSerialNo();
         }
@@ -400,14 +444,30 @@ public partial class FrmCompanyRights : MrForm
         return true;
     }
 
-    private void ClearCompanyDetails()
+    private void ClearControl()
     {
-        CompanyId = 0;
+        _userId = 0;
+        TxtUserInfo.Clear();
+        ClearCompanyControl();
+        if (SGrid.RowCount > 0)
+        {
+            SGrid.Rows.Clear();
+        }
+        if (SGrid.RowCount == 0)
+        {
+            SGrid.Rows.Add();
+        }
+        TxtSno.Text = (CompanyName.Index + 1).ToString();
+    }
+    
+    private void ClearCompanyControl()
+    {
+        _companyId = 0;
         TxtCompanyName.Clear();
         TxtFileName.Clear();
     }
-
-    private bool IsFormValid()
+    
+    private bool IsControlValid()
     {
         if (_userId == 0 || TxtUserInfo.IsBlankOrEmpty())
         {
@@ -423,25 +483,31 @@ public partial class FrmCompanyRights : MrForm
         }
         return true;
     }
-
+    
     private int SaveCompanyUserRights(string action)
     {
-
+        var rightsId = _companySetup.MaxCompanyRightsId();
         foreach (DataGridViewRow gridRow in SGrid.Rows)
         {
+            if (gridRow.Cells[nameof(CompanyId)].Value.GetInt() == 0)
+            {
+                continue;
+            }
+            
             var details = new CompanyRights
             {
-                CompanyRights_Id = _companySetup.MaxCompanyRightsId(),
+                CompanyRights_Id = rightsId,
                 User_Id = _userId,
-                Company_Id = gridRow.Cells[""].Value.GetInt(),
-                Company_Name = gridRow.Cells[""].Value.GetString(),
-                Start_AdDate = gridRow.Cells[""].Value.GetDateTime(),
-                End_AdDate = gridRow.Cells[""].Value.GetDateTime(),
-                Modify_Start_AdDate = null,
-                Modify_End_AdDate = null,
+                Company_Id = gridRow.Cells[nameof(CompanyId)].Value.GetInt(),
+                Company_Name = gridRow.Cells[nameof(CompanyName)].Value.GetString(),
+                Start_AdDate = ObjGlobal.CfStartAdDate,
+                End_AdDate = ObjGlobal.CfEndAdDate,
+                Modify_Start_AdDate = ObjGlobal.CfStartAdDate,
+                Modify_End_AdDate = ObjGlobal.CfEndAdDate,
                 Back_Days_Restriction = false
             };
             _companySetup.RightsList.Add(details);
+            rightsId++;
         }
         return _companySetup.SaveCompanyRights(action);
     }
@@ -450,7 +516,7 @@ public partial class FrmCompanyRights : MrForm
     private int _rowIndex;
     private int _columnIndex;
 
-    private int CompanyId;
+    private int _companyId;
     private int _userId;
 
     private bool _isRowDelete;

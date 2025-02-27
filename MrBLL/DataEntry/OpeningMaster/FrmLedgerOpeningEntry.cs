@@ -1,6 +1,5 @@
 ﻿using DatabaseModule.CloudSync;
 using DatabaseModule.DataEntry.OpeningMaster;
-using DevExpress.XtraEditors;
 using DevExpress.XtraSplashScreen;
 using MrBLL.DataEntry.Common;
 using MrBLL.Master.LedgerSetup;
@@ -24,7 +23,6 @@ using MrDAL.Master.Interface;
 using MrDAL.Models.Common;
 using MrDAL.Utility.Server;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -41,7 +39,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
     public FrmLedgerOpeningEntry(bool isZoom = false, string voucherNo = "")
     {
         InitializeComponent();
-        _ledgerOpeningRepository = new LedgerOpeningRepository();
+        _entry = new LedgerOpeningRepository();
 
         _setup = new ClsMasterSetup();
         _injectData = new DbSyncRepoInjectData();
@@ -157,16 +155,16 @@ public partial class FrmLedgerOpeningEntry : MrForm
             TxtSno.Text = DGrid.RowCount.ToString();
         }
 
-        isRowUpdate = false;
-        LedgerId = 0;
+        _isRowUpdate = false;
+        _ledgerId = 0;
         TxtLedger.Clear();
-        SubledgerId = 0;
+        _subledgerId = 0;
         TxtSubledger.Clear();
-        AgentId = 0;
+        _agentId = 0;
         TxtAgent.Clear();
-        DepartmentId = 0;
+        _departmentId = 0;
         TxtDepartment.Clear();
-        CurrencyId = ObjGlobal.SysCurrencyId;
+        _currencyId = ObjGlobal.SysCurrencyId;
         TxtCurrency.Text = ObjGlobal.SysCurrency;
         TxtCurrencyRate.Text = 1.GetDecimalString();
         TxtDebit.Clear();
@@ -204,31 +202,31 @@ public partial class FrmLedgerOpeningEntry : MrForm
         if (id > 0)
         {
             TxtLedger.Text = description;
-            LedgerId = id;
+            _ledgerId = id;
         }
         TxtLedger.Focus();
     }
 
     private void OpenSubLedger()
     {
-        (TxtSubledger.Text, SubledgerId) = GetMasterList.GetSubLedgerList(_actionTag);
+        (TxtSubledger.Text, _subledgerId) = GetMasterList.GetSubLedgerList(_actionTag);
     }
 
     private void OpenAgent()
     {
-        (TxtAgent.Text, AgentId) = GetMasterList.GetSubLedgerList(_actionTag);
+        (TxtAgent.Text, _agentId) = GetMasterList.GetSubLedgerList(_actionTag);
         TxtAgent.Focus();
     }
 
     private void OpenDepartment()
     {
-        (TxtDepartment.Text, DepartmentId) = GetMasterList.GetDepartmentList(_actionTag);
+        (TxtDepartment.Text, _departmentId) = GetMasterList.GetDepartmentList(_actionTag);
         TxtDepartment.Focus();
     }
 
     private void OpenCurrency()
     {
-        (TxtCurrency.Text, AgentId, TxtCurrencyRate.Text) = GetMasterList.GetCurrencyList(_actionTag);
+        (TxtCurrency.Text, _agentId, TxtCurrencyRate.Text) = GetMasterList.GetCurrencyList(_actionTag);
         TxtCurrency.Focus();
     }
 
@@ -288,8 +286,8 @@ public partial class FrmLedgerOpeningEntry : MrForm
                 if (id > 0)
                 {
                     TxtLedger.Text = description;
-                    LedgerId = id;
-                    SetLedgerInfo(LedgerId);
+                    _ledgerId = id;
+                    SetLedgerInfo(_ledgerId);
                 }
                 TxtLedger.Focus();
             }
@@ -299,8 +297,8 @@ public partial class FrmLedgerOpeningEntry : MrForm
             }
             else if (e.Control && e.KeyCode == Keys.N)
             {
-                (TxtLedger.Text, LedgerId) = GetMasterList.CreateGeneralLedger("Other", true);
-                SetLedgerInfo(LedgerId);
+                (TxtLedger.Text, _ledgerId) = GetMasterList.CreateGeneralLedger("Other", true);
+                SetLedgerInfo(_ledgerId);
                 TxtLedger.Focus();
             }
             else
@@ -342,7 +340,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
             else if (e.Shift && e.KeyCode is Keys.Tab)
                 SendToBack();
             else if (e.Control && e.KeyCode == Keys.N)
-                (TxtSubledger.Text, SubledgerId) = GetMasterList.CreateSubLedger(true);
+                (TxtSubledger.Text, _subledgerId) = GetMasterList.CreateSubLedger(true);
             else
                 ClsKeyPreview.KeyEvent((char)e.KeyCode, e.KeyValue, e.KeyData.ToString(), "DELETE",
                     e.KeyCode.ToString(), TxtSubledger, OpenSubLedger);
@@ -358,7 +356,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
             else if (e.Shift && e.KeyCode is Keys.Tab)
                 SendToBack();
             else if (e.Control && e.KeyCode == Keys.N)
-                (TxtAgent.Text, AgentId) = GetMasterList.CreateAgent(true);
+                (TxtAgent.Text, _agentId) = GetMasterList.CreateAgent(true);
             else
                 ClsKeyPreview.KeyEvent((char)e.KeyCode, e.KeyValue, e.KeyData.ToString(), "DELETE",
                     e.KeyCode.ToString(), TxtAgent, OpenAgent);
@@ -374,7 +372,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
             else if (e.Shift && e.KeyCode is Keys.Tab)
                 SendToBack();
             else if (e.Control && e.KeyCode == Keys.N)
-                (TxtDepartment.Text, DepartmentId) = GetMasterList.CreateDepartment(true);
+                (TxtDepartment.Text, _departmentId) = GetMasterList.CreateDepartment(true);
             else
                 ClsKeyPreview.KeyEvent((char)e.KeyCode, e.KeyValue, e.KeyData.ToString(), "DELETE",
                     e.KeyCode.ToString(), TxtDepartment, OpenDepartment);
@@ -404,21 +402,21 @@ public partial class FrmLedgerOpeningEntry : MrForm
         if (DGrid.CurrentRow == null) return;
         TxtSno.Text = DGrid.Rows[_rowIndex].Cells["GTxtSNo"].Value.GetString();
         TxtLedger.Text = DGrid.Rows[_rowIndex].Cells["GTxtLedger"].Value.GetString();
-        LedgerId = DGrid.Rows[_rowIndex].Cells["GTxtLedgerId"].Value.GetLong();
-        SetLedgerInfo(LedgerId);
+        _ledgerId = DGrid.Rows[_rowIndex].Cells["GTxtLedgerId"].Value.GetLong();
+        SetLedgerInfo(_ledgerId);
         TxtSubledger.Text = DGrid.Rows[_rowIndex].Cells["GTxtSubLedger"].Value.GetString();
-        SubledgerId = DGrid.Rows[_rowIndex].Cells["GTxtSubledgerId"].Value.GetInt();
+        _subledgerId = DGrid.Rows[_rowIndex].Cells["GTxtSubledgerId"].Value.GetInt();
         TxtAgent.Text = DGrid.Rows[_rowIndex].Cells["GTxtAgent"].Value.GetString();
-        SubledgerId = DGrid.Rows[_rowIndex].Cells["GTxtAgentId"].Value.GetInt();
+        _subledgerId = DGrid.Rows[_rowIndex].Cells["GTxtAgentId"].Value.GetInt();
         TxtDepartment.Text = DGrid.Rows[_rowIndex].Cells["GTxtDepartment"].Value.GetString();
-        SubledgerId = DGrid.Rows[_rowIndex].Cells["GTxtDepartmentId"].Value.GetInt();
+        _subledgerId = DGrid.Rows[_rowIndex].Cells["GTxtDepartmentId"].Value.GetInt();
         TxtCurrency.Text = DGrid.Rows[_rowIndex].Cells["GTxtCurrency"].Value.GetString();
         TxtCurrencyRate.Text = DGrid.Rows[_rowIndex].Cells["GTxtExchangeRate"].Value.GetString();
-        CurrencyId = DGrid.Rows[_rowIndex].Cells["GTxtCurrencyId"].Value.GetInt();
+        _currencyId = DGrid.Rows[_rowIndex].Cells["GTxtCurrencyId"].Value.GetInt();
         TxtDebit.Text = DGrid.Rows[_rowIndex].Cells["GTxtDebit"].Value.GetDecimalString();
         TxtCredit.Text = DGrid.Rows[_rowIndex].Cells["GTxtCredit"].Value.GetDecimalString();
         TxtNarration.Text = DGrid.Rows[_rowIndex].Cells["GTxtNarration"].Value.GetString();
-        isRowUpdate = true;
+        _isRowUpdate = true;
     }
 
     private void AdjustControlsInDataGrid()
@@ -505,15 +503,15 @@ public partial class FrmLedgerOpeningEntry : MrForm
             DGrid.Rows[iRows].Cells["GTxtSNo"].Value = iRows + 1;
         }
 
-        DGrid.Rows[iRows].Cells["GTxtLedgerId"].Value = LedgerId.ToString();
+        DGrid.Rows[iRows].Cells["GTxtLedgerId"].Value = _ledgerId.ToString();
         DGrid.Rows[iRows].Cells["GTxtLedger"].Value = TxtLedger.Text;
-        DGrid.Rows[iRows].Cells["GTxtSubLedgerId"].Value = SubledgerId.ToString();
+        DGrid.Rows[iRows].Cells["GTxtSubLedgerId"].Value = _subledgerId.ToString();
         DGrid.Rows[iRows].Cells["GTxtSubLedger"].Value = TxtSubledger.Text;
-        DGrid.Rows[iRows].Cells["GTxtDepartmentId"].Value = DepartmentId.ToString();
+        DGrid.Rows[iRows].Cells["GTxtDepartmentId"].Value = _departmentId.ToString();
         DGrid.Rows[iRows].Cells["GTxtDepartment"].Value = TxtDepartment.Text;
-        DGrid.Rows[iRows].Cells["GTxtAgentId"].Value = AgentId.ToString();
+        DGrid.Rows[iRows].Cells["GTxtAgentId"].Value = _agentId.ToString();
         DGrid.Rows[iRows].Cells["GTxtAgent"].Value = TxtAgent.Text;
-        DGrid.Rows[iRows].Cells["GTxtCurrencyId"].Value = CurrencyId;
+        DGrid.Rows[iRows].Cells["GTxtCurrencyId"].Value = _currencyId;
         DGrid.Rows[iRows].Cells["GTxtCurrency"].Value = TxtCurrency.Text;
         DGrid.Rows[iRows].Cells["GTxtExchangeRate"].Value = TxtCurrencyRate.Text;
         DGrid.Rows[iRows].Cells["GTxtDebit"].Value = TxtDebit.GetDecimalString();
@@ -525,8 +523,8 @@ public partial class FrmLedgerOpeningEntry : MrForm
             ? (TxtCurrencyRate.GetDecimal() * TxtCredit.GetDecimal()).GetDecimalString()
             : TxtCredit.GetDecimalString();
         DGrid.Rows[iRows].Cells["GTxtNarration"].Value = TxtNarration.Text;
-        DGrid.CurrentCell = DGrid.Rows[isRowUpdate ? iRows : DGrid.RowCount - 1].Cells[_columnIndex];
-        if (isRowUpdate)
+        DGrid.CurrentCell = DGrid.Rows[iRows + 1].Cells[_columnIndex];
+        if (_isRowUpdate)
         {
             EnableGridControl();
             ClearLedgerDetails();
@@ -542,7 +540,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
 
     private void FillLedgerOpeningVoucher(string voucherNo)
     {
-        var dsVoucher = _ledgerOpeningRepository.ReturnOpeningLedgerVoucherInDataSet(voucherNo);
+        var dsVoucher = _entry.ReturnOpeningLedgerVoucherInDataSet(voucherNo);
         if (dsVoucher.Tables[0].Rows.Count > 0)
         {
             if (_actionTag != "SAVE")
@@ -558,7 +556,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
             if (!string.IsNullOrEmpty(dsVoucher.Tables[0].Rows[0]["Cls1"].ToString()))
             {
                 TxtDepartment.Text = dsVoucher.Tables[0].Rows[0]["Department1"].ToString();
-                DepartmentId = ObjGlobal.ReturnInt(dsVoucher.Tables[0].Rows[0]["Cls1"].ToString());
+                _departmentId = ObjGlobal.ReturnInt(dsVoucher.Tables[0].Rows[0]["Cls1"].ToString());
             }
 
             if (dsVoucher.Tables[1].Rows.Count > 0)
@@ -667,33 +665,33 @@ public partial class FrmLedgerOpeningEntry : MrForm
         try
         {
             const int syncRow = 0;
-            _ledgerOpeningRepository.GetOpening.Details = [];
+            _entry.GetOpening.Details = [];
 
             if (_actionTag == "SAVE")
             {
                 TxtVno.Text = TxtVno.GetCurrentVoucherNo("COA", _docDesc);
-                _openingId = _ledgerOpeningRepository.GetOpening.Opening_Id.ReturnMaxIntId("COA", "Opening_Id");
+                _openingId = _entry.GetOpening.Opening_Id.ReturnMaxIntId("COA", "Opening_Id");
             }
-            _ledgerOpeningRepository.GetOpening.Opening_Id = _openingId;
-            _ledgerOpeningRepository.GetOpening.Voucher_No = TxtVno.Text;
-            _ledgerOpeningRepository.GetOpening.Module = "LOB";
-            _ledgerOpeningRepository.GetOpening.OP_Date = DateTime.Parse(MskDate.Text);
-            _ledgerOpeningRepository.GetOpening.OP_Miti = MskMiti.Text.Contains("/") ? MskMiti.Text : MskMiti.Text.Replace("-", "/");
-            _ledgerOpeningRepository.GetOpening.Remarks = TxtRemarks.Text;
-            _ledgerOpeningRepository.GetOpening.Ledger_Id = LedgerId;
-            _ledgerOpeningRepository.GetOpening.Agent_Id = AgentId > 0 ? AgentId : null;
-            _ledgerOpeningRepository.GetOpening.Cls1 = DepartmentId > 0 ? DepartmentId : null;
-            _ledgerOpeningRepository.GetOpening.Branch_Id = ObjGlobal.SysBranchId;
-            _ledgerOpeningRepository.GetOpening.Company_Id = ObjGlobal.SysCompanyUnitId;
-            _ledgerOpeningRepository.GetOpening.Currency_Id = ObjGlobal.SysCurrencyId;
-            _ledgerOpeningRepository.GetOpening.Enter_By = ObjGlobal.LogInUser;
-            _ledgerOpeningRepository.GetOpening.Enter_Date = DateTime.Now;
-            _ledgerOpeningRepository.GetOpening.FiscalYearId = ObjGlobal.SysFiscalYearId;
+            _entry.GetOpening.Opening_Id = _openingId;
+            _entry.GetOpening.Voucher_No = TxtVno.Text;
+            _entry.GetOpening.Module = "LOB";
+            _entry.GetOpening.OP_Date = DateTime.Parse(MskDate.Text);
+            _entry.GetOpening.OP_Miti = MskMiti.Text.Contains("/") ? MskMiti.Text : MskMiti.Text.Replace("-", "/");
+            _entry.GetOpening.Remarks = TxtRemarks.Text;
+            _entry.GetOpening.Ledger_Id = _ledgerId;
+            _entry.GetOpening.Agent_Id = _agentId > 0 ? _agentId : null;
+            _entry.GetOpening.Cls1 = _departmentId > 0 ? _departmentId : null;
+            _entry.GetOpening.Branch_Id = ObjGlobal.SysBranchId;
+            _entry.GetOpening.Company_Id = ObjGlobal.SysCompanyUnitId;
+            _entry.GetOpening.Currency_Id = ObjGlobal.SysCurrencyId;
+            _entry.GetOpening.Enter_By = ObjGlobal.LogInUser;
+            _entry.GetOpening.Enter_Date = DateTime.Now;
+            _entry.GetOpening.FiscalYearId = ObjGlobal.SysFiscalYearId;
 
-            _ledgerOpeningRepository.GetOpening.GetView = DGrid;
+            _entry.GetOpening.GetView = DGrid;
 
             var sync = syncRow.ReturnSyncRowNo("COA", _openingId.ToString());
-
+            _entry.Details.Clear();
             foreach (DataGridViewRow item in DGrid.Rows)
             {
                 var result = item.Cells["GTxtLedgerId"].Value.GetLong();
@@ -713,7 +711,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
                     Ledger_Id = item.Cells["GTxtLedgerId"].Value.GetLong(),
                     Subledger_Id = item.Cells["GTxtSubledgerId"].Value.GetInt(),
                     Agent_Id = item.Cells["GTxtAgentId"].Value.GetInt(),
-                    Cls1 = DepartmentId > 0 ? DepartmentId : null,
+                    Cls1 = _departmentId > 0 ? _departmentId : null,
                     Cls2 = 0,
                     Cls3 = 0,
                     Cls4 = 0,
@@ -744,12 +742,12 @@ public partial class FrmLedgerOpeningEntry : MrForm
                     SyncLastPatchedOn = DateTime.Now,
                     SyncRowVersion = sync
                 };
-                _ledgerOpeningRepository.Details.Add(details);
+                _entry.Details.Add(details);
             }
 
-            _ledgerOpeningRepository.GetOpening.SyncRowVersion = sync;
+            _entry.GetOpening.SyncRowVersion = sync;
 
-            return _ledgerOpeningRepository.SaveLedgerOpening(_actionTag);
+            return _entry.SaveLedgerOpening(_actionTag);
         }
         catch (Exception ex)
         {
@@ -784,11 +782,11 @@ public partial class FrmLedgerOpeningEntry : MrForm
         SplashScreenManager.ShowForm(typeof(PleaseWait));
         //pull all new ledger opening
         var pullResponse =
-            await _ledgerOpeningRepository.PullAccountGroupsServerToClientByRowCounts(ledgerOpeningRepo, 1);
+            await _entry.PullAccountGroupsServerToClientByRowCounts(ledgerOpeningRepo, 1);
 
         SplashScreenManager.CloseForm();
         // push all new ledger opening data
-        var sqlQuery = _ledgerOpeningRepository.GetLedgerOpeningScript();
+        var sqlQuery = _entry.GetLedgerOpeningScript();
         var queryResponse = await QueryUtils.GetListAsync<LedgerOpening>(sqlQuery);
         var loList = queryResponse.List.ToList();
         if (loList.Count > 0)
@@ -923,7 +921,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
             var frm = new FrmCurrency(true);
             frm.ShowDialog();
             TxtCurrency.Text = frm.CurrencyDesc;
-            CurrencyId = frm.CurrencyId;
+            _currencyId = frm.CurrencyId;
         }
         else
         {
@@ -949,7 +947,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
     {
         TxtLedger.TabStop = true;
         if (!TxtLedger.Enabled || ActiveControl == TxtCredit) return;
-        if (!AddTextToGrid(isRowUpdate)) return;
+        if (!AddTextToGrid(_isRowUpdate)) return;
         TxtLedger.Focus();
     }
 
@@ -1078,6 +1076,7 @@ public partial class FrmLedgerOpeningEntry : MrForm
             }
         }
     }
+    
     //DATA GRID CONTROL
     private void DGrid_KeyDown(object sender, KeyEventArgs e)
     {
@@ -1113,12 +1112,12 @@ public partial class FrmLedgerOpeningEntry : MrForm
     {
         if (CustomMessageBox.DeleteRow() is DialogResult.No)
             return;
-        IsRowDelete = true;
+        _isRowDelete = true;
     }
 
     private void DGrid_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
     {
-        if (!IsRowDelete) return;
+        if (!_isRowDelete) return;
         if (DGrid.RowCount is 0) DGrid.Rows.Add();
         GetSerialNo();
     }
@@ -1129,22 +1128,22 @@ public partial class FrmLedgerOpeningEntry : MrForm
 
     #region -------------- OBJECT FOR THIS FORM --------------
 
-    private int SubledgerId;
-    private int DepartmentId;
-    private int CurrencyId = ObjGlobal.SysCurrencyId;
-    private int AgentId;
+    private int _subledgerId;
+    private int _departmentId;
+    private int _currencyId = ObjGlobal.SysCurrencyId;
+    private int _agentId;
     private int _openingId;
     private int _rowIndex;
     private int _columnIndex;
-    private bool IsRowDelete;
-    private bool isRowUpdate;
-    private long LedgerId;
+    private bool _isRowDelete;
+    private bool _isRowUpdate;
+    private long _ledgerId;
     private readonly string[] _tagStrings = ["DELETE", "REVERSE"];
     private string _actionTag = string.Empty;
     private string _docDesc = string.Empty;
     private KeyPressEventArgs _getKeys;
 
-    private readonly ILedgerOpeningRepository _ledgerOpeningRepository;
+    private readonly ILedgerOpeningRepository _entry;
     private readonly IMasterSetup _setup = new ClsMasterSetup();
     private readonly IFinanceDesign _voucher = new FinanceDesign();
 

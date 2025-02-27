@@ -17,18 +17,20 @@ namespace MrDAL.Utility.PickList;
 
 public class ClsPickList : IPickList
 {
-   
+
     // HOSPITAL MASTER LIST
 
     #region --------------- HOSPITAL MASTER LIST ---------------
 
     public DataTable GetPatientList()
     {
-        var cmdString = $@"
-			SELECT pm.PaitentId LedgerId, pm.IPDId, pm.ShortName, LTRIM(RTRIM(Title)) + ' ' + pm.PaitentDesc Description, pm.TAddress, pm.AccountLedger, pm.ContactNo
-			FROM HOS.PatientMaster pm
-			WHERE pm.BranchId = '{ObjGlobal.SysBranchId}' AND (pm.CompanyUnitSetup = '{ObjGlobal.SysCompanyUnitId}' OR pm.CompanyUnitSetup IS NULL ) AND (pm.Status IS NULL OR pm.Status = 1)
-			ORDER BY pm.ShortName DESC,pm.AccountLedger";
+        var cmdString = $"""
+
+                         			SELECT pm.PaitentId LedgerId, pm.IPDId, pm.ShortName, LTRIM(RTRIM(Title)) + ' ' + pm.PaitentDesc Description, pm.TAddress, pm.AccountLedger, pm.ContactNo
+                         			FROM HOS.PatientMaster pm
+                         			WHERE pm.BranchId = '{ObjGlobal.SysBranchId}' AND (pm.CompanyUnitSetup = '{ObjGlobal.SysCompanyUnitId}' OR pm.CompanyUnitSetup IS NULL ) AND (pm.Status IS NULL OR pm.Status = 1)
+                         			ORDER BY pm.ShortName DESC,pm.AccountLedger
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -37,13 +39,17 @@ public class ClsPickList : IPickList
     // HOSPITAL MASTER LIST
     public DataTable GetDoctorTypeList(string actionTag = "", bool status = true)
     {
-        var cmdString = @"
-			SELECT DtID DoctorTypeId, DrTypeDesc TypeDescription, DrTypeShortName TypeShortName, Status
-			FROM HOS.DoctorType
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT DtID DoctorTypeId, DrTypeDesc TypeDescription, DrTypeShortName TypeShortName, Status
+                        			FROM HOS.DoctorType
+                        			WHERE 1=1 
+                        """;
         cmdString += status ? @" AND IsNUll(Status,0) = 1 " : "";
-        cmdString += @"
-			ORDER BY TypeDescription";
+        cmdString += """
+
+                     			ORDER BY TypeDescription
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -53,9 +59,11 @@ public class ClsPickList : IPickList
 
     public DataTable GetCompanyList()
     {
-        const string cmdString = @"
-		select  GComp_Id CompanyId,Company_Name CompanyName FROM AMS.GlobalCompany gc
-        ORDER BY gc.Company_Name ASC";
+        const string cmdString = """
+
+                                 		select  GComp_Id CompanyId,Company_Name CompanyName FROM AMS.GlobalCompany gc
+                                         ORDER BY gc.Company_Name ASC
+                                 """;
         return SqlExtensions.ExecuteDataSetOnMaster(cmdString).Tables[0];
     }
 
@@ -81,8 +89,10 @@ public class ClsPickList : IPickList
 
     public DataTable GetUserList(string actionTag)
     {
-        const string cmdString = @"
-        SELECT User_Id,Full_Name,User_Name,Mobile_No FROM AMS.UserInfo WHERE USER_NAME NOT IN ('ADMIN','AMSADMIN','MRSOLUTION','MRDEMO')";
+        const string cmdString = """
+
+                                         SELECT User_Id,Full_Name,User_Name,Mobile_No FROM AMS.UserInfo WHERE USER_NAME NOT IN ('ADMIN','AMSADMIN','MRSOLUTION','MRDEMO')
+                                 """;
         return SqlExtensions.ExecuteDataSetOnMaster(cmdString).Tables[0];
     }
 
@@ -143,35 +153,47 @@ public class ClsPickList : IPickList
 
     public DataTable GetMemberShipList(string actionTag)
     {
-        var cmdString = @"
-			SELECT MShipId LedgerId, MShipDesc Description, MShipShortName ShortName, MSS.PhoneNo Phone, MSS.EmailAdd Email, GLName Ledger, MemberDesc MemberType, MSS.MExpireDate EndDate, MSS.MValidDate StartDate
-			 FROM AMS.MemberShipSetup MSS
-				  LEFT OUTER JOIN AMS.GeneralLedger AS GL ON GL.GLID = MSS.LedgerId
-				  LEFT OUTER JOIN AMS.MemberType AS MType ON MType.MemberTypeId = MSS.MemberTypeId
-			 WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT MShipId LedgerId, MShipDesc Description, MShipShortName ShortName, MSS.PhoneNo Phone, MSS.EmailAdd Email, GLName Ledger, MemberDesc MemberType, MSS.MExpireDate EndDate, MSS.MValidDate StartDate
+                        			 FROM AMS.MemberShipSetup MSS
+                        				  LEFT OUTER JOIN AMS.GeneralLedger AS GL ON GL.GLID = MSS.LedgerId
+                        				  LEFT OUTER JOIN AMS.MemberType AS MType ON MType.MemberTypeId = MSS.MemberTypeId
+                        			 WHERE 1=1 
+                        """;
         if (actionTag.Equals("SAVE"))
-            cmdString += @"
-				AND(MSS.ActiveStatus IS NULL OR MSS.ActiveStatus = 1)  ";
+            cmdString += """
+
+                         				AND(MSS.ActiveStatus IS NULL OR MSS.ActiveStatus = 1)  
+                         """;
 
         if (actionTag.Equals("DELETE"))
-            cmdString += @"
-				AND MemberId NOT IN  ( SELECT MShipId FROM AMS.AccountDetails WHERE MShipId IS NOT NULL)  ";
+            cmdString += """
+
+                         				AND MemberId NOT IN  ( SELECT MShipId FROM AMS.AccountDetails WHERE MShipId IS NOT NULL)  
+                         """;
         cmdString += " ORDER BY MShipDesc;";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetMemberTypeList(string actionTag)
     {
-        var cmdString = @"
-			SELECT MemberTypeId LedgerId, MemberDesc Description, MemberShortName ShortName, CAST(ISNULL(Discount, 0) AS DECIMAL(18, 2)) Discount
-			FROM AMS.MemberType
-			WHERE 1=1";
+        var cmdString = """
+
+                        			SELECT MemberTypeId LedgerId, MemberDesc Description, MemberShortName ShortName, CAST(ISNULL(Discount, 0) AS DECIMAL(18, 2)) Discount
+                        			FROM AMS.MemberType
+                        			WHERE 1=1
+                        """;
         if (actionTag.Equals("DELETE"))
-            cmdString += @"
-				AND MemberTypeId NOT IN (SELECT MemberId FROM AMS.MemberShipSetup) ";
+            cmdString += """
+
+                         				AND MemberTypeId NOT IN (SELECT MemberId FROM AMS.MemberShipSetup) 
+                         """;
         if (actionTag.Equals("SAVE"))
-            cmdString += @"
-				AND (ActiveStatus =1 OR ActiveStatus IS NULL) ";
+            cmdString += """
+
+                         				AND (ActiveStatus =1 OR ActiveStatus IS NULL) 
+                         """;
         cmdString += @"ORDER BY MemberDesc ";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
@@ -179,49 +201,55 @@ public class ClsPickList : IPickList
     public DataTable GetOpeningGeneralLedgerList(string actionTag, string category, string loginDate)
     {
         if (loginDate.IsBlankOrEmpty() || loginDate == " /  /    ") loginDate = DateTime.Now.GetSystemDate();
-        var cmdString = @$"
-			SELECT GLID LedgerId, GLName Description, gl.GLCode ShortName, PanNo, Balance Balance,CASE WHEN Balance > 0 THEN 'Dr' WHEN b.Balance < 0 THEN 'Cr' ELSE '' END AmtType, GrpName, ISNULL(AgentName, 'No Agent') AgentName, CAST(ISNULL(gl.CrLimit, 0) AS DECIMAL(18, 2)) CrLimit, ISNULL(gl.PhoneNo, 'No Number') PhoneNo, ISNULL(GLAddress, '') GLAddress
-			FROM AMS.GeneralLedger gl
-				 LEFT OUTER JOIN AMS.AccountGroup AG ON AG.GrpId=gl.GrpId
-				 LEFT OUTER JOIN AMS.JuniorAgent AS JA ON JA.AgentId=gl.AgentId
-				 LEFT OUTER JOIN (
-						SELECT Ledger_ID, SUM(LocalDebit_Amt -LocalCredit_Amt) Balance FROM AMS.AccountDetails WHERE Voucher_Date <'{loginDate}'
-						GROUP BY Ledger_ID
-				 ) b ON b.Ledger_ID = gl.GLID
-			WHERE AG.PrimaryGrp IN ('Balance Sheet', 'BS')
-			ORDER BY gl.GLName ";
+        var cmdString = $"""
+
+                         			SELECT GLID LedgerId, GLName Description, gl.GLCode ShortName, PanNo, Balance Balance,CASE WHEN Balance > 0 THEN 'Dr' WHEN b.Balance < 0 THEN 'Cr' ELSE '' END AmtType, GrpName, ISNULL(AgentName, 'No Agent') AgentName, CAST(ISNULL(gl.CrLimit, 0) AS DECIMAL(18, 2)) CrLimit, ISNULL(gl.PhoneNo, 'No Number') PhoneNo, ISNULL(GLAddress, '') GLAddress
+                         			FROM AMS.GeneralLedger gl
+                         				 LEFT OUTER JOIN AMS.AccountGroup AG ON AG.GrpId=gl.GrpId
+                         				 LEFT OUTER JOIN AMS.JuniorAgent AS JA ON JA.AgentId=gl.AgentId
+                         				 LEFT OUTER JOIN (
+                         						SELECT Ledger_ID, SUM(LocalDebit_Amt -LocalCredit_Amt) Balance FROM AMS.AccountDetails WHERE Voucher_Date <'{loginDate}'
+                         						GROUP BY Ledger_ID
+                         				 ) b ON b.Ledger_ID = gl.GLID
+                         			WHERE AG.PrimaryGrp IN ('Balance Sheet', 'BS')
+                         			ORDER BY gl.GLName 
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetGeneralLedgerList(string actionTag, string category, string loginDate, bool status)
     {
-        var cmdString = $@"
-			SELECT gl.GLID LedgerId, gl.GLName Description, gl.GLCode ShortName, gl.ACCode LedgerCode,CAST(ABS(ob.Balance) AS DECIMAL(18,{ObjGlobal.SysAmountLength})) Balance, ";
-        cmdString += $@"
-			CASE WHEN ob.Balance>0 THEN 'Dr' WHEN ob.Balance<0 THEN 'Cr' ELSE '' END BType, gl.PanNo, gl.GLType, AG.GrpType, AG.PrimaryGrp, AG.GrpName GroupDesc, ASG.SubGrpName SubGroupDesc, gl.GLAddress, JA.AgentName SalesMan, CU.CCode Currency, gl.CrDays, gl.CrLimit, gl.CrTYpe, gl.PhoneNo,gl.Status
-						FROM AMS.GeneralLedger gl
-				 LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
-				 LEFT OUTER JOIN AMS.AccountSubGroup AS ASG ON gl.SubGrpId=ASG.SubGrpId
-				 LEFT OUTER JOIN AMS.JuniorAgent AS JA ON gl.AgentId=JA.AgentId
-				 LEFT OUTER JOIN AMS.Currency AS CU ON CU.CId=gl.CurrId
-				 LEFT OUTER JOIN (
-								   SELECT Opening.Ledger_ID, SUM(Balance) Balance
-								   FROM (
-										  SELECT ad.Ledger_ID, SUM(ad.LocalDebit_Amt-ad.LocalCredit_Amt) Balance
-										  FROM AMS.AccountDetails ad
-											   LEFT OUTER JOIN AMS.GeneralLedger gl ON ad.Ledger_ID=gl.GLID
-											   LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
-										  WHERE AG.PrimaryGrp IN ('Balance Sheet', 'BS') AND ad.FiscalYearId<{ObjGlobal.SysFiscalYearId}
-										  GROUP BY ad.Ledger_ID
-										  UNION ALL
-										  SELECT ad.Ledger_ID, SUM(ad.LocalDebit_Amt-ad.LocalCredit_Amt) Balance
-										  FROM AMS.AccountDetails ad
-										  WHERE ad.FiscalYearId={ObjGlobal.SysFiscalYearId}
-										  GROUP BY ad.Ledger_ID
-										) Opening
-								   GROUP BY Opening.Ledger_ID
-								 ) ob ON ob.Ledger_ID=gl.GLID
-			WHERE 1=1 ";
+        var cmdString = $"""
+
+                         			SELECT gl.GLID LedgerId, gl.GLName Description, gl.GLCode ShortName, gl.ACCode LedgerCode,CAST(ABS(ob.Balance) AS DECIMAL(18,{ObjGlobal.SysAmountLength})) Balance, 
+                         """;
+        cmdString += $"""
+
+                      			CASE WHEN ob.Balance>0 THEN 'Dr' WHEN ob.Balance<0 THEN 'Cr' ELSE '' END BType, gl.PanNo, gl.GLType, AG.GrpType, AG.PrimaryGrp, AG.GrpName GroupDesc, ASG.SubGrpName SubGroupDesc, gl.GLAddress, JA.AgentName SalesMan, CU.CCode Currency, gl.CrDays, gl.CrLimit, gl.CrTYpe, gl.PhoneNo,gl.Status
+                      						FROM AMS.GeneralLedger gl
+                      				 LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
+                      				 LEFT OUTER JOIN AMS.AccountSubGroup AS ASG ON gl.SubGrpId=ASG.SubGrpId
+                      				 LEFT OUTER JOIN AMS.JuniorAgent AS JA ON gl.AgentId=JA.AgentId
+                      				 LEFT OUTER JOIN AMS.Currency AS CU ON CU.CId=gl.CurrId
+                      				 LEFT OUTER JOIN (
+                      								   SELECT Opening.Ledger_ID, SUM(Balance) Balance
+                      								   FROM (
+                      										  SELECT ad.Ledger_ID, SUM(ad.LocalDebit_Amt-ad.LocalCredit_Amt) Balance
+                      										  FROM AMS.AccountDetails ad
+                      											   LEFT OUTER JOIN AMS.GeneralLedger gl ON ad.Ledger_ID=gl.GLID
+                      											   LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
+                      										  WHERE AG.PrimaryGrp IN ('Balance Sheet', 'BS') AND ad.FiscalYearId<{ObjGlobal.SysFiscalYearId}
+                      										  GROUP BY ad.Ledger_ID
+                      										  UNION ALL
+                      										  SELECT ad.Ledger_ID, SUM(ad.LocalDebit_Amt-ad.LocalCredit_Amt) Balance
+                      										  FROM AMS.AccountDetails ad
+                      										  WHERE ad.FiscalYearId={ObjGlobal.SysFiscalYearId}
+                      										  GROUP BY ad.Ledger_ID
+                      										) Opening
+                      								   GROUP BY Opening.Ledger_ID
+                      								 ) ob ON ob.Ledger_ID=gl.GLID
+                      			WHERE 1=1 
+                      """;
         switch (category.ToUpper())
         {
             case "CUSTOMER":
@@ -250,30 +278,34 @@ public class ClsPickList : IPickList
         }
 
         if (actionTag.Equals("SAVE")) cmdString += @" AND (gl.Status = 1 OR gl.Status IS NULL) ";
-        cmdString += @"
-			ORDER BY gl.GLName; ";
+        cmdString += """
+
+                     			ORDER BY gl.GLName; 
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetPartyLedgerList(string actionTag)
     {
-        var cmdString = @"
-			SELECT pl.LedgerId, pl.Particular Description, pl.ShortName, pl.LedgerCode, pl.PanNo, pl.GLType, pl.GrpType, pl.PrimaryGrp, pl.GroupDesc, pl.SubGroupDesc, pl.GLAddress, pl.SalesMan, pl.Currency, pl.CrDays, pl.CrLimit, pl.CrTYpe, pl.PhoneNo
-			FROM (
-				   SELECT gl.GLID LedgerId, gl.GLName Particular, gl.GLCode ShortName, gl.ACCode LedgerCode, gl.PanNo, gl.GLType, AG.GrpType, AG.PrimaryGrp, AG.GrpName GroupDesc, ASG.SubGrpName SubGroupDesc, gl.GLAddress, JA.AgentName SalesMan, CU.CCode Currency, gl.CrDays, gl.CrLimit, gl.CrTYpe, gl.PhoneNo
-				   FROM AMS.GeneralLedger gl
-						LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
-						LEFT OUTER JOIN AMS.AccountSubGroup AS ASG ON gl.SubGrpId=ASG.SubGrpId
-						LEFT OUTER JOIN AMS.JuniorAgent AS JA ON gl.AgentId=JA.AgentId
-						LEFT OUTER JOIN AMS.Currency AS CU ON CU.CId=gl.CurrId
-				   WHERE gl.GLType IN ('Customer', 'Vendor', 'Both')
-				   UNION ALL
-				   SELECT ad.PartyLedger_Id LedgerId, ad.PartyName Particular, NULL ShortName, NULL LedgerCode, ad.Party_PanNo, 'PartyLedger' GLType, NULL GrpType, NULL PrimaryGrp, NULL GroupDesc, NULL SubGroupDesc, NULL GLAddress, NULL SalesMan, NULL Currency, NULL CrDays, NULL CrLimit, NULL CrTYpe, NULL PhoneNo
-				   FROM AMS.AccountDetails ad
-				   WHERE ad.PartyName<>'' AND ad.PartyName IS NOT NULL AND ad.PartyName NOT IN (SELECT gl.GLName FROM AMS.GeneralLedger gl)
-				   GROUP BY ad.PartyLedger_Id, ad.PartyName, ad.Party_PanNo
-				 )  pl
-			ORDER BY pl.Particular;  ";
+        var cmdString = """
+
+                        			SELECT pl.LedgerId, pl.Particular Description, pl.ShortName, pl.LedgerCode, pl.PanNo, pl.GLType, pl.GrpType, pl.PrimaryGrp, pl.GroupDesc, pl.SubGroupDesc, pl.GLAddress, pl.SalesMan, pl.Currency, pl.CrDays, pl.CrLimit, pl.CrTYpe, pl.PhoneNo
+                        			FROM (
+                        				   SELECT gl.GLID LedgerId, gl.GLName Particular, gl.GLCode ShortName, gl.ACCode LedgerCode, gl.PanNo, gl.GLType, AG.GrpType, AG.PrimaryGrp, AG.GrpName GroupDesc, ASG.SubGrpName SubGroupDesc, gl.GLAddress, JA.AgentName SalesMan, CU.CCode Currency, gl.CrDays, gl.CrLimit, gl.CrTYpe, gl.PhoneNo
+                        				   FROM AMS.GeneralLedger gl
+                        						LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
+                        						LEFT OUTER JOIN AMS.AccountSubGroup AS ASG ON gl.SubGrpId=ASG.SubGrpId
+                        						LEFT OUTER JOIN AMS.JuniorAgent AS JA ON gl.AgentId=JA.AgentId
+                        						LEFT OUTER JOIN AMS.Currency AS CU ON CU.CId=gl.CurrId
+                        				   WHERE gl.GLType IN ('Customer', 'Vendor', 'Both')
+                        				   UNION ALL
+                        				   SELECT ad.PartyLedger_Id LedgerId, ad.PartyName Particular, NULL ShortName, NULL LedgerCode, ad.Party_PanNo, 'PartyLedger' GLType, NULL GrpType, NULL PrimaryGrp, NULL GroupDesc, NULL SubGroupDesc, NULL GLAddress, NULL SalesMan, NULL Currency, NULL CrDays, NULL CrLimit, NULL CrTYpe, NULL PhoneNo
+                        				   FROM AMS.AccountDetails ad
+                        				   WHERE ad.PartyName<>'' AND ad.PartyName IS NOT NULL AND ad.PartyName NOT IN (SELECT gl.GLName FROM AMS.GeneralLedger gl)
+                        				   GROUP BY ad.PartyLedger_Id, ad.PartyName, ad.Party_PanNo
+                        				 )  pl
+                        			ORDER BY pl.Particular;  
+                        """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -285,33 +317,43 @@ public class ClsPickList : IPickList
 
     public DataTable GetMainAreaList(string actionTag, bool active)
     {
-        var cmdString = @"
-			SELECT MAreaId LedgerId, MAreaName Description, MAreaCode ShortName, MCountry
-			FROM AMS.MainArea ma
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT MAreaId LedgerId, MAreaName Description, MAreaCode ShortName, MCountry
+                        			FROM AMS.MainArea ma
+                        			WHERE 1=1 
+                        """;
         if (actionTag.Equals("SAVE")) cmdString += @" AND (ma.Status = 1 OR ma.Status IS NULL) ";
-        cmdString += @"
-			ORDER BY MAreaName;";
+        cmdString += """
+
+                     			ORDER BY MAreaName;
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetAreaList(string actionTag)
     {
-        var cmdString = @"
-			SELECT AreaId LedgerId,AreaName Description,AreaCode ShortName,Country FROM AMS.Area a
-			WHERE 1=1";
+        var cmdString = """
+
+                        			SELECT AreaId LedgerId,AreaName Description,AreaCode ShortName,Country FROM AMS.Area a
+                        			WHERE 1=1
+                        """;
         cmdString += actionTag.Equals("SAVE") ? " AND ISNULL(a.Status,0) = 1" : "";
-        cmdString += @"
-			ORDER BY AreaName;";
+        cmdString += """
+
+                     			ORDER BY AreaName;
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetJrAgentList(string actionTag)
     {
-        var cmdString = @"
-			SELECT AgentId LedgerId, AgentName Description, AgentCode ShortName, Address, PhoneNo, Commission
-			FROM AMS.JuniorAgent
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT AgentId LedgerId, AgentName Description, AgentCode ShortName, Address, PhoneNo, Commission
+                        			FROM AMS.JuniorAgent
+                        			WHERE 1=1 
+                        """;
         //    if (actionTag.Equals("DELETE"))
         //        cmdString += @"
         //AND AgentId NOT IN (SELECT AgentId FROM AMS.AccountDetails) ";
@@ -322,10 +364,12 @@ public class ClsPickList : IPickList
 
     public DataTable GetSrAgentList(string actionTag)
     {
-        var cmdString = @"
-			SELECT SAgentId LedgerId, SAgent Description, SAgentCode ShortName, Address, PhoneNo, Comm
-			FROM AMS.SeniorAgent
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT SAgentId LedgerId, SAgent Description, SAgentCode ShortName, Address, PhoneNo, Comm
+                        			FROM AMS.SeniorAgent
+                        			WHERE 1=1 
+                        """;
         //    if (actionTag.Equals("DELETE"))
         //        cmdString += @"
         //AND SAgent NOT IN (SELECT SAgent FROM AMS.JuniorAgent) ";
@@ -358,26 +402,34 @@ public class ClsPickList : IPickList
 
     public DataTable GetFloor(string actionTag)
     {
-        var cmdString = @"
-			SELECT FloorId LedgerId,Description,ShortName,Type
-			FROM AMS.Floor
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT FloorId LedgerId,Description,ShortName,Type
+                        			FROM AMS.Floor
+                        			WHERE 1=1 
+                        """;
         if (actionTag.Equals("DELETE"))
-            cmdString += @"
-				AND FloorId NOT IN (SELECT FloorId FROM AMS.TableMaster)";
+            cmdString += """
+
+                         				AND FloorId NOT IN (SELECT FloorId FROM AMS.TableMaster)
+                         """;
         if (actionTag.Equals("SAVE")) cmdString += "  AND (Status = 1 OR Status IS NULL) ";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetTableTm(string actionTag, bool active, string category = "")
     {
-        var cmdString = @"
-			SELECT tm.TableId, tm.TableName, tm.TableCode, tm.FloorId,f.Description,CASE when tm.TableStatus = 'A' THEN 'Available' WHEN tm.TableStatus = 'O' THEN 'Occupied' WHEN tm.TableStatus='R' THEN 'Repair' END TableStatus FROM AMS.TableMaster tm
-			LEFT OUTER JOIN AMS.Floor f ON tm.FloorId = f.FloorId where 1=1";
+        var cmdString = """
+
+                        			SELECT tm.TableId, tm.TableName, tm.TableCode, tm.FloorId,f.Description,CASE when tm.TableStatus = 'A' THEN 'Available' WHEN tm.TableStatus = 'O' THEN 'Occupied' WHEN tm.TableStatus='R' THEN 'Repair' END TableStatus FROM AMS.TableMaster tm
+                        			LEFT OUTER JOIN AMS.Floor f ON tm.FloorId = f.FloorId where 1=1
+                        """;
         if (actionTag.Equals("DELETE"))
-            cmdString += @"
-				AND tm.TableId NOT IN (SELECT sm.TableId FROM AMS.SB_Master sm)
-				AND tm.TableId NOT IN(SELECT sm1.TableId FROM AMS.SO_Master sm1)";
+            cmdString += """
+
+                         				AND tm.TableId NOT IN (SELECT sm.TableId FROM AMS.SB_Master sm)
+                         				AND tm.TableId NOT IN(SELECT sm1.TableId FROM AMS.SO_Master sm1)
+                         """;
         if (actionTag.Equals("SAVE") && active) cmdString += "  AND tm.Status = 1";
         if (category.IsValueExits())
             cmdString += category.GetInt() > 0
@@ -402,18 +454,22 @@ public class ClsPickList : IPickList
 
     public DataTable GetHosDepartment(string actionTag)
     {
-        const string cmdString = @"
-			SELECT d.DId LedgerId,d.DName Description, d.DCode ShortName,d.DoctorId,d1.DrName Doctor,CAST(D.ChargeAmt AS DECIMAL(18,2)) Rate FROM HOS.Department d
-			LEFT OUTER JOIN HOS.Doctor d1 ON d1.DrId = d.DoctorId";
+        const string cmdString = """
+
+                                 			SELECT d.DId LedgerId,d.DName Description, d.DCode ShortName,d.DoctorId,d1.DrName Doctor,CAST(D.ChargeAmt AS DECIMAL(18,2)) Rate FROM HOS.Department d
+                                 			LEFT OUTER JOIN HOS.Doctor d1 ON d1.DrId = d.DoctorId
+                                 """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetProductGroup(string actionTag)
     {
-        var cmdString = @"
-			SELECT PGrpID LedgerId,GrpName Description,GrpCode ShortName,Convert(Decimal(18,2),GMargin) Margin
-			FROM AMS.ProductGroup
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT PGrpID LedgerId,GrpName Description,GrpCode ShortName,Convert(Decimal(18,2),GMargin) Margin
+                        			FROM AMS.ProductGroup
+                        			WHERE 1=1 
+                        """;
         if (actionTag.Equals("SAVE")) cmdString += "\n AND [Status] = 1 OR [Status] IS NULL ";
         if (actionTag is "DELETE")
             cmdString +=
@@ -423,10 +479,12 @@ public class ClsPickList : IPickList
 
     public DataTable GetProductSubGroup(string actionTag, string groupId)
     {
-        var cmdString = @"
-			SELECT PSubGrpId LedgerId, SubGrpName Description, ShortName, PG.GrpName GrpName
-			FROM AMS.ProductSubGroup PSG
-				LEFT OUTER JOIN AMS.ProductGroup PG ON PSG.GrpId = PG.PGrpId ";
+        var cmdString = """
+
+                        			SELECT PSubGrpId LedgerId, SubGrpName Description, ShortName, PG.GrpName GrpName
+                        			FROM AMS.ProductSubGroup PSG
+                        				LEFT OUTER JOIN AMS.ProductGroup PG ON PSG.GrpId = PG.PGrpId 
+                        """;
         if (actionTag.Equals("SAVE") && groupId.GetInt() > 0) cmdString += $"\n WHERE PG.PGrpId = '{groupId}'";
         cmdString += "\n ORDER BY PSG.SubGrpName";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
@@ -434,10 +492,12 @@ public class ClsPickList : IPickList
 
     public DataTable GetProductSubGroups(string actionTag, string groupId)
     {
-        var cmdString = @"
-			SELECT PSubGrpId LedgerId, SubGrpName Description, ShortName, PG.GrpName GrpName
-			FROM AMS.ProductSubGroup PSG
-				LEFT OUTER JOIN AMS.ProductGroup PG ON PSG.GrpId = PG.PGrpId ";
+        var cmdString = """
+
+                        			SELECT PSubGrpId LedgerId, SubGrpName Description, ShortName, PG.GrpName GrpName
+                        			FROM AMS.ProductSubGroup PSG
+                        				LEFT OUTER JOIN AMS.ProductGroup PG ON PSG.GrpId = PG.PGrpId 
+                        """;
         //if (actionTag.Equals("SAVE") && groupId.GetInt() > 0) cmdString += $"\n WHERE PG.PGrpId = '{groupId}'";
         cmdString += "\n ORDER BY PSG.SubGrpName";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
@@ -445,10 +505,12 @@ public class ClsPickList : IPickList
 
     public DataTable GetProductUnit(string actionTag, string category)
     {
-        var cmdString = @"
-			SELECT UID LedgerId, UnitName Description, UnitCode ShortName
-			FROM AMS.ProductUnit
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT UID LedgerId, UnitName Description, UnitCode ShortName
+                        			FROM AMS.ProductUnit
+                        			WHERE 1=1 
+                        """;
         if (actionTag.Equals("SAVE")) cmdString += @" AND (Status = 1 OR Status IS NULL) ";
         if (actionTag.Equals("DELETE")) cmdString += @"AND UID NOT IN (SELECT Unit_Id FROM AMS.StockDetails)";
         cmdString += "ORDER BY UnitCode";
@@ -457,13 +519,15 @@ public class ClsPickList : IPickList
 
     public DataTable GetProductBatch(long productId)
     {
-        var cmdString = $@"
-			SELECT BatchNo Description,MFDate,ExpDate, FORMAT(SUM(CASE WHEN VoucherType='I' THEN Qty ELSE -Qty END),'{ObjGlobal.SysQtyCommaFormat}') StockQty,CAST(Rate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) Rate,DATEDIFF(DAY,GETDATE(),ExpDate) Days,CASE WHEN DATEDIFF(DAY,GETDATE(),ExpDate) <=0 THEN 12 ELSE 0 END IsGroup
-			FROM AMS.ProductAddInfo
-			WHERE ProductId = {productId}
-			GROUP BY BatchNo, Rate,ExpDate,MFDate
-			HAVING SUM(CASE WHEN VoucherType='I' THEN Qty ELSE -Qty END)>0
-			ORDER BY BatchNo;";
+        var cmdString = $"""
+
+                         			SELECT BatchNo Description,MFDate,ExpDate, FORMAT(SUM(CASE WHEN VoucherType='I' THEN Qty ELSE -Qty END),'{ObjGlobal.SysQtyCommaFormat}') StockQty,CAST(Rate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) Rate,DATEDIFF(DAY,GETDATE(),ExpDate) Days,CASE WHEN DATEDIFF(DAY,GETDATE(),ExpDate) <=0 THEN 12 ELSE 0 END IsGroup
+                         			FROM AMS.ProductAddInfo
+                         			WHERE ProductId = {productId}
+                         			GROUP BY BatchNo, Rate,ExpDate,MFDate
+                         			HAVING SUM(CASE WHEN VoucherType='I' THEN Qty ELSE -Qty END)>0
+                         			ORDER BY BatchNo;
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -481,17 +545,21 @@ public class ClsPickList : IPickList
                 : DateTime.Now.ToString("yyyy-MM-dd");
 
         var getDate = DateTime.Parse(loginDate).ToString("yyyy-MM-dd");
-        var cmdString = $@"
-		SELECT p.PID LedgerId, p.PAlias, p.PName Description,P.HsCode, p.PShortName ShortName, CAST(ISNULL(sd.AltQty, 0) AS DECIMAL(18, 2)) BalanceAltQty, PAU.UnitCode AltUnitCode, CAST(ISNULL(sd.Qty, 0) AS DECIMAL(18, 2)) BalanceQty, PU.UnitCode, CAST(p.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(p.PSalesRate AS DECIMAL(18, 2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName, ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName, p.Barcode, p.Barcode1, p.Barcode2, p.Barcode3
-        FROM AMS.Product p
-             LEFT OUTER JOIN(SELECT sd.Product_Id, SUM(CASE WHEN sd.EntryType='I' THEN sd.StockQty WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END) Qty, SUM(CASE WHEN sd.EntryType='I' THEN sd.AltStockQty WHEN sd.EntryType='O' THEN -sd.AltStockQty ELSE 0 END) AltQty FROM AMS.StockDetails sd WHERE sd.Voucher_Date<='{getDate}' GROUP BY sd.Product_Id) AS sd ON sd.Product_Id=p.PID
-             LEFT OUTER JOIN AMS.ProductUnit AS PU ON p.PUnit=PU.UID
-             LEFT OUTER JOIN AMS.ProductUnit AS PAU ON p.PAltUnit=PAU.UID
-             LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=p.PGrpId
-             LEFT OUTER JOIN AMS.ProductSubGroup AS PSG ON PSG.PSubGrpId=p.PSubGrpId ";
+        var cmdString = $"""
+
+                         		SELECT p.PID LedgerId, p.PAlias, p.PName Description,P.HsCode, p.PShortName ShortName, CAST(ISNULL(sd.AltQty, 0) AS DECIMAL(18, 2)) BalanceAltQty, PAU.UnitCode AltUnitCode, CAST(ISNULL(sd.Qty, 0) AS DECIMAL(18, 2)) BalanceQty, PU.UnitCode, CAST(p.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(p.PSalesRate AS DECIMAL(18, 2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName, ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName, p.Barcode, p.Barcode1, p.Barcode2, p.Barcode3
+                                 FROM AMS.Product p
+                                      LEFT OUTER JOIN(SELECT sd.Product_Id, SUM(CASE WHEN sd.EntryType='I' THEN sd.StockQty WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END) Qty, SUM(CASE WHEN sd.EntryType='I' THEN sd.AltStockQty WHEN sd.EntryType='O' THEN -sd.AltStockQty ELSE 0 END) AltQty FROM AMS.StockDetails sd WHERE sd.Voucher_Date<='{getDate}' GROUP BY sd.Product_Id) AS sd ON sd.Product_Id=p.PID
+                                      LEFT OUTER JOIN AMS.ProductUnit AS PU ON p.PUnit=PU.UID
+                                      LEFT OUTER JOIN AMS.ProductUnit AS PAU ON p.PAltUnit=PAU.UID
+                                      LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=p.PGrpId
+                                      LEFT OUTER JOIN AMS.ProductSubGroup AS PSG ON PSG.PSubGrpId=p.PSubGrpId 
+                         """;
         cmdString += ObjGlobal.StockAvailableStock ? @" WHERE sd.Qty > 0 " : "  ";
-        cmdString += @"
-		ORDER BY p.PName, PG.GrpName, PSG.SubGrpName, BuyRate DESC;";
+        cmdString += """
+
+                     		ORDER BY p.PName, PG.GrpName, PSG.SubGrpName, BuyRate DESC;
+                     """;
         var result = SqlExtensions.ExecuteDataSet(cmdString);
         return result.Tables[0];
     }
@@ -503,20 +571,24 @@ public class ClsPickList : IPickList
                 ? ObjGlobal.CfEndAdDate.GetSystemDate()
                 : DateTime.Now.ToString("yyyy-MM-dd");
         var getDate = DateTime.Parse(loginDate).ToString("yyyy-MM-dd");
-        var cmdString = $@"
-			SELECT PID LedgerId, PAlias, p.PName Description, p.PShortName ShortName, CAST(sd.Qty AS DECIMAL(18, 2)) BalanceQty, PU.UnitCode, CAST(p.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(p.PSalesRate AS DECIMAL(18, 2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName, ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName
-			FROM AMS.Product                              p
-				 LEFT OUTER JOIN (SELECT sd.Product_Id, SUM(CASE WHEN sd.EntryType='I' THEN sd.Qty WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END) Qty
-								  FROM AMS.StockDetails sd
-								  WHERE sd.Voucher_Date<='{getDate}'
-								  GROUP BY sd.Product_Id) AS sd ON sd.Product_Id=p.PID
-				 LEFT OUTER JOIN AMS.ProductUnit          AS PU ON p.PUnit=PU.UID
-				 LEFT OUTER JOIN AMS.ProductGroup         AS PG ON PG.PGrpId=p.PGrpId
-				 LEFT OUTER JOIN AMS.ProductSubGroup      AS PSG ON PSG.PSubGrpId=p.PSubGrpId
-			WHERE p.PID IN (SELECT FinishedGoodsId FROM INV.BOM_Master) ";
+        var cmdString = $"""
+
+                         			SELECT PID LedgerId, PAlias, p.PName Description, p.PShortName ShortName, CAST(sd.Qty AS DECIMAL(18, 2)) BalanceQty, PU.UnitCode, CAST(p.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(p.PSalesRate AS DECIMAL(18, 2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName, ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName
+                         			FROM AMS.Product                              p
+                         				 LEFT OUTER JOIN (SELECT sd.Product_Id, SUM(CASE WHEN sd.EntryType='I' THEN sd.Qty WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END) Qty
+                         								  FROM AMS.StockDetails sd
+                         								  WHERE sd.Voucher_Date<='{getDate}'
+                         								  GROUP BY sd.Product_Id) AS sd ON sd.Product_Id=p.PID
+                         				 LEFT OUTER JOIN AMS.ProductUnit          AS PU ON p.PUnit=PU.UID
+                         				 LEFT OUTER JOIN AMS.ProductGroup         AS PG ON PG.PGrpId=p.PGrpId
+                         				 LEFT OUTER JOIN AMS.ProductSubGroup      AS PSG ON PSG.PSubGrpId=p.PSubGrpId
+                         			WHERE p.PID IN (SELECT FinishedGoodsId FROM INV.BOM_Master) 
+                         """;
         cmdString += ObjGlobal.StockAvailableStock ? @" AND sd.Qty > 0 " : "";
-        cmdString += @"
-			ORDER BY p.PName; ";
+        cmdString += """
+
+                     			ORDER BY p.PName; 
+                     """;
         var result = SqlExtensions.ExecuteDataSet(cmdString);
         return result.Tables[0];
     }
@@ -529,20 +601,24 @@ public class ClsPickList : IPickList
                 : DateTime.Now.ToString("yyyy-MM-dd");
 
         var getDate = DateTime.Parse(loginDate).ToString("yyyy-MM-dd");
-        var cmdString = $@"
-			SELECT Pid LedgerId, PAlias, P.PName Description, P.PShortName ShortName,CAST ( sd.Qty AS DECIMAL(18,2))  BalanceQty, PU.UnitCode,CAST ( P.PBuyRate AS DECIMAL(18,2))  BuyRate, CAST (  P.PSalesRate AS DECIMAL(18,2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName,ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName
-			FROM AMS.Product p
-			LEFT OUTER JOIN
-			(
-				SELECT sd.Product_Id,SUM(CASE WHEN sd.EntryType='I' THEN  sd.Qty WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END ) Qty FROM AMS.StockDetails sd WHERE SD.Voucher_Date <='{getDate}'
-				GROUP BY sd.Product_Id
-			) AS sd ON sd.Product_Id= p.PID
-			left outer join AMS.ProductUnit as PU on P.PUnit = PU.UID
-			left outer join AMS.ProductGroup as PG on PG.PGrpID = p.PGrpId
-			left outer join AMS.ProductSubGroup as PSG on PSG.PSubGrpID = p.PSubGrpId			";
+        var cmdString = $"""
+
+                         			SELECT Pid LedgerId, PAlias, P.PName Description, P.PShortName ShortName,CAST ( sd.Qty AS DECIMAL(18,2))  BalanceQty, PU.UnitCode,CAST ( P.PBuyRate AS DECIMAL(18,2))  BuyRate, CAST (  P.PSalesRate AS DECIMAL(18,2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName,ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName
+                         			FROM AMS.Product p
+                         			LEFT OUTER JOIN
+                         			(
+                         				SELECT sd.Product_Id,SUM(CASE WHEN sd.EntryType='I' THEN  sd.Qty WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END ) Qty FROM AMS.StockDetails sd WHERE SD.Voucher_Date <='{getDate}'
+                         				GROUP BY sd.Product_Id
+                         			) AS sd ON sd.Product_Id= p.PID
+                         			left outer join AMS.ProductUnit as PU on P.PUnit = PU.UID
+                         			left outer join AMS.ProductGroup as PG on PG.PGrpID = p.PGrpId
+                         			left outer join AMS.ProductSubGroup as PSG on PSG.PSubGrpID = p.PSubGrpId			
+                         """;
         if (ObjGlobal.StockAvailableStock)
-            cmdString += @"
-			WHERE sd.Qty > 0 ";
+            cmdString += """
+
+                         			WHERE sd.Qty > 0 
+                         """;
         cmdString += " ORDER BY p.PName";
         var result = SqlExtensions.ExecuteDataSet(cmdString);
         return result.Tables[0];
@@ -550,41 +626,49 @@ public class ClsPickList : IPickList
 
     public DataTable GetProductWithQtyFilterByLedger(string actionTag, string loginDate, string category, string moduleType)
     {
-        var cmdString = $@"
-			SELECT PID LedgerId, PAlias, p.PName Description, P.HsCode,p.PShortName ShortName, CAST(sd.Qty AS DECIMAL(18, 2)) BalanceQty, PU.UnitCode, CAST(p.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(p.PSalesRate AS DECIMAL(18, 2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName, ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName
-			FROM AMS.Product p
-				 LEFT OUTER JOIN (
-								   SELECT sd.Product_Id, SUM( CASE WHEN sd.EntryType='I' THEN sd.Qty
-																WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END
-															) Qty
-								   FROM AMS.StockDetails sd
-								   WHERE sd.Voucher_Date<='{loginDate.GetSystemDate()}'
-								   GROUP BY sd.Product_Id
-								 ) AS sd ON sd.Product_Id=p.PID
-				 LEFT OUTER JOIN AMS.ProductUnit AS PU ON p.PUnit=PU.UID
-				 LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=p.PGrpId
-				 LEFT OUTER JOIN AMS.ProductSubGroup AS PSG ON PSG.PSubGrpId=p.PSubGrpId
-			WHERE 1=1 ";
+        var cmdString = $"""
+
+                         			SELECT PID LedgerId, PAlias, p.PName Description, P.HsCode,p.PShortName ShortName, CAST(sd.Qty AS DECIMAL(18, 2)) BalanceQty, PU.UnitCode, CAST(p.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(p.PSalesRate AS DECIMAL(18, 2)) PSalesRate, ISNULL(PG.GrpName, 'No Group') GrpName, ISNULL(PSG.SubGrpName, 'No SubGroup') SubGrpName
+                         			FROM AMS.Product p
+                         				 LEFT OUTER JOIN (
+                         								   SELECT sd.Product_Id, SUM( CASE WHEN sd.EntryType='I' THEN sd.Qty
+                         																WHEN sd.EntryType='O' THEN -sd.StockQty ELSE 0 END
+                         															) Qty
+                         								   FROM AMS.StockDetails sd
+                         								   WHERE sd.Voucher_Date<='{loginDate.GetSystemDate()}'
+                         								   GROUP BY sd.Product_Id
+                         								 ) AS sd ON sd.Product_Id=p.PID
+                         				 LEFT OUTER JOIN AMS.ProductUnit AS PU ON p.PUnit=PU.UID
+                         				 LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=p.PGrpId
+                         				 LEFT OUTER JOIN AMS.ProductSubGroup AS PSG ON PSG.PSubGrpId=p.PSubGrpId
+                         			WHERE 1=1 
+                         """;
         if (ObjGlobal.StockAvailableStock) cmdString += " and sd.Qty > 0 ";
         if (category.Equals("LEDGER") && moduleType.GetLong() > 0)
-            cmdString += $@"
-				AND p.PID IN (SELECT Product_Id FROM ams.StockDetails sd1 WHERE sd1.Ledger_Id = {moduleType}) ";
+            cmdString += $"""
+
+                          				AND p.PID IN (SELECT Product_Id FROM ams.StockDetails sd1 WHERE sd1.Ledger_Id = {moduleType}) 
+                          """;
         cmdString += " ORDER BY p.PName";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetMasterRestroProductList(string actionTag)
     {
-        var cmdString = @"
-			SELECT PID LedgerId, P.PName Description, P.PShortName ShortName, PU.UnitCode, CAST(P.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(P.PSalesRate AS DECIMAL(18, 2)) PSalesRate, PG.GrpName GrpName, PSG.SubGrpName
-			FROM AMS.Product AS P
-				 LEFT OUTER JOIN AMS.ProductUnit AS PU ON P.PUnit=PU.UID
-				 LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=P.PGrpId
-				 LEFT OUTER JOIN AMS.ProductSubGroup PSG ON P.PSubGrpId=PSG.PSubGrpId
-			WHERE CAST(P.PSalesRate AS DECIMAL(18, 2))>0 AND(p.PType='S' OR P.PType='Service' OR P.PType = 'I' OR P.PType = 'Inventory')AND(p.PCategory='FG' OR p.PCategory='Finished Goods')  ";
+        var cmdString = """
+
+                        			SELECT PID LedgerId, P.PName Description, P.PShortName ShortName, PU.UnitCode, CAST(P.PBuyRate AS DECIMAL(18, 2)) BuyRate, CAST(P.PSalesRate AS DECIMAL(18, 2)) PSalesRate, PG.GrpName GrpName, PSG.SubGrpName
+                        			FROM AMS.Product AS P
+                        				 LEFT OUTER JOIN AMS.ProductUnit AS PU ON P.PUnit=PU.UID
+                        				 LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=P.PGrpId
+                        				 LEFT OUTER JOIN AMS.ProductSubGroup PSG ON P.PSubGrpId=PSG.PSubGrpId
+                        			WHERE CAST(P.PSalesRate AS DECIMAL(18, 2))>0 AND(p.PType='S' OR P.PType='Service' OR P.PType = 'I' OR P.PType = 'Inventory')AND(p.PCategory='FG' OR p.PCategory='Finished Goods')  
+                        """;
         if (actionTag.Equals("SAVE")) cmdString += @" AND (P.Status  = 1 OR P.Status IS NULL) ";
-        cmdString += @"
-			ORDER BY P.PName; ";
+        cmdString += """
+
+                     			ORDER BY P.PName; 
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -746,10 +830,12 @@ public class ClsPickList : IPickList
 
     public DataTable GetCostCenter(string actionTag)
     {
-        var cmdString = @"
-			SELECT CCId LedgerId, CCName Description, CCcode ShortName
-			FROM AMS.CostCenter
-			WHERE 1=1";
+        var cmdString = """
+
+                        			SELECT CCId LedgerId, CCName Description, CCcode ShortName
+                        			FROM AMS.CostCenter
+                        			WHERE 1=1
+                        """;
         if (actionTag.Equals("SAVE"))
         {
         }
@@ -758,33 +844,43 @@ public class ClsPickList : IPickList
         {
         }
 
-        cmdString += @"
-			ORDER BY CCName";
+        cmdString += """
+
+                     			ORDER BY CCName
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetCurrency(string actionTag)
     {
-        var cmdString = @"
-			SELECT CId LedgerId,CName Description,CCode ShortName,CRate
-			FROM AMS.Currency
-			WHERE 1=1 ";
-        cmdString += @"
-			Order By CName";
+        var cmdString = """
+
+                        			SELECT CId LedgerId,CName Description,CCode ShortName,CRate
+                        			FROM AMS.Currency
+                        			WHERE 1=1 
+                        """;
+        cmdString += """
+
+                     			Order By CName
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetDoctor(string tag)
     {
-        var cmdString = $@"
-			SELECT DrId LedgerId, DRName Description, DrShortName ShortName, DrTypeDesc, ContactNo, Address, DP.DName DName
-			FROM HOS.Doctor AS D
-				LEFT OUTER JOIN HOS.DoctorType AS DT ON D.Drtype=Dt.DTID
-				LEFT OUTER JOIN HOS.Department AS DP ON DP.DoctorId=D.DrId
-			WHERE (D.BranchId IS NULL OR D.BranchId='{ObjGlobal.SysBranchId}')AND(D.CompanyUnitSetup IS NULL OR D.CompanyUnitSetup='{ObjGlobal.SysCompanyUnitId}')";
+        var cmdString = $"""
+
+                         			SELECT DrId LedgerId, DRName Description, DrShortName ShortName, DrTypeDesc, ContactNo, Address, DP.DName DName
+                         			FROM HOS.Doctor AS D
+                         				LEFT OUTER JOIN HOS.DoctorType AS DT ON D.Drtype=Dt.DTID
+                         				LEFT OUTER JOIN HOS.Department AS DP ON DP.DoctorId=D.DrId
+                         			WHERE (D.BranchId IS NULL OR D.BranchId='{ObjGlobal.SysBranchId}')AND(D.CompanyUnitSetup IS NULL OR D.CompanyUnitSetup='{ObjGlobal.SysCompanyUnitId}')
+                         """;
         cmdString += tag.Equals("SAVE") ? @" AND (D.Status IS NULL OR D.Status=1) " : "";
-        cmdString += @"
-			ORDER BY DrName;";
+        cmdString += """
+
+                     			ORDER BY DrName;
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -823,10 +919,12 @@ public class ClsPickList : IPickList
 
     public DataTable GetDocumentNumbering(string actionTag, string category)
     {
-        var cmdString = @"
-			SELECT DocId LedgerId,DocModule Module, DocDesc Description, DocStartMiti DocStartMiti, DocEndMiti DocEndMiti
-			FROM AMS.DocumentNumbering
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT DocId LedgerId,DocModule Module, DocDesc Description, DocStartMiti DocStartMiti, DocEndMiti DocEndMiti
+                        			FROM AMS.DocumentNumbering
+                        			WHERE 1=1 
+                        """;
         cmdString += actionTag.Equals("VIEW") ? "" : $"AND DocModule = '{category}'";
         if (!ObjGlobal.DomainLoginUser.Contains(ObjGlobal.LogInUser.GetUpper()))
             cmdString += $"AND DocBranch IN ({ObjGlobal.SysBranchId}) ";
@@ -854,14 +952,18 @@ public class ClsPickList : IPickList
 
     public DataTable GetCompanyUnitList()
     {
-        const string script = @"
-        SELECT cu.CmpUnit_ID ValueId, cu.CmpUnit_Name ValueName,cu.CmpUnit_Code ShortName,cu.Address FROM AMS.CompanyUnit  cu ";
+        const string script = """
+
+                                      SELECT cu.CmpUnit_ID ValueId, cu.CmpUnit_Name ValueName,cu.CmpUnit_Code ShortName,cu.Address FROM AMS.CompanyUnit  cu 
+                              """;
         return SqlExtensions.ExecuteDataSet(script).Tables[0];
     }
     public DataTable GetFiscalYearList()
     {
-        const string script = @"
-        SELECT cu.CmpUnit_ID CmpUnit_ID, cu.CmpUnit_Name ValueName,cu.CmpUnit_Code ShortName,cu.Address FROM AMS.CompanyUnit  cu ";
+        const string script = """
+
+                                      SELECT cu.CmpUnit_ID CmpUnit_ID, cu.CmpUnit_Name ValueName,cu.CmpUnit_Code ShortName,cu.Address FROM AMS.CompanyUnit  cu 
+                              """;
         return SqlExtensions.ExecuteDataSet(script).Tables[0];
     }
 
@@ -882,11 +984,13 @@ public class ClsPickList : IPickList
 
     public DataTable MasterSubLedger(string actionTag = "")
     {
-        var commandText = @"
-			SELECT SLId LedgerId, SLName Description, SLCode ShortName, SLAddress Address, SLPhoneNo PhoneNo, gl.GLName Ledger
-			FROM AMS.SubLedger sl
-				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID=TRY_CAST(ISNULL(sl.GLID,0) AS BIGINT)
-			WHERE 1=1 ";
+        var commandText = """
+
+                          			SELECT SLId LedgerId, SLName Description, SLCode ShortName, SLAddress Address, SLPhoneNo PhoneNo, gl.GLName Ledger
+                          			FROM AMS.SubLedger sl
+                          				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID=TRY_CAST(ISNULL(sl.GLID,0) AS BIGINT)
+                          			WHERE 1=1 
+                          """;
         if (actionTag.Equals("SAVE")) commandText += " AND (sl.Status = 1 OR sl.Status IS NULL) ";
         if (actionTag.ToUpper() == "DELETE")
             commandText += " AND sl.SLId  NOT IN (SELECT Subleder_ID FROM AMS.AccountDetails  WHERE Subleder_ID IS NOT NULL) ";
@@ -895,14 +999,16 @@ public class ClsPickList : IPickList
 
     public DataTable MasterGeneralLedger(string actionTag = "")
     {
-        var cmdString = @"
-			SELECT gl.GLID LedgerId, gl.GLName Description, gl.GLCode ShortName, gl.ACCode LedgerCode, 0 Balance, '' BType, gl.PanNo, gl.GLType, AG.GrpType, AG.PrimaryGrp, AG.GrpName GroupDesc, ASG.SubGrpName SubGroupDesc, gl.GLAddress, JA.AgentName SalesMan, CU.CCode Currency, gl.CrDays, gl.CrLimit, gl.CrTYpe, gl.PhoneNo
-			FROM AMS.GeneralLedger gl
-				 LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
-				 LEFT OUTER JOIN AMS.AccountSubGroup AS ASG ON gl.SubGrpId=ASG.SubGrpId
-				 LEFT OUTER JOIN AMS.JuniorAgent AS JA ON gl.AgentId=JA.AgentId
-				 LEFT OUTER JOIN AMS.Currency AS CU ON CU.CId=gl.CurrId
-			WHERE 1=1";
+        var cmdString = """
+
+                        			SELECT gl.GLID LedgerId, gl.GLName Description, gl.GLCode ShortName, gl.ACCode LedgerCode, 0 Balance, '' BType, gl.PanNo, gl.GLType, AG.GrpType, AG.PrimaryGrp, AG.GrpName GroupDesc, ASG.SubGrpName SubGroupDesc, gl.GLAddress, JA.AgentName SalesMan, CU.CCode Currency, gl.CrDays, gl.CrLimit, gl.CrTYpe, gl.PhoneNo
+                        			FROM AMS.GeneralLedger gl
+                        				 LEFT OUTER JOIN AMS.AccountGroup AS AG ON gl.GrpId=AG.GrpId
+                        				 LEFT OUTER JOIN AMS.AccountSubGroup AS ASG ON gl.SubGrpId=ASG.SubGrpId
+                        				 LEFT OUTER JOIN AMS.JuniorAgent AS JA ON gl.AgentId=JA.AgentId
+                        				 LEFT OUTER JOIN AMS.Currency AS CU ON CU.CId=gl.CurrId
+                        			WHERE 1=1
+                        """;
         if (actionTag.ToUpper() == "DELETE")
             cmdString += " AND gl.GLID NOT IN ( SELECT Ledger_Id FROM AMS.AccountDetails ad) ";
         cmdString += "ORDER BY gl.GLName";
@@ -911,13 +1017,15 @@ public class ClsPickList : IPickList
 
     public DataTable MasterProduct(string actionTag)
     {
-        var commandText = $@"
-			SELECT PID LedgerId, P.PName Description, P.PShortName ShortName, UID, PU.UnitCode, CAST(P.PBuyRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) BuyRate, CAST(P.PSalesRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) PSalesRate, PG.PGrpId, ISNULL(PG.GrpName,'NO CATEGORY') GrpName,P.PSubGrpId,ISNULL(psg.SubGrpName,'NO SUB CATEGORY') SubGrpName, CAST(PTax AS DECIMAL(18,{ObjGlobal.SysAmountLength})) PTax, P.Barcode, P.Barcode1,CAST(P.PMRP AS DECIMAL(18,{ObjGlobal.SysAmountLength})) PMRP, CAST(P.TradeRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) TradeRate,CAST(P.BeforeBuyRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) BeforeBuyRate,CAST(P.BeforeSalesRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) BeforeSalesRate
-			FROM AMS.Product AS P
-				 LEFT OUTER JOIN AMS.ProductUnit AS PU ON P.PUnit=PU.UID
-				 LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=P.PGrpId
-				 LEFT OUTER JOIN AMS.ProductSubGroup AS psg ON psg.PSubGrpId = P.PSubGrpId
-			WHERE 1=1 ";
+        var commandText = $"""
+
+                           			SELECT PID LedgerId, P.PName Description, P.PShortName ShortName, UID, PU.UnitCode, CAST(P.PBuyRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) BuyRate, CAST(P.PSalesRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) PSalesRate, PG.PGrpId, ISNULL(PG.GrpName,'NO CATEGORY') GrpName,P.PSubGrpId,ISNULL(psg.SubGrpName,'NO SUB CATEGORY') SubGrpName, CAST(PTax AS DECIMAL(18,{ObjGlobal.SysAmountLength})) PTax, P.Barcode, P.Barcode1,CAST(P.PMRP AS DECIMAL(18,{ObjGlobal.SysAmountLength})) PMRP, CAST(P.TradeRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) TradeRate,CAST(P.BeforeBuyRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) BeforeBuyRate,CAST(P.BeforeSalesRate AS DECIMAL(18,{ObjGlobal.SysAmountLength})) BeforeSalesRate
+                           			FROM AMS.Product AS P
+                           				 LEFT OUTER JOIN AMS.ProductUnit AS PU ON P.PUnit=PU.UID
+                           				 LEFT OUTER JOIN AMS.ProductGroup AS PG ON PG.PGrpId=P.PGrpId
+                           				 LEFT OUTER JOIN AMS.ProductSubGroup AS psg ON psg.PSubGrpId = P.PSubGrpId
+                           			WHERE 1=1 
+                           """;
         if (actionTag.ToUpper() == "DELETE")
         {
             commandText += " AND Pid not in (Select Product_Id from AMS.StockDetails) ";
@@ -938,77 +1046,91 @@ public class ClsPickList : IPickList
 
     public DataTable ReturnLedgerOpeningVoucherList(string module)
     {
-        var cmdString = @$"
-			SELECT Voucher_No VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 then  vm.OP_Miti else  CONVERT(VARCHAR(10), vm.OP_Date, 101)  end VoucherDate,GLName,CAST(Sum(VM.LocalDebit -VM.LocalCredit) AS DECIMAL(18,{ObjGlobal.SysAmountLength}))  Amount,CASE WHEN Sum(VM.LocalDebit - VM.LocalCredit) > 0 THEN 'Dr' WHEN Sum(VM.LocalDebit - VM.LocalCredit) < 0 THEN 'Cr' ELSE '' END AmtType
-			FROM AMS.LedgerOpening AS VM
-				LEFT OUTER JOIN AMS.GeneralLedger GL ON VM.Ledger_Id=GL.GLID
-			WHERE  VM.Module IN ('{module}','LOB','OB') AND (vm.Branch_id IS NULL OR vm.Branch_id='{ObjGlobal.SysBranchId}') AND (vm.Company_Id IS NULL OR vm.Company_Id='{ObjGlobal.SysCompanyUnitId}') AND (VM.FiscalYearId IS NULL OR VM.FiscalYearId='{ObjGlobal.SysFiscalYearId}')
-			GROUP BY Voucher_No, OP_Date, OP_Miti, GLName
-			ORDER BY Voucher_No";
+        var cmdString = $"""
+
+                         			SELECT Voucher_No VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 then  vm.OP_Miti else  CONVERT(VARCHAR(10), vm.OP_Date, 101)  end VoucherDate,GLName,CAST(Sum(VM.LocalDebit -VM.LocalCredit) AS DECIMAL(18,{ObjGlobal.SysAmountLength}))  Amount,CASE WHEN Sum(VM.LocalDebit - VM.LocalCredit) > 0 THEN 'Dr' WHEN Sum(VM.LocalDebit - VM.LocalCredit) < 0 THEN 'Cr' ELSE '' END AmtType
+                         			FROM AMS.LedgerOpening AS VM
+                         				LEFT OUTER JOIN AMS.GeneralLedger GL ON VM.Ledger_Id=GL.GLID
+                         			WHERE  VM.Module IN ('{module}','LOB','OB') AND (vm.Branch_id IS NULL OR vm.Branch_id='{ObjGlobal.SysBranchId}') AND (vm.Company_Id IS NULL OR vm.Company_Id='{ObjGlobal.SysCompanyUnitId}') AND (VM.FiscalYearId IS NULL OR VM.FiscalYearId='{ObjGlobal.SysFiscalYearId}')
+                         			GROUP BY Voucher_No, OP_Date, OP_Miti, GLName
+                         			ORDER BY Voucher_No
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable ReturnJournalVoucherList(bool isProvision, DateTime vDate, string vnoMode, bool isActive)
     {
-        var cmdString = $@"
-			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, JD.Voucher_No VoucherNo, JD.Ledger_ID LedgerId, gl.GLName LedgerDesc, CAST(JD.Debit AS DECIMAL(18,2)) DebitAmount, CAST(JD.Credit AS DECIMAL(18,2)) CreditAmount
-			FROM AMS.JV_Master JV
-				 INNER JOIN AMS.JV_Details JD ON JD.Voucher_No = JV.Voucher_No
-				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = JD.Ledger_ID
-			WHERE JV.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND JV.Action_Type <> 'CANCEL' AND JV.Voucher_Date <='{vDate.GetSystemDate()}'  AND gl.Branch_ID = {ObjGlobal.SysBranchId}  AND JV.FiscalYearId = {ObjGlobal.SysFiscalYearId}
-			ORDER BY VoucherNo, VoucherDate,JD.Debit  desc,LedgerDesc;";
+        var cmdString = $"""
+
+                         			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, JD.Voucher_No VoucherNo, JD.Ledger_ID LedgerId, gl.GLName LedgerDesc, CAST(JD.Debit AS DECIMAL(18,2)) DebitAmount, CAST(JD.Credit AS DECIMAL(18,2)) CreditAmount
+                         			FROM AMS.JV_Master JV
+                         				 INNER JOIN AMS.JV_Details JD ON JD.Voucher_No = JV.Voucher_No
+                         				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = JD.Ledger_ID
+                         			WHERE JV.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND JV.Action_Type <> 'CANCEL' AND JV.Voucher_Date <='{vDate.GetSystemDate()}'  AND gl.Branch_ID = {ObjGlobal.SysBranchId}  AND JV.FiscalYearId = {ObjGlobal.SysFiscalYearId}
+                         			ORDER BY VoucherNo, VoucherDate,JD.Debit  desc,LedgerDesc;
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable ReturnCashBankVoucherList(bool isProvision, DateTime vDate, string vnoMode, bool isActive,
         string category = "CONTRA")
     {
-        var cmdString = $@"
-			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, CD.Voucher_No VoucherNo, CD.Ledger_Id LedgerId, gl.GLName LedgerDesc, CAST(CD.Debit AS DECIMAL(18, 2)) DebitAmount, CAST(CD.Credit AS DECIMAL(18, 2)) CreditAmount
-			FROM AMS.CB_Master CB
-				 INNER JOIN AMS.CB_Details CD ON CB.Voucher_No = CD.Voucher_No
-				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = CD.Ledger_Id
-			WHERE CB.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND CB.Action_Type <> 'CANCEL' AND CB.Voucher_Date <='{vDate.GetSystemDate()}' ";
+        var cmdString = $"""
+
+                         			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, CD.Voucher_No VoucherNo, CD.Ledger_Id LedgerId, gl.GLName LedgerDesc, CAST(CD.Debit AS DECIMAL(18, 2)) DebitAmount, CAST(CD.Credit AS DECIMAL(18, 2)) CreditAmount
+                         			FROM AMS.CB_Master CB
+                         				 INNER JOIN AMS.CB_Details CD ON CB.Voucher_No = CD.Voucher_No
+                         				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = CD.Ledger_Id
+                         			WHERE CB.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND CB.Action_Type <> 'CANCEL' AND CB.Voucher_Date <='{vDate.GetSystemDate()}' 
+                         """;
         cmdString += isProvision ? " AND CB.VoucherMode ='PROV' " : " ";
         cmdString += category is "REMIT"
             ? $" AND CB.VoucherMode = '{category}'"
             : " AND CB.VoucherMode IN ('Contra', 'Payment', 'Receipt', 'CC', 'P', 'R') ";
-        cmdString += @"
-			ORDER BY VoucherNo, VoucherDate, LedgerDesc ; ";
+        cmdString += """
+
+                     			ORDER BY VoucherNo, VoucherDate, LedgerDesc ; 
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable ReturnDebitNotesVoucherList(bool isProvision, DateTime vDate, string vnoMode, bool isActive)
     {
-        var cmdString = @$"
-			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, ND.Voucher_No VoucherNo, ND.Ledger_Id LedgerId, gl.GLName LedgerDesc, ND.Debit DebitAmount, ND.Credit CreditAmount
-			FROM AMS.Notes_Master NM
-				 INNER JOIN AMS.Notes_Details ND ON ND.Voucher_No = NM.Voucher_No
-				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = ND.Ledger_Id
-			WHERE NM.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND NM.VoucherMode='DN' AND NM.Action_Type <> 'CANCEL'
-			ORDER BY VoucherNo, VoucherDate, LedgerDesc;";
+        var cmdString = $"""
+
+                         			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, ND.Voucher_No VoucherNo, ND.Ledger_Id LedgerId, gl.GLName LedgerDesc, ND.Debit DebitAmount, ND.Credit CreditAmount
+                         			FROM AMS.Notes_Master NM
+                         				 INNER JOIN AMS.Notes_Details ND ON ND.Voucher_No = NM.Voucher_No
+                         				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = ND.Ledger_Id
+                         			WHERE NM.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND NM.VoucherMode='DN' AND NM.Action_Type <> 'CANCEL'
+                         			ORDER BY VoucherNo, VoucherDate, LedgerDesc;
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable ReturnCreditNotesVoucherList(bool isProvision, DateTime vDate, string vnoMode, bool isActive)
     {
-        var cmdString = @$"
-			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, ND.Voucher_No VoucherNo, ND.Ledger_Id LedgerId, gl.GLName LedgerDesc, ND.Debit DebitAmount, ND.Credit CreditAmount
-			FROM AMS.Notes_Master NM
-				 INNER JOIN AMS.Notes_Details ND ON ND.Voucher_No = NM.Voucher_No
-				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = ND.Ledger_Id
-			WHERE NM.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND NM.VoucherMode='CN' AND NM.Action_Type <> 'CANCEL'
-			ORDER BY VoucherNo, VoucherDate, LedgerDesc; ";
+        var cmdString = $"""
+
+                         			SELECT CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN Voucher_Miti ELSE CONVERT(VARCHAR(10), Voucher_Date, 101) END VoucherDate, ND.Voucher_No VoucherNo, ND.Ledger_Id LedgerId, gl.GLName LedgerDesc, ND.Debit DebitAmount, ND.Credit CreditAmount
+                         			FROM AMS.Notes_Master NM
+                         				 INNER JOIN AMS.Notes_Details ND ON ND.Voucher_No = NM.Voucher_No
+                         				 LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID = ND.Ledger_Id
+                         			WHERE NM.FiscalYearId = {ObjGlobal.SysFiscalYearId} AND NM.VoucherMode='CN' AND NM.Action_Type <> 'CANCEL'
+                         			ORDER BY VoucherNo, VoucherDate, LedgerDesc; 
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable ReturnPdcVoucherList(string voucherType)
     {
-        var cmdString = @$"
-			SELECT PDCId VoucherId,VoucherNo,Case when (SELECT EnglishDate FROM AMS.SystemSetting)= 0 then  VoucherMiti else  CONVERT(VARCHAR(10), VoucherDate, 101)  end VoucherDate,VoucherType, gl.GLName,CONVERT (DECIMAL (18,2), pc.Amount ) Amount
-			FROM AMS.PostDateCheque pc
-				LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID= pc.LedgerId
-			WHERE  (BranchId='{ObjGlobal.SysBranchId}' OR BranchId IS NULL) and (CompanyUnitId='{ObjGlobal.SysCompanyUnitId}' OR CompanyUnitId IS NULL)";
+        var cmdString = $"""
+
+                         			SELECT PDCId VoucherId,VoucherNo,Case when (SELECT EnglishDate FROM AMS.SystemSetting)= 0 then  VoucherMiti else  CONVERT(VARCHAR(10), VoucherDate, 101)  end VoucherDate,VoucherType, gl.GLName,CONVERT (DECIMAL (18,2), pc.Amount ) Amount
+                         			FROM AMS.PostDateCheque pc
+                         				LEFT OUTER JOIN AMS.GeneralLedger gl ON gl.GLID= pc.LedgerId
+                         			WHERE  (BranchId='{ObjGlobal.SysBranchId}' OR BranchId IS NULL) and (CompanyUnitId='{ObjGlobal.SysCompanyUnitId}' OR CompanyUnitId IS NULL)
+                         """;
         cmdString += voucherType.IsValueExits() ? $" AND pc.Status = '{voucherType}'" : " AND pc.Status='Due' ";
         cmdString += " ORDER BY pc.voucherNo,pc.VoucherDate ";
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
@@ -1017,70 +1139,92 @@ public class ClsPickList : IPickList
     // PURCHASE REGISTER
     public DataTable ReturnPurchaseIndentVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PIN_Invoice VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.PIN_Date, 103) ELSE pm.PIN_Miti END VoucherDate,Person Ledger,0 TPAN,0 Amount, pm.Remarks
-			FROM AMS.PIN_Master  pm
-			WHERE pm.BranchId = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PIN_Invoice VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.PIN_Date, 103) ELSE pm.PIN_Miti END VoucherDate,Person Ledger,0 TPAN,0 Amount, pm.Remarks
+                      			FROM AMS.PIN_Master  pm
+                      			WHERE pm.BranchId = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += "ORDER BY pm.PIN_Invoice,pm.PIN_Date ;";
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnPurchaseOrderVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PO_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.Invoice_Date, 103) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM(pm.Party_Name) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST(pm.LN_Amount AS DECIMAL(18, 2)) Amount, pm.Remarks
-			FROM AMS.PO_Master pm, AMS.GeneralLedger gl
-			WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PO_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.Invoice_Date, 103) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM(pm.Party_Name) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST(pm.LN_Amount AS DECIMAL(18, 2)) Amount, pm.Remarks
+                      			FROM AMS.PO_Master pm, AMS.GeneralLedger gl
+                      			WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += "ORDER BY pm.PO_Invoice,pm.Invoice_Date ;";
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnPurchaseChallanVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PC_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT ( VARCHAR, pm.Invoice_Date, 103 ) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM ( pm.Party_Name ) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
-			 FROM AMS.PC_Master pm, AMS.GeneralLedger gl
-			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PC_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT ( VARCHAR, pm.Invoice_Date, 103 ) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM ( pm.Party_Name ) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
+                      			 FROM AMS.PC_Master pm, AMS.GeneralLedger gl
+                      			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         if (voucherType.Equals("OPC"))
-            cmdTxt += @"
-				 AND pm.PC_Invoice NOT IN (SELECT pb.PC_Invoice FROM AMS.PB_Master pb WHERE pb.PC_Invoice IS NOT NULL AND pb.PC_Invoice <> '')";
-        cmdTxt += @"
-			 ORDER BY pm.PC_Invoice, pm.Invoice_Date;";
+            cmdTxt += """
+
+                      				 AND pm.PC_Invoice NOT IN (SELECT pb.PC_Invoice FROM AMS.PB_Master pb WHERE pb.PC_Invoice IS NOT NULL AND pb.PC_Invoice <> '')
+                      """;
+        cmdTxt += """
+
+                  			 ORDER BY pm.PC_Invoice, pm.Invoice_Date;
+                  """;
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnPurchaseChallanReturnVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PCR_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT ( VARCHAR, pm.Invoice_Date, 103 ) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM ( pm.Party_Name ) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
-			 FROM AMS.PCR_Master pm, AMS.GeneralLedger gl
-			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PCR_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT ( VARCHAR, pm.Invoice_Date, 103 ) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM ( pm.Party_Name ) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
+                      			 FROM AMS.PCR_Master pm, AMS.GeneralLedger gl
+                      			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         if (voucherType.Equals("OPC"))
-            cmdTxt += @"
-				 AND pm.PCR_Invoice NOT IN (SELECT pb.ChallanReturnNo FROM AMS.PR_Master pb WHERE pb.PCR_Invoice IS NOT NULL AND pb.PCR_Invoice <> '')";
-        cmdTxt += @"
-			 ORDER BY pm.PCR_Invoice, pm.Invoice_Date;";
+            cmdTxt += """
+
+                      				 AND pm.PCR_Invoice NOT IN (SELECT pb.ChallanReturnNo FROM AMS.PR_Master pb WHERE pb.PCR_Invoice IS NOT NULL AND pb.PCR_Invoice <> '')
+                      """;
+        cmdTxt += """
+
+                  			 ORDER BY pm.PCR_Invoice, pm.Invoice_Date;
+                  """;
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnPurchaseInvoiceVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PB_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.Invoice_Date, 103) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM(pm.Party_Name) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN,CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
-			FROM AMS.PB_Master pm, AMS.GeneralLedger gl
-			WHERE pm.Vendor_ID = gl.GLID AND pm.R_Invoice = 0 AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}'";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PB_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.Invoice_Date, 103) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM(pm.Party_Name) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN,CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
+                      			FROM AMS.PB_Master pm, AMS.GeneralLedger gl
+                      			WHERE pm.Vendor_ID = gl.GLID AND pm.R_Invoice = 0 AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}'
+                      """;
         cmdTxt += !voucherType.Equals("RETURN") ? $" AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' " : " ";
-        cmdTxt += @"
-			ORDER BY pm.PB_Invoice, pm.Invoice_Date; ";
+        cmdTxt += """
+
+                  			ORDER BY pm.PB_Invoice, pm.Invoice_Date; 
+                  """;
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnPurchaseReturnVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PR_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.Invoice_Date, 103) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM(pm.Party_Name) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST(pm.LN_Amount AS DECIMAL(18, 2)) Amount, pm.Remarks
-			FROM AMS.PR_Master pm, AMS.GeneralLedger gl
-			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PR_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, pm.Invoice_Date, 103) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM(pm.Party_Name) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST(pm.LN_Amount AS DECIMAL(18, 2)) Amount, pm.Remarks
+                      			FROM AMS.PR_Master pm, AMS.GeneralLedger gl
+                      			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += voucherType.Equals("RETURN") || voucherType.Equals("PCR")
             ? " AND pm.Invoice_Type ='RETURN' "
             : " AND pm.Invoice_Type <> 'RETURN'";
@@ -1090,10 +1234,12 @@ public class ClsPickList : IPickList
 
     public DataTable ReturnPurchaseAdditionalVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT pm.PB_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT ( VARCHAR, pm.Invoice_Date, 103 ) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM ( pm.Party_Name ) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
-			 FROM AMS.PB_Master pm, AMS.GeneralLedger gl
-			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT pm.PB_Invoice VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT ( VARCHAR, pm.Invoice_Date, 103 ) ELSE pm.Invoice_Miti END VoucherDate, CASE WHEN pm.Party_Name IS NOT NULL AND LTRIM ( pm.Party_Name ) <> '' THEN gl.GLName + ' (' + pm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN pm.Vat_No IS NULL THEN gl.PanNo ELSE pm.Vat_No END TPAN, CAST( pm.LN_Amount AS DECIMAL(18,2)) Amount, pm.Remarks
+                      			 FROM AMS.PB_Master pm, AMS.GeneralLedger gl
+                      			 WHERE pm.Vendor_ID = gl.GLID AND pm.Invoice_Type <> 'Cancel' AND pm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND pm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += "ORDER BY pm.PB_Invoice,pm.Invoice_Date; ";
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
@@ -1101,53 +1247,65 @@ public class ClsPickList : IPickList
     // SALES REGISTER
     public DataTable ReturnSalesHoldVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT sm.SB_Invoice VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103) ELSE sm.Invoice_Miti END VoucherDate,
-			CASE WHEN  sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name) <> '' THEN gl.GLName + ' (' + sm.Party_Name + ')'  ELSE gl.GLName  END Ledger,
-			CASE WHEN sm.Vat_No  IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN,CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
-			FROM AMS.temp_SB_Master  sm, AMS.GeneralLedger gl
-			WHERE sm.Customer_ID = gl.GLID
-			and sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT sm.SB_Invoice VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103) ELSE sm.Invoice_Miti END VoucherDate,
+                      			CASE WHEN  sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name) <> '' THEN gl.GLName + ' (' + sm.Party_Name + ')'  ELSE gl.GLName  END Ledger,
+                      			CASE WHEN sm.Vat_No  IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN,CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
+                      			FROM AMS.temp_SB_Master  sm, AMS.GeneralLedger gl
+                      			WHERE sm.Customer_ID = gl.GLID
+                      			and sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += "ORDER BY sm.SB_Invoice,sm.Invoice_Date; ";
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnSalesQuotationVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT sm.SQ_Invoice VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103) ELSE sm.Invoice_Miti END VoucherDate,
-			CASE WHEN  sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name) <> '' THEN gl.GLName + ' (' + sm.Party_Name + ')'  ELSE gl.GLName  END Ledger,
-			CASE WHEN sm.Vat_No  IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN,CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
-			FROM AMS.SQ_Master sm, AMS.GeneralLedger gl
-			WHERE sm.Customer_ID = gl.GLID
-			and sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT sm.SQ_Invoice VoucherNo,CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103) ELSE sm.Invoice_Miti END VoucherDate,
+                      			CASE WHEN  sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name) <> '' THEN gl.GLName + ' (' + sm.Party_Name + ')'  ELSE gl.GLName  END Ledger,
+                      			CASE WHEN sm.Vat_No  IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN,CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
+                      			FROM AMS.SQ_Master sm, AMS.GeneralLedger gl
+                      			WHERE sm.Customer_ID = gl.GLID
+                      			and sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += "ORDER BY sm.SQ_Invoice,sm.Invoice_Date; ";
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable ReturnSalesOrderVoucherNoList(string voucherType)
     {
-        var cmdString = $@"
-			SELECT sm.SO_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)=1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST(sm.LN_Amount AS DECIMAL(18, 2)) Amount, sm.Remarks
-			FROM AMS.SO_Master sm, AMS.GeneralLedger gl
-			WHERE sm.Customer_Id=gl.GLID AND sm.CBranch_Id={ObjGlobal.SysBranchId} AND sm.FiscalYearId={ObjGlobal.SysFiscalYearId}";
+        var cmdString = $"""
+
+                         			SELECT sm.SO_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)=1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST(sm.LN_Amount AS DECIMAL(18, 2)) Amount, sm.Remarks
+                         			FROM AMS.SO_Master sm, AMS.GeneralLedger gl
+                         			WHERE sm.Customer_Id=gl.GLID AND sm.CBranch_Id={ObjGlobal.SysBranchId} AND sm.FiscalYearId={ObjGlobal.SysFiscalYearId}
+                         """;
         cmdString += voucherType.Equals("O") ? @"AND sm.Invoice_Type <> 'POSTED'" : "";
         cmdString += voucherType switch
         {
-            "PRINT" => @"
-			ORDER BY sm.SO_Invoice DESC, sm.Invoice_Date DESC; ",
-            _ => @"
-			ORDER BY sm.SO_Invoice, sm.Invoice_Date; "
+            "PRINT" => """
+
+                       			ORDER BY sm.SO_Invoice DESC, sm.Invoice_Date DESC; 
+                       """,
+            _ => """
+
+                 			ORDER BY sm.SO_Invoice, sm.Invoice_Date; 
+                 """
         };
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable ReturnSalesChallanVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT sm.SC_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
-			FROM AMS.SC_Master sm, AMS.GeneralLedger gl
-			WHERE sm.Customer_Id=gl.GLID AND sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT sm.SC_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
+                      			FROM AMS.SC_Master sm, AMS.GeneralLedger gl
+                      			WHERE sm.Customer_Id=gl.GLID AND sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += voucherType is "OSC"
             ? " AND sm.SC_Invoice NOT IN (SELECT sb.SC_Invoice FROM AMS.SB_Master sb WHERE sb.SC_Invoice IS NOT NULL OR sb.SC_Invoice <> '')"
             : "";
@@ -1159,10 +1317,12 @@ public class ClsPickList : IPickList
 
     public DataTable ReturnSalesInvoiceVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT sm.SB_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST(sm.LN_Amount AS DECIMAL(18, 2)) Amount, sm.Remarks
-			FROM AMS.SB_Master sm, AMS.GeneralLedger gl
-			WHERE sm.Customer_ID = gl.GLID AND sm.R_Invoice = 0 AND sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' ";
+        var cmdTxt = $"""
+
+                      			SELECT sm.SB_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST(sm.LN_Amount AS DECIMAL(18, 2)) Amount, sm.Remarks
+                      			FROM AMS.SB_Master sm, AMS.GeneralLedger gl
+                      			WHERE sm.Customer_ID = gl.GLID AND sm.R_Invoice = 0 AND sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}' 
+                      """;
         cmdTxt += voucherType.Equals("Print")
             ? "ORDER BY sm.Invoice_Date DESC,sm.SB_Invoice DESC"
             : " ORDER BY sm.SB_Invoice,sm.Invoice_Date ";
@@ -1171,10 +1331,12 @@ public class ClsPickList : IPickList
 
     public DataTable ReturnSalesReturnVoucherNoList(string voucherType)
     {
-        var cmdTxt = $@"
-			SELECT sm.SR_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1  THEN CONVERT ( VARCHAR, sm.Invoice_Date, 103 ) ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM ( sm.Party_Name ) <> '' THEN gl.GLName + ' (' + sm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
-			 FROM AMS.SR_Master sm, AMS.GeneralLedger gl
-			 WHERE sm.Customer_ID = gl.GLID AND Action_Type <> 'CANCEL' AND sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}'";
+        var cmdTxt = $"""
+
+                      			SELECT sm.SR_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1  THEN CONVERT ( VARCHAR, sm.Invoice_Date, 103 ) ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM ( sm.Party_Name ) <> '' THEN gl.GLName + ' (' + sm.Party_Name + ')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST( sm.LN_Amount AS DECIMAL(18,2)) Amount, sm.Remarks
+                      			 FROM AMS.SR_Master sm, AMS.GeneralLedger gl
+                      			 WHERE sm.Customer_ID = gl.GLID AND Action_Type <> 'CANCEL' AND sm.CBranch_Id = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}'
+                      """;
         cmdTxt += voucherType.Equals("Print")
             ? "ORDER BY sm.Invoice_Date DESC,sm.SR_Invoice DESC"
             : "ORDER BY sm.SR_Invoice,sm.Invoice_Date ";
@@ -1183,11 +1345,13 @@ public class ClsPickList : IPickList
 
     public DataTable ReturnTodaySalesReports()
     {
-        var cmdString = $@"
-			SELECT sm.SB_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST(sm.LN_Amount AS DECIMAL(18, 2)) Amount, sm.Payment_Mode PaymentMode
-			FROM AMS.SB_Master sm, AMS.GeneralLedger gl
-			WHERE sm.Customer_Id=gl.GLID AND sm.R_Invoice=0 AND sm.CBranch_Id='{ObjGlobal.SysBranchId}' AND sm.FiscalYearId='{ObjGlobal.SysFiscalYearId}' AND gl.EnterBy='{ObjGlobal.LogInUser}' AND sm.Invoice_Date='{Convert.ToDateTime(DateTime.Now):yyyy-MM-dd}'
-			ORDER BY sm.SB_Invoice; ";
+        var cmdString = $"""
+
+                         			SELECT sm.SB_Invoice VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.Invoice_Date, 103)ELSE sm.Invoice_Miti END VoucherDate, CASE WHEN sm.Party_Name IS NOT NULL AND LTRIM(sm.Party_Name)<>'' THEN gl.GLName+' ('+sm.Party_Name+')' ELSE gl.GLName END Ledger, CASE WHEN sm.Vat_No IS NULL THEN gl.PanNo ELSE sm.Vat_No END TPAN, CAST(sm.LN_Amount AS DECIMAL(18, 2)) Amount, sm.Payment_Mode PaymentMode
+                         			FROM AMS.SB_Master sm, AMS.GeneralLedger gl
+                         			WHERE sm.Customer_Id=gl.GLID AND sm.R_Invoice=0 AND sm.CBranch_Id='{ObjGlobal.SysBranchId}' AND sm.FiscalYearId='{ObjGlobal.SysFiscalYearId}' AND gl.EnterBy='{ObjGlobal.LogInUser}' AND sm.Invoice_Date='{Convert.ToDateTime(DateTime.Now):yyyy-MM-dd}'
+                         			ORDER BY sm.SB_Invoice; 
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -1198,33 +1362,39 @@ public class ClsPickList : IPickList
     public DataTable GetProductOpeningVoucherList()
     {
         var cmdString = new StringBuilder();
-        cmdString.AppendLine($@"
-			SELECT Voucher_No VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN OP_Miti ELSE CONVERT(VARCHAR(10), OP_Date, 101) END VoucherDate, PName, CONVERT(DECIMAL(18, 2), Qty) Qty, CONVERT(DECIMAL(18, 2), Rate) Rate, CONVERT(DECIMAL(18, 2), Amount) Amount
-			FROM AMS.ProductOpening OP
-				 LEFT OUTER JOIN AMS.Product P ON OP.Product_Id=P.PID
-			WHERE (OP.CBranch_Id = '{ObjGlobal.SysBranchId}' OR OP.CBranch_Id IS NULL) AND (OP.CUnit_Id = '{ObjGlobal.SysCompanyUnitId}' OR OP.CUnit_Id IS NULL) AND (OP.FiscalYearId IS NULL OR OP.FiscalYearId = '{ObjGlobal.SysFiscalYearId}')
-			ORDER BY Voucher_No, Serial_No ");
+        cmdString.AppendLine($"""
+
+                              			SELECT Voucher_No VoucherNo, CASE WHEN (SELECT sc.EnglishDate FROM AMS.SystemSetting sc) = 0 THEN OP_Miti ELSE CONVERT(VARCHAR(10), OP_Date, 101) END VoucherDate, PName, CONVERT(DECIMAL(18, 2), Qty) Qty, CONVERT(DECIMAL(18, 2), Rate) Rate, CONVERT(DECIMAL(18, 2), Amount) Amount
+                              			FROM AMS.ProductOpening OP
+                              				 LEFT OUTER JOIN AMS.Product P ON OP.Product_Id=P.PID
+                              			WHERE (OP.CBranch_Id = '{ObjGlobal.SysBranchId}' OR OP.CBranch_Id IS NULL) AND (OP.CUnit_Id = '{ObjGlobal.SysCompanyUnitId}' OR OP.CUnit_Id IS NULL) AND (OP.FiscalYearId IS NULL OR OP.FiscalYearId = '{ObjGlobal.SysFiscalYearId}')
+                              			ORDER BY Voucher_No, Serial_No 
+                              """);
         return SqlExtensions.ExecuteDataSet(cmdString.ToString()).Tables[0];
     }
 
     public DataTable GetStockAdjustmentVoucherList()
     {
-        var cmdTxt = $@"
-			SELECT sm.StockAdjust_No VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.VDate, 103)ELSE sm.VMiti END VoucherDate, sm.PhyStockNo, sm.Remarks
-			FROM AMS.STA_Master sm
-			 WHERE sm.BranchId = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}'
-			ORDER BY sm.StockAdjust_No ; ";
+        var cmdTxt = $"""
+
+                      			SELECT sm.StockAdjust_No VoucherNo, CASE WHEN(SELECT sc.EnglishDate FROM AMS.SystemSetting sc)= 1 THEN CONVERT(VARCHAR, sm.VDate, 103)ELSE sm.VMiti END VoucherDate, sm.PhyStockNo, sm.Remarks
+                      			FROM AMS.STA_Master sm
+                      			 WHERE sm.BranchId = '{ObjGlobal.SysBranchId}' AND sm.FiscalYearId = '{ObjGlobal.SysFiscalYearId}'
+                      			ORDER BY sm.StockAdjust_No ; 
+                      """;
         return SqlExtensions.ExecuteDataSet(cmdTxt).Tables[0];
     }
 
     public DataTable GetBomVoucherList(string category)
     {
-        var cmdString = $@"
-			SELECT bm.VoucherNo, Case when (SELECT EnglishDate FROM AMS.SystemSetting)= 0 THEN bm.VMiti ELSE CONVERT(VARCHAR(10), bm.VDate, 101) END VoucherDate, p.PName, CAST(bm.FinishedGoodsQty AS DECIMAL(18, 2)) FinishedGoodsQty, pu.UnitCode, CAST(bm.Amount AS DECIMAL(18, 2)) Amount
-			FROM INV.BOM_Master bm
-				 LEFT OUTER JOIN AMS.Product p ON bm.FinishedGoodsId = p.PID
-				 LEFT OUTER JOIN AMS.ProductUnit pu ON p.PUnit = pu.UID
-			WHERE bm.BranchId ='{ObjGlobal.SysBranchId}' ";
+        var cmdString = $"""
+
+                         			SELECT bm.VoucherNo, Case when (SELECT EnglishDate FROM AMS.SystemSetting)= 0 THEN bm.VMiti ELSE CONVERT(VARCHAR(10), bm.VDate, 101) END VoucherDate, p.PName, CAST(bm.FinishedGoodsQty AS DECIMAL(18, 2)) FinishedGoodsQty, pu.UnitCode, CAST(bm.Amount AS DECIMAL(18, 2)) Amount
+                         			FROM INV.BOM_Master bm
+                         				 LEFT OUTER JOIN AMS.Product p ON bm.FinishedGoodsId = p.PID
+                         				 LEFT OUTER JOIN AMS.ProductUnit pu ON p.PUnit = pu.UID
+                         			WHERE bm.BranchId ='{ObjGlobal.SysBranchId}' 
+                         """;
         if (category.GetLong() > 0) cmdString += $" AND bm.FinishedGoodsId = '{category}' ";
         //AND bm.FiscalYearId='{ObjGlobal.SysFiscalYearId}';
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
@@ -1232,12 +1402,14 @@ public class ClsPickList : IPickList
 
     public DataTable GetIbomVoucherList()
     {
-        var cmdString = $@"
-			SELECT bm.VoucherNo, Case when (SELECT EnglishDate FROM AMS.SystemSetting)= 0  THEN bm.VMiti ELSE CONVERT ( VARCHAR(10), bm.VDate, 101 ) END VoucherDate, p.PName, bm.FinishedGoodsQty, pu.UnitCode, CAST(bm.Amount AS DECIMAL(18, 2)) Amount
-			 FROM INV.Production_Master bm
-				  LEFT OUTER JOIN AMS.Product p ON bm.FinishedGoodsId = p.PID
-				  LEFT OUTER JOIN AMS.ProductUnit pu ON p.PUnit = pu.UID
-			WHERE bm.BranchId ='{ObjGlobal.SysBranchId}' AND bm.FiscalYearId='{ObjGlobal.SysFiscalYearId}'; ";
+        var cmdString = $"""
+
+                         			SELECT bm.VoucherNo, Case when (SELECT EnglishDate FROM AMS.SystemSetting)= 0  THEN bm.VMiti ELSE CONVERT ( VARCHAR(10), bm.VDate, 101 ) END VoucherDate, p.PName, bm.FinishedGoodsQty, pu.UnitCode, CAST(bm.Amount AS DECIMAL(18, 2)) Amount
+                         			 FROM INV.Production_Master bm
+                         				  LEFT OUTER JOIN AMS.Product p ON bm.FinishedGoodsId = p.PID
+                         				  LEFT OUTER JOIN AMS.ProductUnit pu ON p.PUnit = pu.UID
+                         			WHERE bm.BranchId ='{ObjGlobal.SysBranchId}' AND bm.FiscalYearId='{ObjGlobal.SysFiscalYearId}'; 
+                         """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
@@ -1251,23 +1423,31 @@ public class ClsPickList : IPickList
 
     public DataTable GetClientCollection(string actionTag = "", bool status = true)
     {
-        var cmdString = @"
-			SELECT ClientId LedgerId,ClientDescription Description,PanNo,ClientAddress,EmailAddress FROM CRM.ClientCollection
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT ClientId LedgerId,ClientDescription Description,PanNo,ClientAddress,EmailAddress FROM CRM.ClientCollection
+                        			WHERE 1=1 
+                        """;
         cmdString += status ? @" AND Status = 1 " : "";
-        cmdString += @"
-			ORDER BY ClientDescription";
+        cmdString += """
+
+                     			ORDER BY ClientDescription
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 
     public DataTable GetClientSource(string actionTag = "", bool status = true)
     {
-        var cmdString = @"
-			SELECT SDescription Description FROM CRM.ClientSource
-			WHERE 1=1 ";
+        var cmdString = """
+
+                        			SELECT SDescription Description FROM CRM.ClientSource
+                        			WHERE 1=1 
+                        """;
         cmdString += status ? @" AND IsActive = 1 " : "";
-        cmdString += @"
-			ORDER BY SDescription";
+        cmdString += """
+
+                     			ORDER BY SDescription
+                     """;
         return SqlExtensions.ExecuteDataSet(cmdString).Tables[0];
     }
 

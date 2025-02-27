@@ -19,8 +19,7 @@ namespace MrBLL.Setup.UserSetup;
 public partial class FrmUserConfig : MrForm
 {
     // USER CONFIG
-    #region --------------- FrmUserConfig ---------------
-
+    #region --------------- USER CONFIG ---------------
     public FrmUserConfig()
     {
         InitializeComponent();
@@ -158,10 +157,13 @@ public partial class FrmUserConfig : MrForm
     private void TxtLedger_KeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyCode is Keys.F1)
+        {
             BtnLedger_Click(sender, e);
-        else if (TxtLedger.ReadOnly is true)
-            ClsKeyPreview.KeyEvent((char)e.KeyCode, e.KeyValue, e.KeyData.ToString(), "DELETE",
-                e.KeyCode.ToString(), TxtLedger, BtnLedger);
+        }
+        else if (TxtLedger.ReadOnly)
+        {
+            ClsKeyPreview.KeyEvent(e, "DELETE", TxtLedger, BtnLedger);
+        }
     }
     #endregion --------------- FrmUserConfig ---------------
 

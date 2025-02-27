@@ -2222,9 +2222,11 @@ public partial class FrmAutoPopList : Form
         RGrid.AddColumn("Barcode2", "Barcode2", "Barcode2", 0, 5, false);
         RGrid.AddColumn("Barcode3", "Barcode3", "Barcode3", 0, 5, false);
 
-        GetListTable = Category.Equals("LEDGER")
-            ? _objPickList.GetProductWithQtyFilterByLedger(ActionTag, LoginDate, Category, ModuleType)
-            : _objPickList.GetProductWithQty(ActionTag, LoginDate);
+        GetListTable = Category switch
+        {
+            "LEDGER" => _objPickList.GetProductWithQtyFilterByLedger(ActionTag, LoginDate, Category, ModuleType),
+            _ => _objPickList.GetProductWithQty(ActionTag, LoginDate)
+        };
 
         if (GetListTable is { Rows.Count: > 100 })
         {

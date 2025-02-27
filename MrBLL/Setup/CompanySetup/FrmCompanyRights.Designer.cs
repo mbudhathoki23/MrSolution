@@ -31,13 +31,8 @@ namespace MrBLL.Setup.CompanySetup
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.SGrid = new MrDAL.Control.ControlsEx.Control.DataGridViewEx();
-            this.GTxtCompanyId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GTxtSNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GTxtFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GTxtCompanyName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BtnSave = new DevExpress.XtraEditors.SimpleButton();
             this.BtnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -45,6 +40,10 @@ namespace MrBLL.Setup.CompanySetup
             this.BtnUser = new System.Windows.Forms.Button();
             this.TxtUserInfo = new MrDAL.Control.ControlsEx.Control.MrTextBox();
             this.lbl_User = new System.Windows.Forms.Label();
+            this.CompanyId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CompanyName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.SGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.StorePanel.SuspendLayout();
@@ -58,63 +57,30 @@ namespace MrBLL.Setup.CompanySetup
             this.SGrid.BackgroundColor = System.Drawing.Color.AliceBlue;
             this.SGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.GTxtCompanyId,
-            this.GTxtSNo,
-            this.GTxtFileName,
-            this.GTxtCompanyName});
+            this.CompanyId,
+            this.SNo,
+            this.FileName,
+            this.CompanyName});
             this.SGrid.DoubleBufferEnabled = true;
             this.SGrid.GridColor = System.Drawing.Color.DarkSlateBlue;
             this.SGrid.Location = new System.Drawing.Point(5, 36);
             this.SGrid.Margin = new System.Windows.Forms.Padding(2);
+            this.SGrid.MultiSelect = false;
             this.SGrid.Name = "SGrid";
             this.SGrid.ReadOnly = true;
-            this.SGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Empty;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Bookman Old Style", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Empty;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Empty;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.SGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.SGrid.RowHeadersVisible = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.SGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.SGrid.RowTemplate.Height = 24;
             this.SGrid.Size = new System.Drawing.Size(591, 241);
+            this.SGrid.StandardTab = true;
             this.SGrid.TabIndex = 1;
-            // 
-            // GTxtCompanyId
-            // 
-            this.GTxtCompanyId.HeaderText = "CompanyId";
-            this.GTxtCompanyId.Name = "GTxtCompanyId";
-            this.GTxtCompanyId.ReadOnly = true;
-            this.GTxtCompanyId.Visible = false;
-            this.GTxtCompanyId.Width = 5;
-            // 
-            // GTxtSNo
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.GTxtSNo.DefaultCellStyle = dataGridViewCellStyle1;
-            this.GTxtSNo.HeaderText = "SNo";
-            this.GTxtSNo.Name = "GTxtSNo";
-            this.GTxtSNo.ReadOnly = true;
-            this.GTxtSNo.Width = 65;
-            // 
-            // GTxtFileName
-            // 
-            this.GTxtFileName.HeaderText = "File Name";
-            this.GTxtFileName.Name = "GTxtFileName";
-            this.GTxtFileName.ReadOnly = true;
-            this.GTxtFileName.Width = 150;
-            // 
-            // GTxtCompanyName
-            // 
-            this.GTxtCompanyName.HeaderText = "Company Name";
-            this.GTxtCompanyName.Name = "GTxtCompanyName";
-            this.GTxtCompanyName.ReadOnly = true;
-            this.GTxtCompanyName.Width = 500;
             // 
             // BtnSave
             // 
@@ -194,6 +160,37 @@ namespace MrBLL.Setup.CompanySetup
             this.lbl_User.TabIndex = 9;
             this.lbl_User.Text = "User Name";
             // 
+            // CompanyId
+            // 
+            this.CompanyId.HeaderText = "CompanyId";
+            this.CompanyId.Name = "CompanyId";
+            this.CompanyId.ReadOnly = true;
+            this.CompanyId.Visible = false;
+            this.CompanyId.Width = 5;
+            // 
+            // SNo
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.SNo.DefaultCellStyle = dataGridViewCellStyle1;
+            this.SNo.HeaderText = "SNo";
+            this.SNo.Name = "SNo";
+            this.SNo.ReadOnly = true;
+            this.SNo.Width = 65;
+            // 
+            // FileName
+            // 
+            this.FileName.HeaderText = "File Name";
+            this.FileName.Name = "FileName";
+            this.FileName.ReadOnly = true;
+            this.FileName.Width = 150;
+            // 
+            // CompanyName
+            // 
+            this.CompanyName.HeaderText = "Company Name";
+            this.CompanyName.Name = "CompanyName";
+            this.CompanyName.ReadOnly = true;
+            this.CompanyName.Width = 500;
+            // 
             // FrmCompanyRights
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,7 +198,6 @@ namespace MrBLL.Setup.CompanySetup
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(600, 322);
             this.Controls.Add(this.StorePanel);
-            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "FrmCompanyRights";
@@ -223,13 +219,13 @@ namespace MrBLL.Setup.CompanySetup
         private DevExpress.XtraEditors.SimpleButton BtnCancel;
         private System.Windows.Forms.GroupBox groupBox1;
         private MrPanel StorePanel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GTxtCompanyId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GTxtSNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn GTxtDataBase;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GTxtCompanyName;
         private System.Windows.Forms.Label lbl_User;
         private System.Windows.Forms.Button BtnUser;
         private MrTextBox TxtUserInfo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GTxtFileName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CompanyId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FileName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CompanyName;
     }
 }
